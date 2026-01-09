@@ -1,0 +1,253 @@
+{
+  "categories": [
+    {
+      "id": "jsx-basics",
+      "name": "JSX 基础",
+      "description": "学习 JSX 语法、元素渲染和基本规则",
+      "icon": "📝",
+      "lessons": [
+        {
+          "id": 1,
+          "title": "Hello World",
+          "difficulty": "easy",
+          "question": "创建一个显示 'Hello React' 的 div 元素",
+          "description": "JSX 是 JavaScript 的语法扩展，看起来像 HTML 但实际上是 JavaScript。",
+          "starterCode": "function App() {\n  return (\n    // 在这里写 JSX\n  )\n}\n\nrender(<App />)",
+          "solution": "function App() {\n  return <div>Hello React</div>\n}\n\nrender(<App />)",
+          "hints": [
+            "JSX 元素写法和 HTML 类似",
+            "使用 <div>Hello React</div>",
+            "不需要引号包裹"
+          ],
+          "testCases": [
+            {
+              "description": "应该返回 div 元素",
+              "pattern": "<div>"
+            },
+            {
+              "description": "应该包含文字 'Hello React'",
+              "pattern": "Hello React"
+            }
+          ]
+        },
+        {
+          "id": 2,
+          "title": "多个元素",
+          "difficulty": "easy",
+          "question": "创建一个 h1 标题和一个 p 段落，用 Fragment 包裹",
+          "description": "React 组件只能返回一个根元素，使用 Fragment (<>) 可以不添加额外 DOM 节点。",
+          "starterCode": "function App() {\n  return (\n    // 使用 <> </> 包裹多个元素\n  )\n}\n\nrender(<App />)",
+          "solution": "function App() {\n  return (\n    <>\n      <h1>标题</h1>\n      <p>这是一个段落</p>\n    </>\n  )\n}\n\nrender(<App />)",
+          "hints": [
+            "使用 <> 和 </> 包裹多个元素",
+            "Fragment 不会在 DOM 中创建额外节点",
+            "h1 和 p 元素都要在 Fragment 内"
+          ],
+          "testCases": [
+            {
+              "description": "应该包含 h1 元素",
+              "pattern": "<h1>"
+            },
+            {
+              "description": "应该包含 p 元素",
+              "pattern": "<p>"
+            },
+            {
+              "description": "应该使用 Fragment",
+              "pattern": "<>|Fragment"
+            }
+          ]
+        },
+        {
+          "id": 3,
+          "title": "JSX 中使用变量",
+          "difficulty": "easy",
+          "question": "定义一个变量 name，在 JSX 中使用 {} 显示它",
+          "description": "在 JSX 中使用 {} 可以嵌入 JavaScript 表达式。",
+          "starterCode": "function App() {\n  const name = 'React'\n\n  return (\n    <div>你好, {/* 在这里显示 name */}</div>\n  )\n}\n\nrender(<App />)",
+          "solution": "function App() {\n  const name = 'React'\n\n  return (\n    <div>你好, {name}</div>\n  )\n}\n\nrender(<App />)",
+          "hints": [
+            "使用 {name} 在 JSX 中显示变量",
+            "花括号内可以写任何 JavaScript 表达式",
+            "变量会自动转换为字符串显示"
+          ],
+          "testCases": [
+            {
+              "description": "应该定义 name 变量",
+              "pattern": "name"
+            },
+            {
+              "description": "应该在 JSX 中使用 {name}",
+              "pattern": "{name}|{ name }"
+            }
+          ]
+        },
+        {
+          "id": 4,
+          "title": "JSX 中的表达式",
+          "difficulty": "medium",
+          "question": "在 JSX 中计算并显示 1 + 2 的结果",
+          "description": "花括号内可以放任何 JavaScript 表达式，包括运算、函数调用等。",
+          "starterCode": "function App() {\n  return (\n    <div>结果是: {/* 在这里计算 1 + 2 */}</div>\n  )\n}\n\nrender(<App />)",
+          "solution": "function App() {\n  return (\n    <div>结果是: {1 + 2}</div>\n  )\n}\n\nrender(<App />)",
+          "hints": [
+            "在 {} 中直接写 1 + 2",
+            "表达式会自动计算并显示结果",
+            "可以写任何有效的 JavaScript 表达式"
+          ],
+          "testCases": [
+            {
+              "description": "应该包含加法运算",
+              "pattern": "1 \\+ 2|1\\+2"
+            },
+            {
+              "description": "应该在花括号中",
+              "pattern": "\\{.*1.*\\+.*2.*\\}"
+            }
+          ]
+        },
+        {
+          "id": 5,
+          "title": "className 样式",
+          "difficulty": "easy",
+          "question": "给 div 添加 className='container'",
+          "description": "在 JSX 中使用 className 而不是 class（因为 class 是 JavaScript 关键字）。",
+          "starterCode": "function App() {\n  return (\n    <div>我需要样式</div>\n  )\n}\n\nrender(<App />)",
+          "solution": "function App() {\n  return (\n    <div className=\"container\">我需要样式</div>\n  )\n}\n\nrender(<App />)",
+          "hints": [
+            "使用 className 而不是 class",
+            "className=\"container\"",
+            "HTML 的 class 在 JSX 中要改为 className"
+          ],
+          "testCases": [
+            {
+              "description": "应该使用 className",
+              "pattern": "className"
+            },
+            {
+              "description": "值应该是 'container'",
+              "pattern": "className=\"container\""
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "components",
+      "name": "组件基础",
+      "description": "创建和使用 React 组件",
+      "icon": "🧩",
+      "lessons": [
+        {
+          "id": 6,
+          "title": "创建第一个组件",
+          "difficulty": "easy",
+          "question": "创建一个名为 Welcome 的组件，显示 '欢迎学习 React'",
+          "description": "React 组件就是返回 JSX 的函数，组件名首字母必须大写。",
+          "starterCode": "// 创建 Welcome 组件\n\nfunction App() {\n  return <Welcome />\n}\n\nrender(<App />)",
+          "solution": "function Welcome() {\n  return <div>欢迎学习 React</div>\n}\n\nfunction App() {\n  return <Welcome />\n}\n\nrender(<App />)",
+          "hints": [
+            "组件名首字母大写：Welcome",
+            "组件是返回 JSX 的函数",
+            "function Welcome() { return ... }"
+          ],
+          "testCases": [
+            {
+              "description": "应该定义 Welcome 组件",
+              "pattern": "function Welcome"
+            },
+            {
+              "description": "应该返回 JSX",
+              "pattern": "return.*欢迎学习 React"
+            },
+            {
+              "description": "应该在 App 中使用 <Welcome />",
+              "pattern": "<Welcome"
+            }
+          ]
+        },
+        {
+          "id": 7,
+          "title": "组件复用",
+          "difficulty": "easy",
+          "question": "创建 Card 组件并在 App 中使用 3 次",
+          "description": "组件可以复用多次，每个实例都是独立的。",
+          "starterCode": "function Card() {\n  return <div>卡片</div>\n}\n\nfunction App() {\n  return (\n    <div>\n      {/* 使用 3 个 Card 组件 */}\n    </div>\n  )\n}\n\nrender(<App />)",
+          "solution": "function Card() {\n  return <div>卡片</div>\n}\n\nfunction App() {\n  return (\n    <div>\n      <Card />\n      <Card />\n      <Card />\n    </div>\n  )\n}\n\nrender(<App />)",
+          "hints": [
+            "直接写 3 个 <Card />",
+            "组件可以像 HTML 标签一样使用",
+            "每个 Card 都是独立的实例"
+          ],
+          "testCases": [
+            {
+              "description": "应该有 Card 组件定义",
+              "pattern": "function Card"
+            },
+            {
+              "description": "应该使用多次 Card",
+              "pattern": "<Card",
+              "minCount": 3
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "props",
+      "name": "Props 传递",
+      "description": "学习父子组件通过 Props 通信",
+      "icon": "🔗",
+      "lessons": [
+        {
+          "id": 11,
+          "title": "Props 基础",
+          "difficulty": "easy",
+          "question": "创建 Greeting 组件，接收 name prop 并显示",
+          "description": "Props 是父组件传递给子组件的数据，类似函数参数。",
+          "starterCode": "function Greeting(props) {\n  return <div>你好, {/* 显示 props.name */}</div>\n}\n\nfunction App() {\n  return <Greeting name=\"张三\" />\n}\n\nrender(<App />)",
+          "solution": "function Greeting(props) {\n  return <div>你好, {props.name}</div>\n}\n\nfunction App() {\n  return <Greeting name=\"张三\" />\n}\n\nrender(<App />)",
+          "hints": [
+            "使用 props.name 访问传入的 name",
+            "props 是组件的第一个参数",
+            "在 JSX 中用 {} 包裹变量"
+          ],
+          "testCases": [
+            {
+              "description": "应该使用 props.name",
+              "pattern": "props\\.name"
+            },
+            {
+              "description": "App 应该传递 name prop",
+              "pattern": "name="
+            }
+          ]
+        },
+        {
+          "id": 12,
+          "title": "Props 解构",
+          "difficulty": "easy",
+          "question": "使用解构语法获取 name 和 age props",
+          "description": "可以在函数参数中直接解构 props，让代码更简洁。",
+          "starterCode": "function UserCard(props) {\n  return (\n    <div>\n      <p>姓名: {/* name */}</p>\n      <p>年龄: {/* age */}</p>\n    </div>\n  )\n}\n\nfunction App() {\n  return <UserCard name=\"李四\" age={25} />\n}\n\nrender(<App />)",
+          "solution": "function UserCard({ name, age }) {\n  return (\n    <div>\n      <p>姓名: {name}</p>\n      <p>年龄: {age}</p>\n    </div>\n  )\n}\n\nfunction App() {\n  return <UserCard name=\"李四\" age={25} />\n}\n\nrender(<App />)",
+          "hints": [
+            "使用 { name, age } 替代 props",
+            "这样可以直接使用 name 和 age",
+            "解构语法: function UserCard({ name, age })"
+          ],
+          "testCases": [
+            {
+              "description": "应该使用解构参数",
+              "pattern": "\\{.*name.*,.*age.*\\}"
+            },
+            {
+              "description": "应该显示 name 和 age",
+              "pattern": "\\{name\\}.*\\{age\\}"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
