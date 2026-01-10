@@ -1,0 +1,84 @@
+{
+  "app": {
+    "title": "React Learning Platform",
+    "subtitle": "Interactive React Learning Experience",
+    "loading": "Loading...",
+    "error": "Error loading application"
+  },
+  "nav": {
+    "home": "Home",
+    "lessons": "Lessons",
+    "progress": "Progress",
+    "settings": "Settings"
+  },
+  "lesson": {
+    "startCode": "Start Coding",
+    "runTests": "Run Tests",
+    "nextLesson": "Next Lesson",
+    "prevLesson": "Previous Lesson",
+    "showHint": "Show Hint",
+    "hideHint": "Hide Hint",
+    "resetCode": "Reset Code",
+    "difficulty": {
+      "easy": "Easy",
+      "medium": "Medium",
+      "hard": "Hard"
+    },
+    "status": {
+      "notStarted": "Not Started",
+      "inProgress": "In Progress",
+      "completed": "Completed"
+    }
+  },
+  "editor": {
+    "placeholder": "Write your code here...",
+    "runButton": "Run",
+    "resetButton": "Reset",
+    "copyButton": "Copy",
+    "copiedMessage": "Copied to clipboard"
+  },
+  "tests": {
+    "running": "Running tests...",
+    "passed": "Test Passed",
+    "failed": "Test Failed",
+    "allPassed": "All tests passed!",
+    "someFailed": "{{passed}}/{{total}} tests passed",
+    "error": "Test execution error"
+  },
+  "progress": {
+    "completed": "Completed",
+    "total": "Total",
+    "percentage": "{{percentage}}% Complete",
+    "lessonsCompleted": "{{completed}}/{{total}} Lessons Completed",
+    "categoryProgress": "Category Progress",
+    "overallProgress": "Overall Progress"
+  },
+  "hints": {
+    "title": "Hint",
+    "noMoreHints": "No more hints available",
+    "hintNumber": "Hint {{number}}"
+  },
+  "settings": {
+    "language": "Language",
+    "theme": "Theme",
+    "lightTheme": "Light",
+    "darkTheme": "Dark",
+    "fontSize": "Font Size",
+    "autoSave": "Auto Save"
+  },
+  "errors": {
+    "loadingFailed": "Failed to load",
+    "savingFailed": "Failed to save",
+    "networkError": "Network error",
+    "unexpectedError": "An unexpected error occurred",
+    "tryAgain": "Try Again",
+    "refreshPage": "Refresh Page"
+  },
+  "accessibility": {
+    "skipToMain": "Skip to main content",
+    "menuOpen": "Open menu",
+    "menuClose": "Close menu",
+    "expandSection": "Expand section",
+    "collapseSection": "Collapse section"
+  }
+}

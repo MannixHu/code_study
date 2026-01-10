@@ -1,0 +1,84 @@
+{
+  "app": {
+    "title": "React 学习平台",
+    "subtitle": "交互式 React 学习体验",
+    "loading": "加载中...",
+    "error": "加载应用时出错"
+  },
+  "nav": {
+    "home": "首页",
+    "lessons": "课程",
+    "progress": "进度",
+    "settings": "设置"
+  },
+  "lesson": {
+    "startCode": "开始编码",
+    "runTests": "运行测试",
+    "nextLesson": "下一课",
+    "prevLesson": "上一课",
+    "showHint": "显示提示",
+    "hideHint": "隐藏提示",
+    "resetCode": "重置代码",
+    "difficulty": {
+      "easy": "简单",
+      "medium": "中等",
+      "hard": "困难"
+    },
+    "status": {
+      "notStarted": "未开始",
+      "inProgress": "进行中",
+      "completed": "已完成"
+    }
+  },
+  "editor": {
+    "placeholder": "在这里编写你的代码...",
+    "runButton": "运行",
+    "resetButton": "重置",
+    "copyButton": "复制",
+    "copiedMessage": "已复制到剪贴板"
+  },
+  "tests": {
+    "running": "测试运行中...",
+    "passed": "测试通过",
+    "failed": "测试失败",
+    "allPassed": "所有测试通过！",
+    "someFailed": "{{passed}}/{{total}} 测试通过",
+    "error": "测试执行出错"
+  },
+  "progress": {
+    "completed": "已完成",
+    "total": "总计",
+    "percentage": "{{percentage}}% 完成",
+    "lessonsCompleted": "{{completed}}/{{total}} 课程完成",
+    "categoryProgress": "分类进度",
+    "overallProgress": "总体进度"
+  },
+  "hints": {
+    "title": "提示",
+    "noMoreHints": "没有更多提示了",
+    "hintNumber": "提示 {{number}}"
+  },
+  "settings": {
+    "language": "语言",
+    "theme": "主题",
+    "lightTheme": "浅色",
+    "darkTheme": "深色",
+    "fontSize": "字体大小",
+    "autoSave": "自动保存"
+  },
+  "errors": {
+    "loadingFailed": "加载失败",
+    "savingFailed": "保存失败",
+    "networkError": "网络错误",
+    "unexpectedError": "发生意外错误",
+    "tryAgain": "重试",
+    "refreshPage": "刷新页面"
+  },
+  "accessibility": {
+    "skipToMain": "跳转到主内容",
+    "menuOpen": "打开菜单",
+    "menuClose": "关闭菜单",
+    "expandSection": "展开部分",
+    "collapseSection": "折叠部分"
+  }
+}
