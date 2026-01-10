@@ -128,7 +128,7 @@ function buildASTContext(ast: any): Record<string, any> {
     },
 
     // 箭头函数
-    ArrowFunctionExpression(path) {
+    ArrowFunctionExpression(_path) {
       context.hasArrowFunction = true
     },
 
@@ -161,7 +161,7 @@ function buildASTContext(ast: any): Record<string, any> {
     },
 
     // JSX Fragment
-    JSXFragment(path) {
+    JSXFragment(_path) {
       context.hasJSX = true
       context.jsxElementNames.push('Fragment')
     },
@@ -213,7 +213,7 @@ function buildASTContext(ast: any): Record<string, any> {
     },
 
     // 条件表达式
-    ConditionalExpression(path) {
+    ConditionalExpression(_path) {
       context.hasConditionalRendering = true
     },
 

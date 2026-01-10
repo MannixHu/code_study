@@ -90,7 +90,7 @@ function parseCodeToAST(code: string): ASTContext {
         }
       },
 
-      ArrowFunctionExpression: (path) => {
+      ArrowFunctionExpression: (_path) => {
         context.hasFunctionDeclaration = true
       },
 
@@ -120,7 +120,7 @@ function parseCodeToAST(code: string): ASTContext {
         }
       },
 
-      JSXFragment: (path) => {
+      JSXFragment: (_path) => {
         context.hasJSX = true
       },
 
