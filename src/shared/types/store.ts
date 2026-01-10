@@ -30,6 +30,7 @@ export interface ProgressStore {
   isRunningTests: boolean
   currentProgress: any
   setCompletedLessonIds: (ids: Set<string>) => void
+  addCompletedLesson: (lessonId: string) => void
   setTestResults: (results: TestResult[]) => void
   setIsRunningTests: (is: boolean) => void
   setCurrentProgress: (progress: any) => void
@@ -37,11 +38,16 @@ export interface ProgressStore {
 
 export interface EditorStore {
   userCode: string
-  isAnalyzing: boolean
-  analysisResults: any
+  isAnalyzing?: boolean
+  analysisResults?: any
   setUserCode: (code: string) => void
-  setIsAnalyzing: (is: boolean) => void
-  setAnalysisResults: (results: any) => void
+  setIsAnalyzing?: (is: boolean) => void
+  setAnalysisResults?: (results: any) => void
+  isSaved?: boolean
+  lastSavedCode?: string
+  resetCode?: (lessonId: string) => Promise<void>
+  loadSavedCode?: (lessonId: string) => Promise<void>
+  markAsSaved?: () => void
 }
 
 export interface UiStore {
@@ -51,8 +57,12 @@ export interface UiStore {
   hintIndex?: number
   setShowHint?: (show: boolean) => void
   setHintIndex?: (index: number) => void
+  resetHint?: () => void
+  nextHint?: (maxHints: number) => void
+  toggleSidebar?: () => void
   theme?: string
   editorLayout?: any
   setEditorLayout?: (layout: any) => void
   setTheme?: (theme: string) => void
+  toggleTheme?: () => void
 }

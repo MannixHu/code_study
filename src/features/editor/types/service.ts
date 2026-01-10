@@ -3,13 +3,23 @@
  * 业务逻辑层的返回类型和数据结构
  */
 
-import type { Category, Lesson, Progress, TestResult, CategoryMeta } from './lesson'
+import type { Category, Lesson, Progress, TestResult, CategoryMeta, TestCase } from '../../lessons/types/lesson'
 
 // ==================== Common Types ====================
 
-export type Result<T, E = ServiceError> =
-  | { success: true; data: T }
-  | { success: false; error: E }
+export interface SuccessResult<T> {
+  success: true
+  data: T
+  error?: undefined
+}
+
+export interface ErrorResult<E> {
+  success: false
+  data?: undefined
+  error: E
+}
+
+export type Result<T, E = ServiceError> = SuccessResult<T> | ErrorResult<E>
 
 export interface ServiceError {
   code: string
@@ -46,7 +56,7 @@ export interface CodeAnalysisResult {
 export interface TestServiceAPI {
   runTests(
     code: string,
-    testCases: import('./lesson').TestCase[]
+    testCases: TestCase[]
   ): Promise<Result<TestResult[], ServiceError>>
 
   validateCode(code: string): Promise<Result<CodeAnalysisResult, ServiceError>>

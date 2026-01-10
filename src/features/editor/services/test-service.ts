@@ -4,7 +4,7 @@
  * 负责运行测试用例、验证代码结构
  */
 
-import type { TestCase, TestResult } from '../types/lesson'
+import type { TestCase, TestResult } from '../../lessons/types/lesson'
 import type { TestServiceAPI, CodeAnalysisResult, Result, ServiceError } from '../types/service'
 import { codeAnalyzerService } from './code-analyzer'
 

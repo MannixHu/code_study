@@ -1,4 +1,5 @@
-export { TestResults } from './components/TestResults'
+export { default as TestResults } from './components/TestResults'
 export { useProgress } from './hooks/useProgress'
 export { progressService } from './services/progress-service'
-export type { ProgressState } from './types/progress'
+export { progressRepository } from './repository/progress-repository'
+export type { ProgressState, ProgressRecord } from './types/progress'

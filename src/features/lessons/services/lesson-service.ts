@@ -5,8 +5,8 @@
  */
 
 import type { Category, Lesson, CategoryMeta } from '../types/lesson'
-import type { LessonServiceAPI, Result, ServiceError } from '../types/service'
-import { lessonRepository } from '../repository'
+import type { LessonServiceAPI, Result, ServiceError } from '../../editor/types/service'
+import { lessonRepository } from '../repository/lesson-repository'
 
 /**
  * Lesson Service 实现

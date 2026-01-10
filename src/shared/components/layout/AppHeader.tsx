@@ -5,10 +5,10 @@
 
 import { Layout, Badge, Tabs } from 'antd'
 import { CodeOutlined } from '@ant-design/icons'
-import { useLessonStore } from '../../store'
-import { progressService } from '../../services'
+import { useLessonStore } from '../../../store'
+import { progressService } from '../../../features/progress'
 import { useState, useEffect } from 'react'
-import type { StatisticsData } from '../../types/service'
+import type { StatisticsData } from '../../../features/editor/types/service'
 
 const { Header } = Layout
 

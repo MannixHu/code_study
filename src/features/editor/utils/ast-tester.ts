@@ -1,6 +1,6 @@
 import { parse } from '@babel/parser'
 import traverse from '@babel/traverse'
-import type { TestCase } from '../types/lesson'
+import type { TestCase } from '../../lessons/types/lesson'
 
 // AST 检查结果
 interface ASTCheckResult {

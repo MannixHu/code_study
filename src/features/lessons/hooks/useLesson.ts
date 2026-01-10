@@ -4,7 +4,7 @@
  */
 
 import { useEffect, useRef } from 'react'
-import { useLessonStore } from '../store'
+import { useLessonStore } from '../../../store'
 import type { Category, Lesson } from '../types/lesson'
 
 export interface UseLessonResult {

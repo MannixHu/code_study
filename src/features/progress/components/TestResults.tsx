@@ -5,7 +5,7 @@
 
 import { Alert, Spin } from 'antd'
 import { CheckCircleOutlined, CloseCircleOutlined } from '@ant-design/icons'
-import type { TestResult } from '../../types/lesson'
+import type { TestResult } from '../../lessons/types/lesson'
 import './feedback.css'
 
 interface TestResultsProps {

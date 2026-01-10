@@ -4,8 +4,8 @@
  */
 
 import { useEffect, useCallback, useRef } from 'react'
-import { useEditorStore } from '../store'
-import { progressRepository } from '../repository'
+import { useEditorStore } from '../../../store'
+import { progressRepository } from '../../progress'
 
 export interface UseEditorResult {
   userCode: string

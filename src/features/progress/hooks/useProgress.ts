@@ -4,9 +4,9 @@
  */
 
 import { useEffect, useState, useCallback } from 'react'
-import { useProgressStore } from '../store'
-import { progressService } from '../services'
-import type { StatisticsData } from '../types/service'
+import { useProgressStore } from '../../../store'
+import { progressService } from '../services/progress-service'
+import type { StatisticsData } from '../../editor/types/service'
 
 export interface UseProgressResult {
   completedLessonIds: Set<string>

@@ -4,8 +4,8 @@
  * 封装 Dexie.js IndexedDB 操作
  */
 
-import type { ProgressRepository } from '../types/service'
-import type { ProgressV2 } from '../db/dexie-db'
+import type { ProgressRepository } from '../../editor/types/service'
+import type { ProgressV2 } from '../../../shared/db/dexie-db'
 import {
   saveProgress as dbSaveProgress,
   getProgress as dbGetProgress,
@@ -17,7 +17,7 @@ import {
   getCategoryStats as dbGetCategoryStats,
   saveProgressBatch as dbSaveProgressBatch,
   isIndexedDBAvailable,
-} from '../db/dexie-db'
+} from '../../../shared/db/dexie-db'
 
 /**
  * Progress Repository 实现

@@ -4,9 +4,10 @@
  */
 
 import { useCallback } from 'react'
-import { useProgressStore, useEditorStore } from '../store'
-import { testService, progressService } from '../services'
-import type { TestCase, TestResult } from '../types/lesson'
+import { useProgressStore, useEditorStore } from '../../../store'
+import { testService } from '../services/test-service'
+import { progressService } from '../../progress'
+import type { TestCase, TestResult } from '../../lessons/types/lesson'
 
 export interface UseTestRunnerResult {
   testResults: TestResult[]

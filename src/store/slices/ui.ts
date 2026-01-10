@@ -30,6 +30,16 @@ export const useUIStore = create<UIStore>((set) => ({
     set({ showHint: show })
   },
 
+  // 设置提示索引
+  setHintIndex: (index: number) => {
+    set({ hintIndex: index })
+  },
+
+  // 设置侧边栏显示
+  setSidebarVisible: (visible: boolean) => {
+    set({ sidebarVisible: visible })
+  },
+
   // 显示下一个提示
   nextHint: (maxHints: number) => {
     set((state) => {

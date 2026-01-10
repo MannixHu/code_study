@@ -5,10 +5,9 @@
 
 import { Spin } from 'antd'
 import { PlayCircleOutlined, CodeOutlined } from '@ant-design/icons'
-import { useLesson, useEditor, useTestRunner } from '../../hooks'
-import CodeEditor from '../editor/CodeEditor'
-import TestResults from '../feedback/TestResults'
-import './learning-page.css'
+import { useLesson } from '../hooks/useLesson'
+import { useEditor, useTestRunner, CodeEditor } from '../../editor'
+import { TestResults } from '../../progress'
 
 function LearningPage() {
   const { currentLesson, loading } = useLesson()

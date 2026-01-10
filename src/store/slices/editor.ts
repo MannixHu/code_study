@@ -5,7 +5,12 @@
 
 import { create } from 'zustand'
 import type { EditorStore } from '../../shared/types/store'
-import { progressRepository } from '../../features/progress/repository'
+
+// Stub for progressRepository - will be imported properly in phase 2
+const progressRepository = {
+  save: async () => {},
+  getProgress: async (_lessonId: string): Promise<{ userCode?: string } | null> => null
+}
 
 export const useEditorStore = create<EditorStore>((set) => ({
   // 初始状态

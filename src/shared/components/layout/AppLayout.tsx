@@ -6,7 +6,7 @@
 import { Layout } from 'antd'
 import AppHeader from './AppHeader'
 import AppSidebar from './AppSidebar'
-import LearningPage from '../pages/LearningPage'
+import { LearningPage } from '../../../features/lessons'
 import './layout.css'
 
 const { Content } = Layout

@@ -7,8 +7,8 @@ import { useEffect } from 'react'
 import { ConfigProvider, theme, Spin } from 'antd'
 import { useLesson, lessonService } from './features/lessons'
 import { useLessonStore, useProgressStore } from './store'
-import { progressService } from './services'
-import AppLayout from './components/layout/AppLayout'
+import { progressService } from './features/progress'
+import AppLayout from './shared/components/layout/AppLayout'
 import './App.css'
 
 function App() {

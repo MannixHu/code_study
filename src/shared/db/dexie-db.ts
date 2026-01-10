@@ -1,5 +1,5 @@
 import Dexie from 'dexie'
-import type { Progress } from '../types/lesson'
+import type { Progress } from '../../features/lessons/types/lesson'
 
 /**
  * Progress 扩展字段 (v2 schema)

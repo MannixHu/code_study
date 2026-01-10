@@ -4,10 +4,10 @@
  * 负责记录、查询和分析学习进度
  */
 
-import type { TestResult, Progress } from '../types/lesson'
-import type { ProgressServiceAPI, StatisticsData, Result, ServiceError } from '../types/service'
-import type { ProgressV2 } from '../db/dexie-db'
-import { progressRepository } from '../repository'
+import type { TestResult, Progress } from '../../lessons/types/lesson'
+import type { ProgressServiceAPI, StatisticsData, Result, ServiceError } from '../../editor/types/service'
+import type { ProgressV2 } from '../../../shared/db/dexie-db'
+import { progressRepository } from '../repository/progress-repository'
 
 /**
  * Progress Service 实现

@@ -5,8 +5,9 @@
 
 import { Layout, Card, Select, Tag, Button, Space, Tooltip, Alert } from 'antd'
 import { LeftOutlined, RightOutlined, BulbOutlined, SendOutlined, ReloadOutlined, EyeOutlined } from '@ant-design/icons'
-import { useLesson, useProgress } from '../../hooks'
-import { useUIStore } from '../../store'
+import { useLesson } from '../../../features/lessons'
+import { useProgress } from '../../../features/progress'
+import { useUIStore } from '../../../store'
 import { useMemo } from 'react'
 import './layout.css'
 
