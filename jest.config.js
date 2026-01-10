@@ -51,9 +51,7 @@ export default {
   // Transform files with ts-jest
   transform: {
     '^.+\\.tsx?$': ['ts-jest', {
-      tsconfig: {
-        jsx: 'react-jsx',
-      },
+      tsconfig: './tsconfig.jest.json',
     }],
   },
 
