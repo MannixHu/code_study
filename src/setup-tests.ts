@@ -1,9 +1,10 @@
+/* eslint-disable @typescript-eslint/no-explicit-any, no-unexpected-multiline */
 /**
  * Jest Setup File
  * Runs once before all tests to configure the testing environment
  */
 
-import '@testing-library/jest-dom'
+import "@testing-library/jest-dom";
 
 // Mock window.matchMedia
 (window as any).matchMedia = jest.fn().mockImplementation((query: string) => ({
@@ -15,33 +16,33 @@ import '@testing-library/jest-dom'
   addEventListener: jest.fn(),
   removeEventListener: jest.fn(),
   dispatchEvent: jest.fn(),
-}))
-
-// Mock IntersectionObserver
-(global as any).IntersectionObserver = class IntersectionObserver {
+}))(
+  // Mock IntersectionObserver
+  global as any,
+).IntersectionObserver = class IntersectionObserver {
   constructor() {}
   disconnect() {}
   observe() {}
   takeRecords() {
-    return []
+    return [];
   }
   unobserve() {}
-}
+};
 
 // Suppress console errors in tests (optional)
-const originalError = console.error
+const originalError = console.error;
 beforeAll(() => {
   console.error = (...args: any[]) => {
     if (
-      typeof args[0] === 'string' &&
-      args[0].includes('Warning: ReactDOM.render')
+      typeof args[0] === "string" &&
+      args[0].includes("Warning: ReactDOM.render")
     ) {
-      return
+      return;
     }
-    originalError.call(console, ...args)
-  }
-})
+    originalError.call(console, ...args);
+  };
+});
 
 afterAll(() => {
-  console.error = originalError
-})
+  console.error = originalError;
+});

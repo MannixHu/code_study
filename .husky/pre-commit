@@ -1,0 +1,10 @@
+echo "🔍 Running pre-commit checks..."
+
+# Run lint-staged (includes eslint --fix and prettier)
+npx lint-staged
+
+# Quick type check
+echo "📝 Type checking..."
+npx tsc --noEmit
+
+echo "✅ Pre-commit checks passed!"

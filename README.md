@@ -1,73 +1,130 @@
-# React + TypeScript + Vite
+# MeFlow3 - React Learning Platform
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+[![CI](https://github.com/OWNER/meflow3/actions/workflows/ci.yml/badge.svg)](https://github.com/OWNER/meflow3/actions/workflows/ci.yml)
+[![Performance](https://github.com/OWNER/meflow3/actions/workflows/performance.yml/badge.svg)](https://github.com/OWNER/meflow3/actions/workflows/performance.yml)
 
-Currently, two official plugins are available:
+An interactive React learning platform with code exercises, real-time feedback, and progress tracking.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## Features
 
-## React Compiler
+- Interactive code exercises with Monaco Editor
+- Real-time code evaluation and testing
+- Progress tracking with IndexedDB persistence
+- Category-based lesson organization
+- Web Vitals monitoring
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+## Tech Stack
 
-## Expanding the ESLint configuration
+- **React 19** - UI framework
+- **TypeScript** - Type safety
+- **Vite** - Build tool
+- **Ant Design** - UI components
+- **Zustand** - State management
+- **Dexie** - IndexedDB wrapper
+- **Monaco Editor** - Code editor
+- **Jest** - Unit testing
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+## Getting Started
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+```bash
+# Install dependencies
+npm install
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+# Start development server
+npm run dev
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+# Run tests
+npm test
+
+# Build for production
+npm run build
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+## Development
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+### Git Hooks
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+This project uses Husky for git hooks:
+
+**Pre-commit (fast ~10-20s):**
+
+- Lints and formats staged files with ESLint + Prettier
+- Type checks all files
+
+**Pre-push (comprehensive ~30-60s):**
+
+- Full TypeScript check
+- All test suites
+- Production build verification
+
+**Bypass hooks (emergency only):**
+
+```bash
+git commit --no-verify
+git push --no-verify
 ```
+
+### Testing
+
+```bash
+# Run all tests
+npm test
+
+# Run with watch mode
+npm run test:watch
+
+# Run with coverage
+npm run test:coverage
+```
+
+### Performance
+
+Bundle targets:
+
+- Main bundle: < 500KB (uncompressed)
+- Lighthouse Performance: >= 85
+- Lighthouse Accessibility: >= 90
+
+Check bundle size:
+
+```bash
+npm run build:analyze
+```
+
+### Code Quality
+
+The project enforces code quality through:
+
+- ESLint for linting
+- Prettier for formatting
+- TypeScript strict mode
+- Pre-commit hooks
+
+## Project Structure
+
+```
+src/
+├── components/        # Shared UI components
+├── features/          # Feature modules
+│   ├── editor/        # Code editor feature
+│   ├── lessons/       # Lesson management
+│   └── progress/      # Progress tracking
+├── shared/            # Shared utilities
+├── store/             # Zustand stores
+└── utils/             # Utility functions
+```
+
+## Scripts
+
+| Script                  | Description                |
+| ----------------------- | -------------------------- |
+| `npm run dev`           | Start development server   |
+| `npm run build`         | Build for production       |
+| `npm run build:analyze` | Build with bundle analysis |
+| `npm test`              | Run tests                  |
+| `npm run test:coverage` | Run tests with coverage    |
+| `npm run lint`          | Run ESLint                 |
+
+## License
+
+MIT

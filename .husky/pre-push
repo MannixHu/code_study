@@ -1,0 +1,15 @@
+echo "🔍 Running pre-push checks..."
+
+# Full TypeScript build check
+echo "📝 Full TypeScript check..."
+npx tsc --noEmit
+
+# Run all tests
+echo "🧪 Running all tests..."
+npm test -- --watchAll=false
+
+# Build verification
+echo "🏗️ Build verification..."
+npm run build
+
+echo "✅ Pre-push checks passed!"
