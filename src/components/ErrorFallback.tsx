@@ -22,7 +22,7 @@ export default function ErrorFallback({
         应用遇到了一个错误，请尝试刷新页面
       </p>
 
-      {import.meta.env.DEV && (
+      {process.env.NODE_ENV !== "production" && (
         <details
           style={{
             marginTop: "20px",

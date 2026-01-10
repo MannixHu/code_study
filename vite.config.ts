@@ -23,8 +23,10 @@ export default defineConfig({
     },
   },
   define: {
-    // 为浏览器环境定义 process.env
-    "process.env": {},
+    // 为浏览器环境定义 process.env.NODE_ENV
+    "process.env.NODE_ENV": JSON.stringify(
+      process.env.NODE_ENV || "development",
+    ),
     "process.platform": JSON.stringify(""),
     "process.version": JSON.stringify(""),
   },

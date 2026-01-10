@@ -9,7 +9,7 @@ interface StoredMetric {
 
 function sendToAnalytics(metric: Metric) {
   // Log to console in development
-  if (import.meta.env.DEV) {
+  if (process.env.NODE_ENV !== "production") {
     console.log(
       `[Web Vitals] ${metric.name}:`,
       metric.value.toFixed(2),
