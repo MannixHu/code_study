@@ -22,6 +22,28 @@ export default defineConfig({
     // 确保 Babel 相关依赖被正确预构建
     include: ['@babel/parser', '@babel/traverse'],
   },
+  build: {
+    rollupOptions: {
+      output: {
+        manualChunks: {
+          // React核心库
+          'vendor-react': ['react', 'react-dom'],
+          // UI组件库
+          'vendor-antd': ['antd', '@ant-design/icons'],
+          // 代码编辑器
+          'vendor-monaco': ['@monaco-editor/react'],
+          // 状态管理
+          'vendor-zustand': ['zustand'],
+          // Babel工具 (用于代码分析)
+          'vendor-babel': ['@babel/parser', '@babel/traverse'],
+          // 数据库
+          'vendor-dexie': ['dexie'],
+        },
+      },
+    },
+    // 设置chunk大小警告阈值为1MB
+    chunkSizeWarningLimit: 1000,
+  },
   test: {
     // Vitest configuration
     globals: true,

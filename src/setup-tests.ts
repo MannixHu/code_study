@@ -21,7 +21,7 @@ Object.defineProperty(window, 'matchMedia', {
 })
 
 // Mock IntersectionObserver
-global.IntersectionObserver = class IntersectionObserver {
+(global as any).IntersectionObserver = class IntersectionObserver {
   constructor() {}
   disconnect() {}
   observe() {}
@@ -29,7 +29,7 @@ global.IntersectionObserver = class IntersectionObserver {
     return []
   }
   unobserve() {}
-} as any
+}
 
 // Suppress console errors in tests (optional)
 const originalError = console.error
