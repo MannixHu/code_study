@@ -5,9 +5,9 @@
 
 import { useEffect } from 'react'
 import { ConfigProvider, theme, Spin } from 'antd'
-import { useLesson } from './hooks'
+import { useLesson, lessonService } from './features/lessons'
 import { useLessonStore, useProgressStore } from './store'
-import { progressService, lessonService } from './services'
+import { progressService } from './services'
 import AppLayout from './components/layout/AppLayout'
 import './App.css'
 

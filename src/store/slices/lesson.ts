@@ -4,9 +4,9 @@
  */
 
 import { create } from 'zustand'
-import type { LessonStore } from '../types/store'
-import type { Category, CategoryMeta, Lesson } from '../types/lesson'
-import { lessonService } from '../services'
+import type { LessonStore } from '../../shared/types/store'
+import type { Category, CategoryMeta, Lesson } from '../../features/lessons/types/lesson'
+import { lessonService } from '../../features/lessons'
 
 export const useLessonStore = create<LessonStore>((set, get) => ({
   // 初始状态

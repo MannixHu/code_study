@@ -4,9 +4,9 @@
  */
 
 import { create } from 'zustand'
-import type { ProgressStore } from '../types/store'
-import type { TestResult } from '../types/lesson'
-import { progressService } from '../services'
+import type { ProgressStore } from '../../shared/types/store'
+import type { TestResult } from '../../features/lessons/types/lesson'
+import { progressService } from '../../features/progress'
 
 export const useProgressStore = create<ProgressStore>((set, get) => ({
   // 初始状态

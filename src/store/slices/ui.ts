@@ -4,7 +4,18 @@
  */
 
 import { create } from 'zustand'
-import type { UIStore, EditorLayout } from '../types/store'
+import type { UiStore } from '../../shared/types/store'
+
+interface UIStore extends UiStore {
+  showHint: boolean
+  hintIndex: number
+  setShowHint: (show: boolean) => void
+  setHintIndex: (index: number) => void
+}
+
+interface EditorLayout {
+  [key: string]: any
+}
 
 export const useUIStore = create<UIStore>((set) => ({
   // 初始状态

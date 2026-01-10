@@ -4,8 +4,8 @@
  */
 
 import { create } from 'zustand'
-import type { EditorStore } from '../types/store'
-import { progressRepository } from '../repository'
+import type { EditorStore } from '../../shared/types/store'
+import { progressRepository } from '../../features/progress/repository'
 
 export const useEditorStore = create<EditorStore>((set) => ({
   // 初始状态
