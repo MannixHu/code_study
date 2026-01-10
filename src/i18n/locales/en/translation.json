@@ -56,7 +56,25 @@
   "hints": {
     "title": "Hint",
     "noMoreHints": "No more hints available",
-    "hintNumber": "Hint {{number}}"
+    "hintNumber": "Hint {{number}}",
+    "getHint": "Get Hint",
+    "generating": "Generating...",
+    "noMoreAvailable": "No More Hints",
+    "maxLevelReached": "Maximum hint level reached",
+    "generatingHint": "Generating hint...",
+    "levelIndicator": "Get hint (level {{current}}/{{max}})",
+    "history": "Hint History",
+    "getFailed": "Failed to get hint",
+    "clickToGetHelp": "Click \"Get Hint\" button for help",
+    "levels": {
+      "gentle": "Gentle Hint",
+      "specific": "Specific Hint",
+      "detailed": "Detailed Hint"
+    },
+    "source": {
+      "ai": "AI",
+      "static": "Static"
+    }
   },
   "settings": {
     "language": "Language",
