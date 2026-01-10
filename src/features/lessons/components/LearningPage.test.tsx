@@ -1,3 +1,4 @@
+import { vi } from "vitest";
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /**
  * Tests for LearningPage component
@@ -8,10 +9,10 @@ import userEvent from "@testing-library/user-event";
 import LearningPage from "./LearningPage";
 
 // Mock the hooks
-jest.mock("../hooks/useLesson");
-jest.mock("../../editor", () => ({
-  useEditor: jest.fn(),
-  useTestRunner: jest.fn(),
+vi.mock("../hooks/useLesson");
+vi.mock("../../editor", () => ({
+  useEditor: vi.fn(),
+  useTestRunner: vi.fn(),
   CodeEditor: ({
     value,
     onChange,
@@ -26,7 +27,7 @@ jest.mock("../../editor", () => ({
     />
   ),
 }));
-jest.mock("../../progress", () => ({
+vi.mock("../../progress", () => ({
   TestResults: ({
     results,
     isCorrect,
@@ -72,20 +73,20 @@ describe("LearningPage", () => {
   const defaultEditorState = {
     userCode: "function App() {}",
     isSaved: true,
-    setUserCode: jest.fn(),
-    resetCode: jest.fn(),
-    saveCode: jest.fn(),
+    setUserCode: vi.fn(),
+    resetCode: vi.fn(),
+    saveCode: vi.fn(),
   };
 
   const defaultTestRunnerState = {
     testResults: [],
     isRunningTests: false,
     isCorrect: false,
-    runTests: jest.fn(),
+    runTests: vi.fn(),
   };
 
   beforeEach(() => {
-    jest.clearAllMocks();
+    vi.clearAllMocks();
     mockUseLesson.mockReturnValue({
       currentLesson: mockLesson,
       loading: false,
@@ -219,7 +220,7 @@ describe("LearningPage", () => {
   describe("User Interactions", () => {
     it("should call runTests when run button is clicked", async () => {
       const user = userEvent.setup();
-      const runTests = jest.fn();
+      const runTests = vi.fn();
       mockUseTestRunner.mockReturnValue({
         ...defaultTestRunnerState,
         runTests,
@@ -249,7 +250,7 @@ describe("LearningPage", () => {
 
     it("should call setUserCode with solution when view answer is clicked", async () => {
       const user = userEvent.setup();
-      const setUserCode = jest.fn();
+      const setUserCode = vi.fn();
       mockUseEditor.mockReturnValue({
         ...defaultEditorState,
         setUserCode,
@@ -264,8 +265,8 @@ describe("LearningPage", () => {
 
     it("should call resetCode and setUserCode when reset is clicked", async () => {
       const user = userEvent.setup();
-      const resetCode = jest.fn().mockResolvedValue(undefined);
-      const setUserCode = jest.fn();
+      const resetCode = vi.fn().mockResolvedValue(undefined);
+      const setUserCode = vi.fn();
       mockUseEditor.mockReturnValue({
         ...defaultEditorState,
         resetCode,
@@ -282,7 +283,7 @@ describe("LearningPage", () => {
 
     it("should call saveCode when save button is clicked", async () => {
       const user = userEvent.setup();
-      const saveCode = jest.fn();
+      const saveCode = vi.fn();
       mockUseEditor.mockReturnValue({
         ...defaultEditorState,
         saveCode,
@@ -297,7 +298,7 @@ describe("LearningPage", () => {
 
     it("should update code when editor value changes", async () => {
       const user = userEvent.setup();
-      const setUserCode = jest.fn();
+      const setUserCode = vi.fn();
       mockUseEditor.mockReturnValue({
         ...defaultEditorState,
         setUserCode,

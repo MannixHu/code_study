@@ -1,3 +1,4 @@
+import { vi } from "vitest";
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /**
  * Tests for useTestRunner hook
@@ -7,21 +8,21 @@ import { renderHook, act } from "@testing-library/react";
 import { useTestRunner } from "./useTestRunner";
 
 // Mock the store
-jest.mock("../../../store", () => ({
-  useProgressStore: jest.fn(),
-  useEditorStore: jest.fn(),
+vi.mock("../../../store", () => ({
+  useProgressStore: vi.fn(),
+  useEditorStore: vi.fn(),
 }));
 
 // Mock the services
-jest.mock("../services/test-service", () => ({
+vi.mock("../services/test-service", () => ({
   testService: {
-    runTests: jest.fn(),
+    runTests: vi.fn(),
   },
 }));
 
-jest.mock("../../progress", () => ({
+vi.mock("../../progress", () => ({
   progressService: {
-    recordProgress: jest.fn(),
+    recordProgress: vi.fn(),
   },
 }));
 
@@ -45,9 +46,9 @@ describe("useTestRunner", () => {
   const mockProgressState = {
     testResults: [],
     isRunningTests: false,
-    setTestResults: jest.fn(),
-    setIsRunningTests: jest.fn(),
-    addCompletedLesson: jest.fn(),
+    setTestResults: vi.fn(),
+    setIsRunningTests: vi.fn(),
+    addCompletedLesson: vi.fn(),
   };
 
   const mockEditorState = {
@@ -55,7 +56,7 @@ describe("useTestRunner", () => {
   };
 
   beforeEach(() => {
-    jest.clearAllMocks();
+    vi.clearAllMocks();
     mockUseProgressStore.mockReturnValue(mockProgressState);
     mockUseEditorStore.mockReturnValue(mockEditorState);
   });

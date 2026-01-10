@@ -3,13 +3,13 @@
  * 主布局容器，整合所有主要区域
  */
 
-import { Layout } from 'antd'
-import AppHeader from './AppHeader'
-import AppSidebar from './AppSidebar'
-import { LearningPage } from '../../../features/lessons'
-import './layout.css'
+import { Layout } from "antd";
+import AppHeader from "./AppHeader";
+import AppSidebar from "./AppSidebar";
+import { LearningPage } from "../../../features/lessons";
+import "./layout.css";
 
-const { Content } = Layout
+const { Content } = Layout;
 
 function AppLayout() {
   return (
@@ -22,12 +22,17 @@ function AppLayout() {
         <AppSidebar />
 
         {/* 主内容区 */}
-        <Content className="app-content">
+        <Content
+          id="main-content"
+          role="main"
+          className="app-content"
+          tabIndex={-1}
+        >
           <LearningPage />
         </Content>
       </Layout>
     </Layout>
-  )
+  );
 }
 
-export default AppLayout
+export default AppLayout;

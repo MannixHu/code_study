@@ -60,7 +60,13 @@ export default defineConfig({
     // Vitest configuration
     globals: true,
     environment: "happy-dom",
-    include: ["tests/**/*.test.ts", "tests/**/*.test.tsx"],
+    setupFiles: ["./src/setup-tests.ts"],
+    include: [
+      "tests/**/*.test.ts",
+      "tests/**/*.test.tsx",
+      "src/**/*.test.ts",
+      "src/**/*.test.tsx",
+    ],
     exclude: ["node_modules", "dist", ".idea", ".git", ".cache"],
     coverage: {
       provider: "v8",

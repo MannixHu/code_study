@@ -46,7 +46,7 @@ jobs:
         run: npm run lint
 
   test:
-    name: Jest Tests
+    name: Vitest Tests
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
@@ -62,14 +62,7 @@ jobs:
         run: npm ci
 
       - name: Run tests
-        run: npm test -- --coverage --watchAll=false
-
-      - name: Upload coverage
-        uses: codecov/codecov-action@v3
-        if: always()
-        with:
-          files: ./coverage/lcov.info
-          fail_ci_if_error: false
+        run: npm test -- --run
 
   build:
     name: Production Build
@@ -90,11 +83,3 @@ jobs:
 
       - name: Build
         run: npm run build
-
-      - name: Check bundle size
-        run: |
-          BUNDLE_SIZE=$(du -sb dist | awk '{print $1}')
-          echo "Bundle size: $BUNDLE_SIZE bytes"
-          if [ $BUNDLE_SIZE -gt 524288000 ]; then
-            echo "::warning::Bundle size exceeds 500MB"
-          fi
