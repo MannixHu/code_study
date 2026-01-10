@@ -1,0 +1,155 @@
+/**
+ * Learning Page 样式
+ */
+
+.learning-page {
+  display: flex;
+  height: 100%;
+  width: 100%;
+  background: #1e1e1e;
+  flex-direction: column;
+}
+
+.learning-page.loading-state {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.editor-panel {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  background: #1e1e1e;
+}
+
+.panel-header {
+  padding: 10px 16px;
+  font-size: 12px;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  background: #262626;
+  color: #a6a6a6;
+  border-bottom: 1px solid #333;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.panel-header.light {
+  background: #fafafa;
+  color: #595959;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.save-indicator {
+  margin-left: auto;
+  font-size: 11px;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.unsaved-dot {
+  display: inline-block;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #ff7a45;
+  animation: pulse 1.5s ease-in-out infinite;
+}
+
+.saved-text {
+  color: #52c41a;
+  font-size: 11px;
+}
+
+@keyframes pulse {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+}
+
+.preview-panel {
+  background: #fff;
+  border-top: 1px solid #333;
+  display: flex;
+  flex-direction: column;
+  max-height: 40%;
+  min-height: 150px;
+}
+
+.preview-wrapper {
+  flex: 1;
+  padding: 16px;
+  overflow: auto;
+  background: #fff;
+}
+
+.preview-wrapper::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+.preview-wrapper::-webkit-scrollbar-track {
+  background: #f5f5f5;
+}
+
+.preview-wrapper::-webkit-scrollbar-thumb {
+  background: #d9d9d9;
+  border-radius: 3px;
+}
+
+.preview-placeholder {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  color: #999;
+  font-size: 14px;
+}
+
+.preview-controls {
+  display: flex;
+  gap: 8px;
+  padding: 12px 16px;
+  border-top: 1px solid #f0f0f0;
+  background: #fafafa;
+}
+
+.btn {
+  padding: 6px 12px;
+  border: 1px solid #d9d9d9;
+  border-radius: 4px;
+  background: #fff;
+  cursor: pointer;
+  font-size: 12px;
+  font-weight: 500;
+  transition: all 0.2s ease;
+}
+
+.btn:hover:not(:disabled) {
+  border-color: #6366f1;
+  color: #6366f1;
+}
+
+.btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.btn-primary {
+  background: #6366f1;
+  color: #fff;
+  border-color: #6366f1;
+}
+
+.btn-primary:hover:not(:disabled) {
+  background: #4f46e5;
+  border-color: #4f46e5;
+}

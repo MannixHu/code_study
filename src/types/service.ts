@@ -4,7 +4,18 @@
  */
 
 import type { Category, Lesson, Progress, TestResult, CategoryMeta } from './lesson'
-import type { Result, ServiceError } from './store'
+
+// ==================== Common Types ====================
+
+export type Result<T, E = ServiceError> =
+  | { success: true; data: T }
+  | { success: false; error: E }
+
+export interface ServiceError {
+  code: string
+  message: string
+  details?: unknown
+}
 
 // ==================== Lesson Service ====================
 

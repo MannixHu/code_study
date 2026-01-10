@@ -3,7 +3,7 @@
  * 为 Zustand 状态管理定义的所有类型
  */
 
-import type { Category, Lesson, Progress, TestResult, CategoryMeta } from './lesson'
+import type { Category, Lesson, Progress, CategoryMeta, TestResult } from './lesson'
 
 // ==================== Lesson Store ====================
 
@@ -99,16 +99,4 @@ export interface RootStore {
   editor: EditorStore
   progress: ProgressStore
   ui: UIStore
-}
-
-// ==================== Result Type (for Service layer) ====================
-
-export type Result<T, E = Error> =
-  | { success: true; data: T }
-  | { success: false; error: E }
-
-export interface ServiceError {
-  code: string
-  message: string
-  details?: unknown
 }
