@@ -1,12 +1,13 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 /**
  * Tests for CodeEditor component
  */
 
-import { render, screen, fireEvent } from '@testing-library/react'
-import CodeEditor from './CodeEditor'
+import { render, screen, fireEvent } from "@testing-library/react";
+import CodeEditor from "./CodeEditor";
 
 // Mock Monaco Editor
-jest.mock('@monaco-editor/react', () => ({
+jest.mock("@monaco-editor/react", () => ({
   __esModule: true,
   default: ({
     value,
@@ -14,25 +15,25 @@ jest.mock('@monaco-editor/react', () => ({
     onMount,
     language,
     theme,
-    height
+    height,
   }: {
-    value: string
-    onChange: (value: string | undefined) => void
-    onMount: (editor: any) => void
-    language: string
-    theme: string
-    height: string | number
+    value: string;
+    onChange: (value: string | undefined) => void;
+    onMount: (editor: any) => void;
+    language: string;
+    theme: string;
+    height: string | number;
   }) => {
     // Simulate editor mount
     const mockEditor = {
       addCommand: jest.fn(),
       KeyMod: { CtrlCmd: 1 },
-      KeyCode: { KeyS: 83 }
-    }
+      KeyCode: { KeyS: 83 },
+    };
 
     // Call onMount if provided
     if (onMount) {
-      setTimeout(() => onMount(mockEditor), 0)
+      setTimeout(() => onMount(mockEditor), 0);
     }
 
     return (
@@ -47,141 +48,145 @@ jest.mock('@monaco-editor/react', () => ({
         <span data-testid="editor-theme">{theme}</span>
         <span data-testid="editor-height">{String(height)}</span>
       </div>
-    )
-  }
-}))
+    );
+  },
+}));
 
-describe('CodeEditor', () => {
+describe("CodeEditor", () => {
   const defaultProps = {
     value: 'console.log("Hello")',
-    onChange: jest.fn()
-  }
+    onChange: jest.fn(),
+  };
 
   beforeEach(() => {
-    jest.clearAllMocks()
-  })
+    jest.clearAllMocks();
+  });
 
-  describe('Rendering', () => {
-    it('should render monaco editor wrapper', () => {
-      render(<CodeEditor {...defaultProps} />)
+  describe("Rendering", () => {
+    it("should render monaco editor wrapper", () => {
+      render(<CodeEditor {...defaultProps} />);
 
-      expect(screen.getByTestId('monaco-editor')).toBeInTheDocument()
-    })
+      expect(screen.getByTestId("monaco-editor")).toBeInTheDocument();
+    });
 
-    it('should render with provided value', () => {
-      render(<CodeEditor {...defaultProps} />)
+    it("should render with provided value", () => {
+      render(<CodeEditor {...defaultProps} />);
 
-      const textarea = screen.getByTestId('editor-textarea')
-      expect(textarea).toHaveValue('console.log("Hello")')
-    })
+      const textarea = screen.getByTestId("editor-textarea");
+      expect(textarea).toHaveValue('console.log("Hello")');
+    });
 
-    it('should use default language javascript', () => {
-      render(<CodeEditor {...defaultProps} />)
+    it("should use default language javascript", () => {
+      render(<CodeEditor {...defaultProps} />);
 
-      expect(screen.getByTestId('editor-language')).toHaveTextContent('javascript')
-    })
+      expect(screen.getByTestId("editor-language")).toHaveTextContent(
+        "javascript",
+      );
+    });
 
-    it('should use default height 100%', () => {
-      render(<CodeEditor {...defaultProps} />)
+    it("should use default height 100%", () => {
+      render(<CodeEditor {...defaultProps} />);
 
-      expect(screen.getByTestId('editor-height')).toHaveTextContent('100%')
-    })
+      expect(screen.getByTestId("editor-height")).toHaveTextContent("100%");
+    });
 
-    it('should use vs-dark theme by default', () => {
-      render(<CodeEditor {...defaultProps} />)
+    it("should use vs-dark theme by default", () => {
+      render(<CodeEditor {...defaultProps} />);
 
-      expect(screen.getByTestId('editor-theme')).toHaveTextContent('vs-dark')
-    })
-  })
+      expect(screen.getByTestId("editor-theme")).toHaveTextContent("vs-dark");
+    });
+  });
 
-  describe('Custom Props', () => {
-    it('should use custom language', () => {
-      render(<CodeEditor {...defaultProps} language="typescript" />)
+  describe("Custom Props", () => {
+    it("should use custom language", () => {
+      render(<CodeEditor {...defaultProps} language="typescript" />);
 
-      expect(screen.getByTestId('editor-language')).toHaveTextContent('typescript')
-    })
+      expect(screen.getByTestId("editor-language")).toHaveTextContent(
+        "typescript",
+      );
+    });
 
-    it('should use custom height', () => {
-      render(<CodeEditor {...defaultProps} height="500px" />)
+    it("should use custom height", () => {
+      render(<CodeEditor {...defaultProps} height="500px" />);
 
-      expect(screen.getByTestId('editor-height')).toHaveTextContent('500px')
-    })
+      expect(screen.getByTestId("editor-height")).toHaveTextContent("500px");
+    });
 
-    it('should use custom height as number', () => {
-      render(<CodeEditor {...defaultProps} height={400} />)
+    it("should use custom height as number", () => {
+      render(<CodeEditor {...defaultProps} height={400} />);
 
-      expect(screen.getByTestId('editor-height')).toHaveTextContent('400')
-    })
+      expect(screen.getByTestId("editor-height")).toHaveTextContent("400");
+    });
 
-    it('should use light theme when theme is light', () => {
-      render(<CodeEditor {...defaultProps} theme="light" />)
+    it("should use light theme when theme is light", () => {
+      render(<CodeEditor {...defaultProps} theme="light" />);
 
-      expect(screen.getByTestId('editor-theme')).toHaveTextContent('vs')
-    })
+      expect(screen.getByTestId("editor-theme")).toHaveTextContent("vs");
+    });
 
-    it('should use dark theme when theme is not light', () => {
-      render(<CodeEditor {...defaultProps} theme="dark" />)
+    it("should use dark theme when theme is not light", () => {
+      render(<CodeEditor {...defaultProps} theme="dark" />);
 
-      expect(screen.getByTestId('editor-theme')).toHaveTextContent('vs-dark')
-    })
-  })
+      expect(screen.getByTestId("editor-theme")).toHaveTextContent("vs-dark");
+    });
+  });
 
-  describe('User Interactions', () => {
-    it('should call onChange when value changes', () => {
-      const handleChange = jest.fn()
-      render(<CodeEditor {...defaultProps} onChange={handleChange} />)
+  describe("User Interactions", () => {
+    it("should call onChange when value changes", () => {
+      const handleChange = jest.fn();
+      render(<CodeEditor {...defaultProps} onChange={handleChange} />);
 
-      const textarea = screen.getByTestId('editor-textarea')
-      fireEvent.change(textarea, { target: { value: 'new code' } })
+      const textarea = screen.getByTestId("editor-textarea");
+      fireEvent.change(textarea, { target: { value: "new code" } });
 
-      expect(handleChange).toHaveBeenCalledWith('new code')
-    })
+      expect(handleChange).toHaveBeenCalledWith("new code");
+    });
 
-    it('should not call onChange when value is undefined', () => {
-      const handleChange = jest.fn()
-      render(<CodeEditor {...defaultProps} onChange={handleChange} />)
+    it("should not call onChange when value is undefined", () => {
+      const handleChange = jest.fn();
+      render(<CodeEditor {...defaultProps} onChange={handleChange} />);
 
-      const textarea = screen.getByTestId('editor-textarea')
+      const textarea = screen.getByTestId("editor-textarea");
       // Simulate undefined value
-      fireEvent.change(textarea, { target: { value: '' } })
+      fireEvent.change(textarea, { target: { value: "" } });
 
       // Called with empty string, but component logic would filter undefined
-      expect(handleChange).toHaveBeenCalled()
-    })
+      expect(handleChange).toHaveBeenCalled();
+    });
 
-    it('should handle empty value', () => {
-      render(<CodeEditor {...defaultProps} value="" />)
+    it("should handle empty value", () => {
+      render(<CodeEditor {...defaultProps} value="" />);
 
-      const textarea = screen.getByTestId('editor-textarea')
-      expect(textarea).toHaveValue('')
-    })
-  })
+      const textarea = screen.getByTestId("editor-textarea");
+      expect(textarea).toHaveValue("");
+    });
+  });
 
-  describe('Edge Cases', () => {
-    it('should handle long code values', () => {
-      const longCode = 'x'.repeat(10000)
-      render(<CodeEditor {...defaultProps} value={longCode} />)
+  describe("Edge Cases", () => {
+    it("should handle long code values", () => {
+      const longCode = "x".repeat(10000);
+      render(<CodeEditor {...defaultProps} value={longCode} />);
 
-      const textarea = screen.getByTestId('editor-textarea')
-      expect(textarea).toHaveValue(longCode)
-    })
+      const textarea = screen.getByTestId("editor-textarea");
+      expect(textarea).toHaveValue(longCode);
+    });
 
-    it('should handle special characters in code', () => {
-      const specialCode = '<div>{`${template}`}</div>'
-      render(<CodeEditor {...defaultProps} value={specialCode} />)
+    it("should handle special characters in code", () => {
+      const specialCode = "<div>{`${template}`}</div>";
+      render(<CodeEditor {...defaultProps} value={specialCode} />);
 
-      const textarea = screen.getByTestId('editor-textarea')
-      expect(textarea).toHaveValue(specialCode)
-    })
+      const textarea = screen.getByTestId("editor-textarea");
+      expect(textarea).toHaveValue(specialCode);
+    });
 
-    it('should handle multiline code', () => {
+    it("should handle multiline code", () => {
       const multilineCode = `function test() {
   return 'hello'
-}`
-      render(<CodeEditor {...defaultProps} value={multilineCode} />)
+}`;
+      render(<CodeEditor {...defaultProps} value={multilineCode} />);
 
-      const textarea = screen.getByTestId('editor-textarea')
-      expect(textarea).toHaveValue(multilineCode)
-    })
-  })
-})
+      const textarea = screen.getByTestId("editor-textarea");
+      expect(textarea).toHaveValue(multilineCode);
+    });
+  });
+});
