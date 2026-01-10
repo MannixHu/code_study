@@ -1,4 +1,4 @@
-import { onCLS, onFID, onLCP, onFCP, onTTFB, Metric } from "web-vitals";
+import { onCLS, onINP, onLCP, onFCP, onTTFB, type Metric } from "web-vitals";
 
 interface StoredMetric {
   name: string;
@@ -37,11 +37,11 @@ function sendToAnalytics(metric: Metric) {
 
 /**
  * Initialize Web Vitals monitoring
- * Tracks: CLS, FID, LCP, FCP, TTFB
+ * Tracks: CLS, INP, LCP, FCP, TTFB
  */
 export function initWebVitals() {
   onCLS(sendToAnalytics);
-  onFID(sendToAnalytics);
+  onINP(sendToAnalytics); // INP replaced FID in web-vitals v4
   onLCP(sendToAnalytics);
   onFCP(sendToAnalytics);
   onTTFB(sendToAnalytics);
