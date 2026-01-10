@@ -1,332 +1,337 @@
+import { vi } from "vitest";
 /**
  * Tests for AppSidebar component
  */
 
-import { render, screen } from '@testing-library/react'
-import userEvent from '@testing-library/user-event'
-import AppSidebar from './AppSidebar'
+import { render, screen } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
+import AppSidebar from "./AppSidebar";
 
 // Mock the hooks
-jest.mock('../../../features/lessons', () => ({
-  useLesson: jest.fn()
-}))
+vi.mock("../../../features/lessons", () => ({
+  useLesson: vi.fn(),
+}));
 
-jest.mock('../../../features/progress', () => ({
-  useProgress: jest.fn()
-}))
+vi.mock("../../../features/progress", () => ({
+  useProgress: vi.fn(),
+}));
 
-jest.mock('../../../store', () => ({
-  useUIStore: jest.fn()
-}))
+vi.mock("../../../store", () => ({
+  useUIStore: vi.fn(),
+}));
 
 // Import mocked modules
-import { useLesson } from '../../../features/lessons'
-import { useProgress } from '../../../features/progress'
-import { useUIStore } from '../../../store'
+import { useLesson } from "../../../features/lessons";
+import { useProgress } from "../../../features/progress";
+import { useUIStore } from "../../../store";
 
-const mockUseLesson = useLesson as unknown as jest.Mock
-const mockUseProgress = useProgress as unknown as jest.Mock
-const mockUseUIStore = useUIStore as unknown as jest.Mock
+const mockUseLesson = useLesson as unknown as jest.Mock;
+const mockUseProgress = useProgress as unknown as jest.Mock;
+const mockUseUIStore = useUIStore as unknown as jest.Mock;
 
-describe('AppSidebar', () => {
+describe("AppSidebar", () => {
   const mockCategory = {
-    id: 'jsx',
-    name: 'JSX 基础',
-    icon: '📝',
+    id: "jsx",
+    name: "JSX 基础",
+    icon: "📝",
     lessons: [
       {
-        id: '1',
-        title: 'First Component',
-        description: 'Learn to create your first React component',
-        question: 'Create a simple React component',
-        difficulty: 'easy',
+        id: "1",
+        title: "First Component",
+        description: "Learn to create your first React component",
+        question: "Create a simple React component",
+        difficulty: "easy",
         estimatedTime: 10,
-        tags: ['basics', 'jsx'],
-        hints: ['Use function declaration', 'Return JSX']
+        tags: ["basics", "jsx"],
+        hints: ["Use function declaration", "Return JSX"],
       },
       {
-        id: '2',
-        title: 'Props and State',
-        description: 'Understanding React props and state',
-        question: 'Use props and state in a component',
-        difficulty: 'medium',
+        id: "2",
+        title: "Props and State",
+        description: "Understanding React props and state",
+        question: "Use props and state in a component",
+        difficulty: "medium",
         estimatedTime: 15,
-        tags: ['props', 'state'],
-        hints: ['Define props interface', 'Use useState']
+        tags: ["props", "state"],
+        hints: ["Define props interface", "Use useState"],
       },
       {
-        id: '3',
-        title: 'Advanced Hooks',
-        description: 'Master React hooks',
-        question: 'Implement custom hooks',
-        difficulty: 'hard',
+        id: "3",
+        title: "Advanced Hooks",
+        description: "Master React hooks",
+        question: "Implement custom hooks",
+        difficulty: "hard",
         estimatedTime: 20,
-        tags: ['hooks', 'advanced'],
-        hints: ['Use useEffect', 'Create custom hook']
-      }
-    ]
-  }
+        tags: ["hooks", "advanced"],
+        hints: ["Use useEffect", "Create custom hook"],
+      },
+    ],
+  };
 
-  const mockSetCurrentLesson = jest.fn()
-  const mockResetHint = jest.fn()
-  const mockNextHint = jest.fn()
+  const mockSetCurrentLesson = vi.fn();
+  const mockResetHint = vi.fn();
+  const mockNextHint = vi.fn();
 
   beforeEach(() => {
-    jest.clearAllMocks()
+    vi.clearAllMocks();
 
     mockUseLesson.mockReturnValue({
       currentCategory: mockCategory,
       currentLesson: mockCategory.lessons[0],
-      currentLessonId: '1',
-      setCurrentLesson: mockSetCurrentLesson
-    })
+      currentLessonId: "1",
+      setCurrentLesson: mockSetCurrentLesson,
+    });
 
     mockUseProgress.mockReturnValue({
-      completedLessonIds: new Set(['1'])
-    })
+      completedLessonIds: new Set(["1"]),
+    });
 
     mockUseUIStore.mockReturnValue({
       showHint: false,
       hintIndex: 0,
       resetHint: mockResetHint,
-      nextHint: mockNextHint
-    })
-  })
+      nextHint: mockNextHint,
+    });
+  });
 
-  describe('Rendering', () => {
-    it('should render sidebar with lesson selector', () => {
-      render(<AppSidebar />)
+  describe("Rendering", () => {
+    it("should render sidebar with lesson selector", () => {
+      render(<AppSidebar />);
 
-      expect(screen.getByText('选择题目')).toBeInTheDocument()
-    })
+      expect(screen.getByText("选择题目")).toBeInTheDocument();
+    });
 
-    it('should render current lesson title', () => {
-      render(<AppSidebar />)
+    it("should render current lesson title", () => {
+      render(<AppSidebar />);
 
-      expect(screen.getByText('First Component')).toBeInTheDocument()
-    })
+      expect(screen.getByText("First Component")).toBeInTheDocument();
+    });
 
-    it('should render lesson description', () => {
-      render(<AppSidebar />)
+    it("should render lesson description", () => {
+      render(<AppSidebar />);
 
-      expect(screen.getByText('Learn to create your first React component')).toBeInTheDocument()
-    })
+      expect(
+        screen.getByText("Learn to create your first React component"),
+      ).toBeInTheDocument();
+    });
 
-    it('should render lesson question', () => {
-      render(<AppSidebar />)
+    it("should render lesson question", () => {
+      render(<AppSidebar />);
 
-      expect(screen.getByText('Create a simple React component')).toBeInTheDocument()
-    })
+      expect(
+        screen.getByText("Create a simple React component"),
+      ).toBeInTheDocument();
+    });
 
-    it('should render difficulty tag', () => {
-      render(<AppSidebar />)
+    it("should render difficulty tag", () => {
+      render(<AppSidebar />);
 
-      expect(screen.getByText('简单')).toBeInTheDocument()
-    })
+      expect(screen.getByText("简单")).toBeInTheDocument();
+    });
 
-    it('should render lesson tags', () => {
-      render(<AppSidebar />)
+    it("should render lesson tags", () => {
+      render(<AppSidebar />);
 
-      expect(screen.getByText('basics')).toBeInTheDocument()
-      expect(screen.getByText('jsx')).toBeInTheDocument()
-    })
+      expect(screen.getByText("basics")).toBeInTheDocument();
+      expect(screen.getByText("jsx")).toBeInTheDocument();
+    });
 
-    it('should render time estimate', () => {
-      render(<AppSidebar />)
+    it("should render time estimate", () => {
+      render(<AppSidebar />);
 
-      expect(screen.getByText('10 分钟')).toBeInTheDocument()
-    })
+      expect(screen.getByText("10 分钟")).toBeInTheDocument();
+    });
 
-    it('should render action buttons', () => {
-      render(<AppSidebar />)
+    it("should render action buttons", () => {
+      render(<AppSidebar />);
 
-      expect(screen.getByText('提交答案')).toBeInTheDocument()
-      expect(screen.getByText('提示')).toBeInTheDocument()
-      expect(screen.getByText('重置')).toBeInTheDocument()
-      expect(screen.getByText('答案')).toBeInTheDocument()
-    })
+      expect(screen.getByText("提交答案")).toBeInTheDocument();
+      expect(screen.getByText("提示")).toBeInTheDocument();
+      expect(screen.getByText("重置")).toBeInTheDocument();
+      expect(screen.getByText("答案")).toBeInTheDocument();
+    });
 
-    it('should render navigation buttons', () => {
-      render(<AppSidebar />)
+    it("should render navigation buttons", () => {
+      render(<AppSidebar />);
 
-      expect(screen.getByText('上一题')).toBeInTheDocument()
-      expect(screen.getByText(/下一题/i)).toBeInTheDocument()
-    })
-  })
+      expect(screen.getByText("上一题")).toBeInTheDocument();
+      expect(screen.getByText(/下一题/i)).toBeInTheDocument();
+    });
+  });
 
-  describe('Empty State', () => {
-    it('should return null when no current category', () => {
+  describe("Empty State", () => {
+    it("should return null when no current category", () => {
       mockUseLesson.mockReturnValue({
         currentCategory: null,
         currentLesson: null,
         currentLessonId: null,
-        setCurrentLesson: mockSetCurrentLesson
-      })
+        setCurrentLesson: mockSetCurrentLesson,
+      });
 
-      const { container } = render(<AppSidebar />)
+      const { container } = render(<AppSidebar />);
 
-      expect(container.firstChild).toBeNull()
-    })
+      expect(container.firstChild).toBeNull();
+    });
 
-    it('should return null when no current lesson', () => {
+    it("should return null when no current lesson", () => {
       mockUseLesson.mockReturnValue({
         currentCategory: mockCategory,
         currentLesson: null,
         currentLessonId: null,
-        setCurrentLesson: mockSetCurrentLesson
-      })
+        setCurrentLesson: mockSetCurrentLesson,
+      });
 
-      const { container } = render(<AppSidebar />)
+      const { container } = render(<AppSidebar />);
 
-      expect(container.firstChild).toBeNull()
-    })
-  })
+      expect(container.firstChild).toBeNull();
+    });
+  });
 
-  describe('Navigation', () => {
-    it('should disable previous button on first lesson', () => {
-      render(<AppSidebar />)
+  describe("Navigation", () => {
+    it("should disable previous button on first lesson", () => {
+      render(<AppSidebar />);
 
-      const prevButton = screen.getByText('上一题').closest('button')
-      expect(prevButton).toBeDisabled()
-    })
+      const prevButton = screen.getByText("上一题").closest("button");
+      expect(prevButton).toBeDisabled();
+    });
 
-    it('should enable next button when not on last lesson', () => {
-      render(<AppSidebar />)
+    it("should enable next button when not on last lesson", () => {
+      render(<AppSidebar />);
 
-      const nextButton = screen.getByText(/下一题/i).closest('button')
-      expect(nextButton).not.toBeDisabled()
-    })
+      const nextButton = screen.getByText(/下一题/i).closest("button");
+      expect(nextButton).not.toBeDisabled();
+    });
 
-    it('should disable next button on last lesson', () => {
+    it("should disable next button on last lesson", () => {
       mockUseLesson.mockReturnValue({
         currentCategory: mockCategory,
         currentLesson: mockCategory.lessons[2],
-        currentLessonId: '3',
-        setCurrentLesson: mockSetCurrentLesson
-      })
+        currentLessonId: "3",
+        setCurrentLesson: mockSetCurrentLesson,
+      });
 
-      render(<AppSidebar />)
+      render(<AppSidebar />);
 
-      const nextButton = screen.getByText(/下一题/i).closest('button')
-      expect(nextButton).toBeDisabled()
-    })
+      const nextButton = screen.getByText(/下一题/i).closest("button");
+      expect(nextButton).toBeDisabled();
+    });
 
-    it('should enable previous button when not on first lesson', () => {
+    it("should enable previous button when not on first lesson", () => {
       mockUseLesson.mockReturnValue({
         currentCategory: mockCategory,
         currentLesson: mockCategory.lessons[1],
-        currentLessonId: '2',
-        setCurrentLesson: mockSetCurrentLesson
-      })
+        currentLessonId: "2",
+        setCurrentLesson: mockSetCurrentLesson,
+      });
 
-      render(<AppSidebar />)
+      render(<AppSidebar />);
 
-      const prevButton = screen.getByText('上一题').closest('button')
-      expect(prevButton).not.toBeDisabled()
-    })
+      const prevButton = screen.getByText("上一题").closest("button");
+      expect(prevButton).not.toBeDisabled();
+    });
 
-    it('should call setCurrentLesson when next button is clicked', async () => {
-      const user = userEvent.setup()
-      render(<AppSidebar />)
+    it("should call setCurrentLesson when next button is clicked", async () => {
+      const user = userEvent.setup();
+      render(<AppSidebar />);
 
-      const nextButton = screen.getByText(/下一题/i).closest('button')
+      const nextButton = screen.getByText(/下一题/i).closest("button");
       if (nextButton) {
-        await user.click(nextButton)
+        await user.click(nextButton);
       }
 
-      expect(mockSetCurrentLesson).toHaveBeenCalledWith('2')
-      expect(mockResetHint).toHaveBeenCalled()
-    })
+      expect(mockSetCurrentLesson).toHaveBeenCalledWith("2");
+      expect(mockResetHint).toHaveBeenCalled();
+    });
 
-    it('should call setCurrentLesson when previous button is clicked', async () => {
-      const user = userEvent.setup()
+    it("should call setCurrentLesson when previous button is clicked", async () => {
+      const user = userEvent.setup();
 
       mockUseLesson.mockReturnValue({
         currentCategory: mockCategory,
         currentLesson: mockCategory.lessons[1],
-        currentLessonId: '2',
-        setCurrentLesson: mockSetCurrentLesson
-      })
+        currentLessonId: "2",
+        setCurrentLesson: mockSetCurrentLesson,
+      });
 
-      render(<AppSidebar />)
+      render(<AppSidebar />);
 
-      const prevButton = screen.getByText('上一题').closest('button')
+      const prevButton = screen.getByText("上一题").closest("button");
       if (prevButton) {
-        await user.click(prevButton)
+        await user.click(prevButton);
       }
 
-      expect(mockSetCurrentLesson).toHaveBeenCalledWith('1')
-      expect(mockResetHint).toHaveBeenCalled()
-    })
-  })
+      expect(mockSetCurrentLesson).toHaveBeenCalledWith("1");
+      expect(mockResetHint).toHaveBeenCalled();
+    });
+  });
 
-  describe('Hints', () => {
-    it('should not show hint by default', () => {
-      render(<AppSidebar />)
+  describe("Hints", () => {
+    it("should not show hint by default", () => {
+      render(<AppSidebar />);
 
-      expect(screen.queryByText(/提示 1/i)).not.toBeInTheDocument()
-    })
+      expect(screen.queryByText(/提示 1/i)).not.toBeInTheDocument();
+    });
 
-    it('should show hint when showHint is true and hintIndex > 0', () => {
+    it("should show hint when showHint is true and hintIndex > 0", () => {
       mockUseUIStore.mockReturnValue({
         showHint: true,
         hintIndex: 1,
         resetHint: mockResetHint,
-        nextHint: mockNextHint
-      })
+        nextHint: mockNextHint,
+      });
 
-      render(<AppSidebar />)
+      render(<AppSidebar />);
 
-      expect(screen.getByText('Use function declaration')).toBeInTheDocument()
-    })
+      expect(screen.getByText("Use function declaration")).toBeInTheDocument();
+    });
 
-    it('should call nextHint when hint button is clicked', async () => {
-      const user = userEvent.setup()
-      render(<AppSidebar />)
+    it("should call nextHint when hint button is clicked", async () => {
+      const user = userEvent.setup();
+      render(<AppSidebar />);
 
-      const hintButton = screen.getByText('提示').closest('button')
+      const hintButton = screen.getByText("提示").closest("button");
       if (hintButton) {
-        await user.click(hintButton)
+        await user.click(hintButton);
       }
 
-      expect(mockNextHint).toHaveBeenCalledWith(2)
-    })
-  })
+      expect(mockNextHint).toHaveBeenCalledWith(2);
+    });
+  });
 
-  describe('Difficulty Colors', () => {
-    it('should show success color for easy difficulty', () => {
-      render(<AppSidebar />)
+  describe("Difficulty Colors", () => {
+    it("should show success color for easy difficulty", () => {
+      render(<AppSidebar />);
 
-      const tag = screen.getByText('简单')
-      expect(tag.closest('.ant-tag')).toHaveClass('ant-tag-success')
-    })
+      const tag = screen.getByText("简单");
+      expect(tag.closest(".ant-tag")).toHaveClass("ant-tag-success");
+    });
 
-    it('should show warning color for medium difficulty', () => {
+    it("should show warning color for medium difficulty", () => {
       mockUseLesson.mockReturnValue({
         currentCategory: mockCategory,
         currentLesson: mockCategory.lessons[1],
-        currentLessonId: '2',
-        setCurrentLesson: mockSetCurrentLesson
-      })
+        currentLessonId: "2",
+        setCurrentLesson: mockSetCurrentLesson,
+      });
 
-      render(<AppSidebar />)
+      render(<AppSidebar />);
 
-      const tag = screen.getByText('中等')
-      expect(tag.closest('.ant-tag')).toHaveClass('ant-tag-warning')
-    })
+      const tag = screen.getByText("中等");
+      expect(tag.closest(".ant-tag")).toHaveClass("ant-tag-warning");
+    });
 
-    it('should show error color for hard difficulty', () => {
+    it("should show error color for hard difficulty", () => {
       mockUseLesson.mockReturnValue({
         currentCategory: mockCategory,
         currentLesson: mockCategory.lessons[2],
-        currentLessonId: '3',
-        setCurrentLesson: mockSetCurrentLesson
-      })
+        currentLessonId: "3",
+        setCurrentLesson: mockSetCurrentLesson,
+      });
 
-      render(<AppSidebar />)
+      render(<AppSidebar />);
 
-      const tag = screen.getByText('困难')
-      expect(tag.closest('.ant-tag')).toHaveClass('ant-tag-error')
-    })
-  })
-})
+      const tag = screen.getByText("困难");
+      expect(tag.closest(".ant-tag")).toHaveClass("ant-tag-error");
+    });
+  });
+});

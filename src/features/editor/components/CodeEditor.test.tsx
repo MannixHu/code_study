@@ -1,3 +1,4 @@
+import { vi } from "vitest";
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /**
  * Tests for CodeEditor component
@@ -7,7 +8,7 @@ import { render, screen, fireEvent } from "@testing-library/react";
 import CodeEditor from "./CodeEditor";
 
 // Mock Monaco Editor
-jest.mock("@monaco-editor/react", () => ({
+vi.mock("@monaco-editor/react", () => ({
   __esModule: true,
   default: ({
     value,
@@ -26,7 +27,7 @@ jest.mock("@monaco-editor/react", () => ({
   }) => {
     // Simulate editor mount
     const mockEditor = {
-      addCommand: jest.fn(),
+      addCommand: vi.fn(),
       KeyMod: { CtrlCmd: 1 },
       KeyCode: { KeyS: 83 },
     };
@@ -55,11 +56,11 @@ jest.mock("@monaco-editor/react", () => ({
 describe("CodeEditor", () => {
   const defaultProps = {
     value: 'console.log("Hello")',
-    onChange: jest.fn(),
+    onChange: vi.fn(),
   };
 
   beforeEach(() => {
-    jest.clearAllMocks();
+    vi.clearAllMocks();
   });
 
   describe("Rendering", () => {
@@ -133,7 +134,7 @@ describe("CodeEditor", () => {
 
   describe("User Interactions", () => {
     it("should call onChange when value changes", () => {
-      const handleChange = jest.fn();
+      const handleChange = vi.fn();
       render(<CodeEditor {...defaultProps} onChange={handleChange} />);
 
       const textarea = screen.getByTestId("editor-textarea");
@@ -143,7 +144,7 @@ describe("CodeEditor", () => {
     });
 
     it("should not call onChange when value is undefined", () => {
-      const handleChange = jest.fn();
+      const handleChange = vi.fn();
       render(<CodeEditor {...defaultProps} onChange={handleChange} />);
 
       const textarea = screen.getByTestId("editor-textarea");

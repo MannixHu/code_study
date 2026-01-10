@@ -3,7 +3,6 @@ import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
 import tailwindcss from "@tailwindcss/vite";
 import { visualizer } from "rollup-plugin-visualizer";
-import { VitePWA } from "vite-plugin-pwa";
 import path from "path";
 
 // https://vite.dev/config/
@@ -16,84 +15,6 @@ export default defineConfig({
       open: false,
       gzipSize: true,
       brotliSize: true,
-    }),
-    VitePWA({
-      registerType: "autoUpdate",
-      includeAssets: ["favicon.ico", "icons/*.png"],
-      manifest: {
-        name: "MeFlow3 - React 学习平台",
-        short_name: "MeFlow3",
-        description: "交互式 React 学习体验平台",
-        theme_color: "#6366f1",
-        background_color: "#ffffff",
-        display: "standalone",
-        scope: "/",
-        start_url: "/",
-        icons: [
-          {
-            src: "/icons/icon-192x192.png",
-            sizes: "192x192",
-            type: "image/png",
-          },
-          {
-            src: "/icons/icon-512x512.png",
-            sizes: "512x512",
-            type: "image/png",
-          },
-          {
-            src: "/icons/icon-512x512.png",
-            sizes: "512x512",
-            type: "image/png",
-            purpose: "maskable",
-          },
-        ],
-      },
-      workbox: {
-        // Cache strategies
-        runtimeCaching: [
-          {
-            urlPattern: /^https:\/\/fonts\.googleapis\.com\/.*/i,
-            handler: "CacheFirst",
-            options: {
-              cacheName: "google-fonts-cache",
-              expiration: {
-                maxEntries: 10,
-                maxAgeSeconds: 60 * 60 * 24 * 365, // 1 year
-              },
-              cacheableResponse: {
-                statuses: [0, 200],
-              },
-            },
-          },
-          {
-            urlPattern: /\.(?:png|jpg|jpeg|svg|gif|webp)$/,
-            handler: "CacheFirst",
-            options: {
-              cacheName: "images-cache",
-              expiration: {
-                maxEntries: 50,
-                maxAgeSeconds: 60 * 60 * 24 * 30, // 30 days
-              },
-            },
-          },
-          {
-            urlPattern: /\.(?:js|css)$/,
-            handler: "StaleWhileRevalidate",
-            options: {
-              cacheName: "static-resources",
-              expiration: {
-                maxEntries: 30,
-                maxAgeSeconds: 60 * 60 * 24 * 7, // 7 days
-              },
-            },
-          },
-        ],
-        // Pre-cache app shell
-        globPatterns: ["**/*.{js,css,html,ico,png,svg}"],
-      },
-      devOptions: {
-        enabled: false, // Disable PWA in development
-      },
     }),
   ],
   resolve: {
@@ -139,7 +60,13 @@ export default defineConfig({
     // Vitest configuration
     globals: true,
     environment: "happy-dom",
-    include: ["tests/**/*.test.ts", "tests/**/*.test.tsx"],
+    setupFiles: ["./src/setup-tests.ts"],
+    include: [
+      "tests/**/*.test.ts",
+      "tests/**/*.test.tsx",
+      "src/**/*.test.ts",
+      "src/**/*.test.tsx",
+    ],
     exclude: ["node_modules", "dist", ".idea", ".git", ".cache"],
     coverage: {
       provider: "v8",

@@ -1,3 +1,4 @@
+import { vi } from "vitest";
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /**
  * Tests for AppHeader component
@@ -8,7 +9,7 @@
 import { render, screen } from "@testing-library/react";
 
 // Mock the antd components
-jest.mock("antd", () => ({
+vi.mock("antd", () => ({
   Layout: {
     Header: ({
       children,
@@ -49,7 +50,7 @@ jest.mock("antd", () => ({
 }));
 
 // Mock the store
-jest.mock("../../../store", () => ({
+vi.mock("../../../store", () => ({
   useLessonStore: () => ({
     currentCategoryId: "jsx",
     categories: [
@@ -57,14 +58,14 @@ jest.mock("../../../store", () => ({
       { id: "components", name: "组件开发", icon: "🧩" },
       { id: "hooks", name: "React Hooks", icon: "🎣" },
     ],
-    setCurrentCategoryId: jest.fn(),
+    setCurrentCategoryId: vi.fn(),
   }),
 }));
 
 // Mock the progress service
-jest.mock("../../../features/progress", () => ({
+vi.mock("../../../features/progress", () => ({
   progressService: {
-    calculateStatistics: jest.fn().mockResolvedValue({
+    calculateStatistics: vi.fn().mockResolvedValue({
       success: true,
       data: {
         completedLessons: 3,

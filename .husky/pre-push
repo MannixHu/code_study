@@ -6,7 +6,7 @@ npx tsc --noEmit
 
 # Run all tests
 echo "🧪 Running all tests..."
-npm test -- --watchAll=false
+npm test -- --run
 
 # Build verification
 echo "🏗️ Build verification..."

@@ -9,7 +9,6 @@ import { useLesson, lessonService } from "./features/lessons";
 import { useLessonStore, useProgressStore } from "./store";
 import { progressService } from "./features/progress";
 import ErrorBoundary from "./components/ErrorBoundary";
-import { SkipLink } from "./components/accessibility";
 import AppLayout from "./shared/components/layout/AppLayout";
 import "./App.css";
 
@@ -61,7 +60,6 @@ function App() {
 
   return (
     <ErrorBoundary>
-      <SkipLink targetId="main-content" />
       <ConfigProvider
         theme={{
           algorithm: theme.defaultAlgorithm,
