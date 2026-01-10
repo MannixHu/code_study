@@ -1,0 +1,275 @@
+{
+  "categoryId": "lists",
+  "name": "列表渲染",
+  "description": "学习使用 map 渲染列表和 key 的使用",
+  "icon": "📋",
+  "order": 7,
+  "lessons": [
+    {
+      "id": "lists-1",
+      "title": "基础列表渲染",
+      "difficulty": "easy",
+      "tags": ["列表", "map"],
+      "estimatedTime": 4,
+      "question": "使用 map 渲染水果列表",
+      "description": "使用数组的 map 方法将数据转换为 JSX 元素。",
+      "starterCode": "function App() {\n  const fruits = ['苹果', '香蕉', '橙子']\n\n  return (\n    <ul>\n      {/* 使用 map 渲染列表 */}\n    </ul>\n  )\n}\n\nrender(<App />)",
+      "solution": "function App() {\n  const fruits = ['苹果', '香蕉', '橙子']\n\n  return (\n    <ul>\n      {fruits.map((fruit, index) => (\n        <li key={index}>{fruit}</li>\n      ))}\n    </ul>\n  )\n}\n\nrender(<App />)",
+      "hints": [
+        "fruits.map((fruit, index) => ...)",
+        "返回 <li> 元素",
+        "别忘了 key 属性"
+      ],
+      "testCases": [
+        {
+          "type": "pattern",
+          "description": "应该使用 map",
+          "pattern": "\\.map\\("
+        },
+        {
+          "type": "pattern",
+          "description": "应该有 li 元素",
+          "pattern": "<li"
+        },
+        {
+          "type": "pattern",
+          "description": "应该有 key 属性",
+          "pattern": "key="
+        }
+      ]
+    },
+    {
+      "id": "lists-2",
+      "title": "Key 的重要性",
+      "difficulty": "easy",
+      "tags": ["列表", "key"],
+      "estimatedTime": 5,
+      "question": "使用唯一 id 作为 key",
+      "description": "key 帮助 React 识别哪些元素改变了，应该使用稳定的唯一标识。",
+      "starterCode": "function App() {\n  const users = [\n    { id: 1, name: '张三' },\n    { id: 2, name: '李四' },\n    { id: 3, name: '王五' }\n  ]\n\n  return (\n    <ul>\n      {users.map(user => (\n        <li /* 使用 user.id 作为 key */>\n          {user.name}\n        </li>\n      ))}\n    </ul>\n  )\n}\n\nrender(<App />)",
+      "solution": "function App() {\n  const users = [\n    { id: 1, name: '张三' },\n    { id: 2, name: '李四' },\n    { id: 3, name: '王五' }\n  ]\n\n  return (\n    <ul>\n      {users.map(user => (\n        <li key={user.id}>{user.name}</li>\n      ))}\n    </ul>\n  )\n}\n\nrender(<App />)",
+      "hints": [
+        "key={user.id}",
+        "使用数据的唯一 id",
+        "不要用 index 作为 key（数据有 id 时）"
+      ],
+      "testCases": [
+        {
+          "type": "pattern",
+          "description": "应该使用 key",
+          "pattern": "key="
+        },
+        {
+          "type": "pattern",
+          "description": "应该使用 user.id",
+          "pattern": "key=\\{user\\.id\\}"
+        },
+        {
+          "type": "pattern",
+          "description": "应该使用 map",
+          "pattern": "\\.map\\("
+        }
+      ]
+    },
+    {
+      "id": "lists-3",
+      "title": "渲染对象列表",
+      "difficulty": "easy",
+      "tags": ["列表", "对象"],
+      "estimatedTime": 5,
+      "question": "渲染包含多个属性的产品列表",
+      "description": "列表项可以包含多个属性，展示更复杂的内容。",
+      "starterCode": "function App() {\n  const products = [\n    { id: 1, name: '手机', price: 3999 },\n    { id: 2, name: '电脑', price: 5999 },\n    { id: 3, name: '平板', price: 2999 }\n  ]\n\n  return (\n    <ul>\n      {products.map(product => (\n        <li key={product.id}>\n          {/* 显示 name 和 price */}\n        </li>\n      ))}\n    </ul>\n  )\n}\n\nrender(<App />)",
+      "solution": "function App() {\n  const products = [\n    { id: 1, name: '手机', price: 3999 },\n    { id: 2, name: '电脑', price: 5999 },\n    { id: 3, name: '平板', price: 2999 }\n  ]\n\n  return (\n    <ul>\n      {products.map(product => (\n        <li key={product.id}>\n          {product.name} - ¥{product.price}\n        </li>\n      ))}\n    </ul>\n  )\n}\n\nrender(<App />)",
+      "hints": [
+        "访问 product.name 和 product.price",
+        "在 {} 中显示",
+        "可以组合显示多个属性"
+      ],
+      "testCases": [
+        {
+          "type": "pattern",
+          "description": "应该显示 name",
+          "pattern": "product\\.name"
+        },
+        {
+          "type": "pattern",
+          "description": "应该显示 price",
+          "pattern": "product\\.price"
+        },
+        {
+          "type": "pattern",
+          "description": "应该有 key",
+          "pattern": "key="
+        }
+      ]
+    },
+    {
+      "id": "lists-4",
+      "title": "列表组件抽取",
+      "difficulty": "medium",
+      "tags": ["列表", "组件"],
+      "estimatedTime": 6,
+      "question": "将列表项抽取为单独的组件",
+      "description": "将列表项抽取为组件可以提高代码复用性和可维护性。",
+      "starterCode": "function TodoItem({ todo }) {\n  return (\n    <li>\n      {/* 显示 todo.text */}\n    </li>\n  )\n}\n\nfunction App() {\n  const todos = [\n    { id: 1, text: '学习 React' },\n    { id: 2, text: '做项目' },\n    { id: 3, text: '写文档' }\n  ]\n\n  return (\n    <ul>\n      {todos.map(todo => (\n        /* 使用 TodoItem 组件 */\n      ))}\n    </ul>\n  )\n}\n\nrender(<App />)",
+      "solution": "function TodoItem({ todo }) {\n  return (\n    <li>\n      {todo.text}\n    </li>\n  )\n}\n\nfunction App() {\n  const todos = [\n    { id: 1, text: '学习 React' },\n    { id: 2, text: '做项目' },\n    { id: 3, text: '写文档' }\n  ]\n\n  return (\n    <ul>\n      {todos.map(todo => (\n        <TodoItem key={todo.id} todo={todo} />\n      ))}\n    </ul>\n  )\n}\n\nrender(<App />)",
+      "hints": [
+        "key 要放在 TodoItem 上",
+        "通过 props 传递 todo",
+        "组件抽取让代码更清晰"
+      ],
+      "testCases": [
+        {
+          "type": "pattern",
+          "description": "应该使用 TodoItem 组件",
+          "pattern": "<TodoItem"
+        },
+        {
+          "type": "pattern",
+          "description": "应该传递 key",
+          "pattern": "key="
+        },
+        {
+          "type": "pattern",
+          "description": "应该传递 todo prop",
+          "pattern": "todo="
+        }
+      ]
+    },
+    {
+      "id": "lists-5",
+      "title": "过滤列表",
+      "difficulty": "medium",
+      "tags": ["列表", "filter"],
+      "estimatedTime": 6,
+      "question": "只显示完成的待办事项",
+      "description": "使用 filter 方法过滤数据后再渲染。",
+      "starterCode": "function App() {\n  const todos = [\n    { id: 1, text: '学习 React', completed: true },\n    { id: 2, text: '做项目', completed: false },\n    { id: 3, text: '写文档', completed: true }\n  ]\n\n  return (\n    <ul>\n      {/* 只渲染 completed 为 true 的项 */}\n    </ul>\n  )\n}\n\nrender(<App />)",
+      "solution": "function App() {\n  const todos = [\n    { id: 1, text: '学习 React', completed: true },\n    { id: 2, text: '做项目', completed: false },\n    { id: 3, text: '写文档', completed: true }\n  ]\n\n  return (\n    <ul>\n      {todos\n        .filter(todo => todo.completed)\n        .map(todo => (\n          <li key={todo.id}>{todo.text}</li>\n        ))}\n    </ul>\n  )\n}\n\nrender(<App />)",
+      "hints": [
+        "先 filter 再 map",
+        "filter(todo => todo.completed)",
+        "链式调用"
+      ],
+      "testCases": [
+        {
+          "type": "pattern",
+          "description": "应该使用 filter",
+          "pattern": "\\.filter\\("
+        },
+        {
+          "type": "pattern",
+          "description": "应该使用 map",
+          "pattern": "\\.map\\("
+        },
+        {
+          "type": "pattern",
+          "description": "应该检查 completed",
+          "pattern": "completed"
+        }
+      ]
+    },
+    {
+      "id": "lists-6",
+      "title": "嵌套列表",
+      "difficulty": "medium",
+      "tags": ["列表", "嵌套"],
+      "estimatedTime": 7,
+      "question": "渲染分类和子项的嵌套列表",
+      "description": "使用嵌套的 map 渲染多层数据结构。",
+      "starterCode": "function App() {\n  const categories = [\n    { id: 1, name: '水果', items: ['苹果', '香蕉'] },\n    { id: 2, name: '蔬菜', items: ['白菜', '萝卜'] }\n  ]\n\n  return (\n    <div>\n      {categories.map(category => (\n        <div key={category.id}>\n          <h3>{category.name}</h3>\n          <ul>\n            {/* 渲染 category.items */}\n          </ul>\n        </div>\n      ))}\n    </div>\n  )\n}\n\nrender(<App />)",
+      "solution": "function App() {\n  const categories = [\n    { id: 1, name: '水果', items: ['苹果', '香蕉'] },\n    { id: 2, name: '蔬菜', items: ['白菜', '萝卜'] }\n  ]\n\n  return (\n    <div>\n      {categories.map(category => (\n        <div key={category.id}>\n          <h3>{category.name}</h3>\n          <ul>\n            {category.items.map((item, index) => (\n              <li key={index}>{item}</li>\n            ))}\n          </ul>\n        </div>\n      ))}\n    </div>\n  )\n}\n\nrender(<App />)",
+      "hints": [
+        "外层 map categories",
+        "内层 map category.items",
+        "两层都需要 key"
+      ],
+      "testCases": [
+        {
+          "type": "pattern",
+          "description": "应该有两个 map",
+          "pattern": "\\.map\\(",
+          "minCount": 2
+        },
+        {
+          "type": "pattern",
+          "description": "应该有两个 key",
+          "pattern": "key=",
+          "minCount": 2
+        },
+        {
+          "type": "pattern",
+          "description": "应该访问 items",
+          "pattern": "items"
+        }
+      ]
+    },
+    {
+      "id": "lists-7",
+      "title": "动态添加列表项",
+      "difficulty": "medium",
+      "tags": ["列表", "state"],
+      "estimatedTime": 7,
+      "question": "实现添加和删除列表项功能",
+      "description": "结合 useState 实现动态列表操作。",
+      "starterCode": "function App() {\n  const [items, setItems] = useState(['项目1', '项目2'])\n  const [input, setInput] = useState('')\n\n  const addItem = () => {\n    // 添加 input 到 items\n    // 清空 input\n  }\n\n  const deleteItem = (index) => {\n    // 删除指定索引的项\n  }\n\n  return (\n    <div>\n      <input \n        value={input}\n        onChange={e => setInput(e.target.value)}\n      />\n      <button onClick={addItem}>添加</button>\n      <ul>\n        {items.map((item, index) => (\n          <li key={index}>\n            {item}\n            <button onClick={() => deleteItem(index)}>删除</button>\n          </li>\n        ))}\n      </ul>\n    </div>\n  )\n}\n\nrender(<App />)",
+      "solution": "function App() {\n  const [items, setItems] = useState(['项目1', '项目2'])\n  const [input, setInput] = useState('')\n\n  const addItem = () => {\n    setItems([...items, input])\n    setInput('')\n  }\n\n  const deleteItem = (index) => {\n    setItems(items.filter((_, i) => i !== index))\n  }\n\n  return (\n    <div>\n      <input \n        value={input}\n        onChange={e => setInput(e.target.value)}\n      />\n      <button onClick={addItem}>添加</button>\n      <ul>\n        {items.map((item, index) => (\n          <li key={index}>\n            {item}\n            <button onClick={() => deleteItem(index)}>删除</button>\n          </li>\n        ))}\n      </ul>\n    </div>\n  )\n}\n\nrender(<App />)",
+      "hints": [
+        "添加: setItems([...items, input])",
+        "删除: filter((_, i) => i !== index)",
+        "别忘了清空 input"
+      ],
+      "testCases": [
+        {
+          "type": "pattern",
+          "description": "应该更新 items",
+          "pattern": "setItems"
+        },
+        {
+          "type": "pattern",
+          "description": "应该使用展开运算符或 filter",
+          "pattern": "\\.\\.\\.items|\\.filter\\("
+        },
+        {
+          "type": "pattern",
+          "description": "应该清空 input",
+          "pattern": "setInput\\(\\s*['\"]\\s*['\"]\\s*\\)"
+        }
+      ]
+    },
+    {
+      "id": "lists-8",
+      "title": "列表排序",
+      "difficulty": "hard",
+      "tags": ["列表", "sort"],
+      "estimatedTime": 8,
+      "question": "实现按价格排序的商品列表",
+      "description": "使用 sort 方法对列表进行排序后渲染。",
+      "starterCode": "function App() {\n  const [products] = useState([\n    { id: 1, name: '手机', price: 3999 },\n    { id: 2, name: '电脑', price: 5999 },\n    { id: 3, name: '平板', price: 2999 }\n  ])\n  const [sortOrder, setSortOrder] = useState('asc')\n\n  const getSortedProducts = () => {\n    // 返回排序后的商品列表\n    // sortOrder === 'asc' 升序\n    // sortOrder === 'desc' 降序\n  }\n\n  return (\n    <div>\n      <button onClick={() => setSortOrder('asc')}>升序</button>\n      <button onClick={() => setSortOrder('desc')}>降序</button>\n      <ul>\n        {getSortedProducts().map(product => (\n          <li key={product.id}>\n            {product.name} - ¥{product.price}\n          </li>\n        ))}\n      </ul>\n    </div>\n  )\n}\n\nrender(<App />)",
+      "solution": "function App() {\n  const [products] = useState([\n    { id: 1, name: '手机', price: 3999 },\n    { id: 2, name: '电脑', price: 5999 },\n    { id: 3, name: '平板', price: 2999 }\n  ])\n  const [sortOrder, setSortOrder] = useState('asc')\n\n  const getSortedProducts = () => {\n    return [...products].sort((a, b) => {\n      if (sortOrder === 'asc') {\n        return a.price - b.price\n      } else {\n        return b.price - a.price\n      }\n    })\n  }\n\n  return (\n    <div>\n      <button onClick={() => setSortOrder('asc')}>升序</button>\n      <button onClick={() => setSortOrder('desc')}>降序</button>\n      <ul>\n        {getSortedProducts().map(product => (\n          <li key={product.id}>\n            {product.name} - ¥{product.price}\n          </li>\n        ))}\n      </ul>\n    </div>\n  )\n}\n\nrender(<App />)",
+      "hints": [
+        "先复制数组: [...products]",
+        "使用 sort((a, b) => ...)",
+        "升序: a.price - b.price，降序相反"
+      ],
+      "testCases": [
+        {
+          "type": "pattern",
+          "description": "应该使用 sort",
+          "pattern": "\\.sort\\("
+        },
+        {
+          "type": "pattern",
+          "description": "应该判断 sortOrder",
+          "pattern": "sortOrder"
+        },
+        {
+          "type": "pattern",
+          "description": "应该比较 price",
+          "pattern": "price"
+        }
+      ]
+    }
+  ]
+}

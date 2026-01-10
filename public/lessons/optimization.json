@@ -1,0 +1,202 @@
+{
+  "categoryId": "optimization",
+  "name": "性能优化",
+  "description": "学习 useCallback 和 useMemo 优化性能",
+  "icon": "⚡",
+  "order": 11,
+  "lessons": [
+    {
+      "id": "optimization-1",
+      "title": "useCallback 基础",
+      "difficulty": "medium",
+      "tags": ["useCallback", "性能"],
+      "estimatedTime": 7,
+      "question": "使用 useCallback 缓存事件处理函数",
+      "description": "useCallback 返回记忆化的回调函数，避免子组件不必要的渲染。",
+      "starterCode": "function Child({ onClick }) {\n  console.log('Child 渲染')\n  return <button onClick={onClick}>点击</button>\n}\n\nfunction App() {\n  const [count, setCount] = useState(0)\n\n  // 使用 useCallback 缓存 handleClick\n  const handleClick = () => {\n    console.log('clicked')\n  }\n\n  return (\n    <div>\n      <p>计数: {count}</p>\n      <button onClick={() => setCount(count + 1)}>增加</button>\n      <Child onClick={handleClick} />\n    </div>\n  )\n}\n\nrender(<App />)",
+      "solution": "function Child({ onClick }) {\n  console.log('Child 渲染')\n  return <button onClick={onClick}>点击</button>\n}\n\nfunction App() {\n  const [count, setCount] = useState(0)\n\n  const handleClick = useCallback(() => {\n    console.log('clicked')\n  }, [])\n\n  return (\n    <div>\n      <p>计数: {count}</p>\n      <button onClick={() => setCount(count + 1)}>增加</button>\n      <Child onClick={handleClick} />\n    </div>\n  )\n}\n\nrender(<App />)",
+      "hints": [
+        "useCallback(() => { ... }, [])",
+        "空依赖数组表示函数不变",
+        "减少子组件重新渲染"
+      ],
+      "testCases": [
+        {
+          "type": "pattern",
+          "description": "应该使用 useCallback",
+          "pattern": "useCallback"
+        },
+        {
+          "type": "pattern",
+          "description": "应该有依赖数组",
+          "pattern": "useCallback.*\\[.*\\]"
+        },
+        {
+          "type": "pattern",
+          "description": "应该定义 handleClick",
+          "pattern": "handleClick"
+        }
+      ]
+    },
+    {
+      "id": "optimization-2",
+      "title": "useCallback 依赖",
+      "difficulty": "hard",
+      "tags": ["useCallback", "依赖"],
+      "estimatedTime": 8,
+      "question": "useCallback 依赖外部变量",
+      "description": "当回调函数依赖外部变量时，需要加入依赖数组。",
+      "starterCode": "function App() {\n  const [count, setCount] = useState(0)\n  const [step, setStep] = useState(1)\n\n  // 使用 useCallback，依赖 step\n  const increment = () => {\n    setCount(count + step)\n  }\n\n  return (\n    <div>\n      <p>计数: {count}</p>\n      <p>步长: {step}</p>\n      <button onClick={increment}>增加</button>\n      <button onClick={() => setStep(step + 1)}>改变步长</button>\n    </div>\n  )\n}\n\nrender(<App />)",
+      "solution": "function App() {\n  const [count, setCount] = useState(0)\n  const [step, setStep] = useState(1)\n\n  const increment = useCallback(() => {\n    setCount(c => c + step)\n  }, [step])\n\n  return (\n    <div>\n      <p>计数: {count}</p>\n      <p>步长: {step}</p>\n      <button onClick={increment}>增加</button>\n      <button onClick={() => setStep(step + 1)}>改变步长</button>\n    </div>\n  )\n}\n\nrender(<App />)",
+      "hints": [
+        "依赖数组: [step]",
+        "使用函数式更新: setCount(c => c + step)",
+        "step 变化时函数重新创建"
+      ],
+      "testCases": [
+        {
+          "type": "pattern",
+          "description": "应该使用 useCallback",
+          "pattern": "useCallback"
+        },
+        {
+          "type": "pattern",
+          "description": "依赖数组应包含 step",
+          "pattern": "\\[\\s*step\\s*\\]"
+        },
+        {
+          "type": "pattern",
+          "description": "应该使用函数式更新",
+          "pattern": "setCount\\(\\s*\\w+\\s*=>"
+        }
+      ]
+    },
+    {
+      "id": "optimization-3",
+      "title": "useMemo 基础",
+      "difficulty": "medium",
+      "tags": ["useMemo", "性能"],
+      "estimatedTime": 7,
+      "question": "使用 useMemo 缓存计算结果",
+      "description": "useMemo 返回记忆化的值，避免昂贵的计算重复执行。",
+      "starterCode": "function App() {\n  const [count, setCount] = useState(0)\n  const [text, setText] = useState('')\n\n  // 使用 useMemo 缓存计算结果\n  const expensiveValue = (() => {\n    console.log('计算中...')\n    return count * 2\n  })()\n\n  return (\n    <div>\n      <input value={text} onChange={e => setText(e.target.value)} />\n      <p>计数: {count}</p>\n      <p>双倍: {expensiveValue}</p>\n      <button onClick={() => setCount(count + 1)}>增加</button>\n    </div>\n  )\n}\n\nrender(<App />)",
+      "solution": "function App() {\n  const [count, setCount] = useState(0)\n  const [text, setText] = useState('')\n\n  const expensiveValue = useMemo(() => {\n    console.log('计算中...')\n    return count * 2\n  }, [count])\n\n  return (\n    <div>\n      <input value={text} onChange={e => setText(e.target.value)} />\n      <p>计数: {count}</p>\n      <p>双倍: {expensiveValue}</p>\n      <button onClick={() => setCount(count + 1)}>增加</button>\n    </div>\n  )\n}\n\nrender(<App />)",
+      "hints": [
+        "useMemo(() => { ... }, [count])",
+        "返回计算结果",
+        "只在 count 变化时重新计算"
+      ],
+      "testCases": [
+        {
+          "type": "pattern",
+          "description": "应该使用 useMemo",
+          "pattern": "useMemo"
+        },
+        {
+          "type": "pattern",
+          "description": "依赖数组应包含 count",
+          "pattern": "\\[\\s*count\\s*\\]"
+        },
+        {
+          "type": "pattern",
+          "description": "应该返回值",
+          "pattern": "return"
+        }
+      ]
+    },
+    {
+      "id": "optimization-4",
+      "title": "useMemo 计算派生状态",
+      "difficulty": "medium",
+      "tags": ["useMemo", "派生"],
+      "estimatedTime": 7,
+      "question": "使用 useMemo 计算过滤后的列表",
+      "description": "useMemo 适合缓存基于 state 派生的复杂计算。",
+      "starterCode": "function App() {\n  const [items] = useState([\n    { id: 1, name: 'Apple', price: 10 },\n    { id: 2, name: 'Banana', price: 5 },\n    { id: 3, name: 'Orange', price: 15 }\n  ])\n  const [minPrice, setMinPrice] = useState(0)\n\n  // 使用 useMemo 过滤价格大于等于 minPrice 的项\n  const filteredItems = items.filter(item => item.price >= minPrice)\n\n  return (\n    <div>\n      <input \n        type=\"number\" \n        value={minPrice}\n        onChange={e => setMinPrice(Number(e.target.value))}\n      />\n      <ul>\n        {filteredItems.map(item => (\n          <li key={item.id}>{item.name} - ¥{item.price}</li>\n        ))}\n      </ul>\n    </div>\n  )\n}\n\nrender(<App />)",
+      "solution": "function App() {\n  const [items] = useState([\n    { id: 1, name: 'Apple', price: 10 },\n    { id: 2, name: 'Banana', price: 5 },\n    { id: 3, name: 'Orange', price: 15 }\n  ])\n  const [minPrice, setMinPrice] = useState(0)\n\n  const filteredItems = useMemo(() => {\n    return items.filter(item => item.price >= minPrice)\n  }, [items, minPrice])\n\n  return (\n    <div>\n      <input \n        type=\"number\" \n        value={minPrice}\n        onChange={e => setMinPrice(Number(e.target.value))}\n      />\n      <ul>\n        {filteredItems.map(item => (\n          <li key={item.id}>{item.name} - ¥{item.price}</li>\n        ))}\n      </ul>\n    </div>\n  )\n}\n\nrender(<App />)",
+      "hints": [
+        "useMemo(() => items.filter(...), [items, minPrice])",
+        "依赖 items 和 minPrice",
+        "避免每次渲染都过滤"
+      ],
+      "testCases": [
+        {
+          "type": "pattern",
+          "description": "应该使用 useMemo",
+          "pattern": "useMemo"
+        },
+        {
+          "type": "pattern",
+          "description": "应该使用 filter",
+          "pattern": "\\.filter\\("
+        },
+        {
+          "type": "pattern",
+          "description": "依赖数组应包含 items 和 minPrice",
+          "pattern": "\\[.*items.*minPrice.*\\]|\\[.*minPrice.*items.*\\]"
+        }
+      ]
+    },
+    {
+      "id": "optimization-5",
+      "title": "React.memo 组件记忆化",
+      "difficulty": "hard",
+      "tags": ["React.memo", "性能"],
+      "estimatedTime": 8,
+      "question": "使用 React.memo 防止组件不必要的渲染",
+      "description": "React.memo 是高阶组件，对 props 进行浅比较，避免不必要的渲染。",
+      "starterCode": "function Child({ name }) {\n  console.log('Child 渲染:', name)\n  return <div>你好, {name}</div>\n}\n\nfunction App() {\n  const [count, setCount] = useState(0)\n  const name = 'React'\n\n  return (\n    <div>\n      <p>计数: {count}</p>\n      <button onClick={() => setCount(count + 1)}>增加</button>\n      <Child name={name} />\n    </div>\n  )\n}\n\nrender(<App />)",
+      "solution": "const Child = React.memo(function Child({ name }) {\n  console.log('Child 渲染:', name)\n  return <div>你好, {name}</div>\n})\n\nfunction App() {\n  const [count, setCount] = useState(0)\n  const name = 'React'\n\n  return (\n    <div>\n      <p>计数: {count}</p>\n      <button onClick={() => setCount(count + 1)}>增加</button>\n      <Child name={name} />\n    </div>\n  )\n}\n\nrender(<App />)",
+      "hints": [
+        "React.memo(Component)",
+        "包裹组件定义",
+        "props 不变时不重新渲染"
+      ],
+      "testCases": [
+        {
+          "type": "pattern",
+          "description": "应该使用 React.memo",
+          "pattern": "React\\.memo"
+        },
+        {
+          "type": "pattern",
+          "description": "应该有 Child 组件",
+          "pattern": "function Child|Child.*function"
+        }
+      ]
+    },
+    {
+      "id": "optimization-6",
+      "title": "综合优化",
+      "difficulty": "hard",
+      "tags": ["useCallback", "useMemo", "React.memo"],
+      "estimatedTime": 10,
+      "question": "结合使用 useCallback、useMemo 和 React.memo",
+      "description": "实际项目中通常需要组合使用多种优化手段。",
+      "starterCode": "function ListItem({ item, onDelete }) {\n  console.log('ListItem 渲染:', item.name)\n  return (\n    <li>\n      {item.name}\n      <button onClick={() => onDelete(item.id)}>删除</button>\n    </li>\n  )\n}\n\nfunction App() {\n  const [items, setItems] = useState([\n    { id: 1, name: 'Item 1' },\n    { id: 2, name: 'Item 2' }\n  ])\n  const [filter, setFilter] = useState('')\n\n  const handleDelete = (id) => {\n    setItems(items.filter(item => item.id !== id))\n  }\n\n  const filteredItems = items.filter(item => \n    item.name.includes(filter)\n  )\n\n  return (\n    <div>\n      <input \n        value={filter}\n        onChange={e => setFilter(e.target.value)}\n        placeholder=\"过滤\"\n      />\n      <ul>\n        {filteredItems.map(item => (\n          <ListItem \n            key={item.id}\n            item={item}\n            onDelete={handleDelete}\n          />\n        ))}\n      </ul>\n    </div>\n  )\n}\n\nrender(<App />)",
+      "solution": "const ListItem = React.memo(function ListItem({ item, onDelete }) {\n  console.log('ListItem 渲染:', item.name)\n  return (\n    <li>\n      {item.name}\n      <button onClick={() => onDelete(item.id)}>删除</button>\n    </li>\n  )\n})\n\nfunction App() {\n  const [items, setItems] = useState([\n    { id: 1, name: 'Item 1' },\n    { id: 2, name: 'Item 2' }\n  ])\n  const [filter, setFilter] = useState('')\n\n  const handleDelete = useCallback((id) => {\n    setItems(items => items.filter(item => item.id !== id))\n  }, [])\n\n  const filteredItems = useMemo(() => \n    items.filter(item => item.name.includes(filter)),\n    [items, filter]\n  )\n\n  return (\n    <div>\n      <input \n        value={filter}\n        onChange={e => setFilter(e.target.value)}\n        placeholder=\"过滤\"\n      />\n      <ul>\n        {filteredItems.map(item => (\n          <ListItem \n            key={item.id}\n            item={item}\n            onDelete={handleDelete}\n          />\n        ))}\n      </ul>\n    </div>\n  )\n}\n\nrender(<App />)",
+      "hints": [
+        "ListItem 用 React.memo 包裹",
+        "handleDelete 用 useCallback",
+        "filteredItems 用 useMemo"
+      ],
+      "testCases": [
+        {
+          "type": "pattern",
+          "description": "应该使用 React.memo",
+          "pattern": "React\\.memo"
+        },
+        {
+          "type": "pattern",
+          "description": "应该使用 useCallback",
+          "pattern": "useCallback"
+        },
+        {
+          "type": "pattern",
+          "description": "应该使用 useMemo",
+          "pattern": "useMemo"
+        }
+      ]
+    }
+  ]
+}

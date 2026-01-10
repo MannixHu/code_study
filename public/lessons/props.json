@@ -1,0 +1,248 @@
+{
+  "categoryId": "props",
+  "name": "Props 传递",
+  "description": "学习组件间的数据传递和 Props 使用",
+  "icon": "📦",
+  "order": 3,
+  "lessons": [
+    {
+      "id": "props-1",
+      "title": "传递字符串 Props",
+      "difficulty": "easy",
+      "tags": ["Props", "基础"],
+      "estimatedTime": 3,
+      "question": "创建一个 Greeting 组件，接收 name prop 并显示 '你好, {name}'",
+      "description": "Props 是组件间传递数据的方式，类似 Vue 的 props。",
+      "starterCode": "function Greeting(props) {\n  return (\n    <div>{/* 显示 props.name */}</div>\n  )\n}\n\nfunction App() {\n  return <Greeting name=\"张三\" />\n}\n\nrender(<App />)",
+      "solution": "function Greeting(props) {\n  return (\n    <div>你好, {props.name}</div>\n  )\n}\n\nfunction App() {\n  return <Greeting name=\"张三\" />\n}\n\nrender(<App />)",
+      "hints": [
+        "使用 props.name 访问传入的 name",
+        "在 JSX 中用 {} 显示变量",
+        "Props 是只读的，不能修改"
+      ],
+      "testCases": [
+        {
+          "type": "pattern",
+          "description": "应该包含 props.name",
+          "pattern": "props\\.name"
+        },
+        {
+          "type": "pattern",
+          "description": "应该有 Greeting 组件",
+          "pattern": "function Greeting"
+        },
+        {
+          "type": "ast",
+          "description": "应该使用 JSX",
+          "checker": "hasJSX"
+        }
+      ]
+    },
+    {
+      "id": "props-2",
+      "title": "Props 解构",
+      "difficulty": "easy",
+      "tags": ["Props", "ES6"],
+      "estimatedTime": 4,
+      "question": "使用解构语法简化 Greeting 组件的 props 访问",
+      "description": "可以在函数参数中直接解构 props，使代码更简洁。",
+      "starterCode": "function Greeting(props) {\n  return <div>你好, {props.name}</div>\n}\n\nfunction App() {\n  return <Greeting name=\"李四\" />\n}\n\nrender(<App />)",
+      "solution": "function Greeting({ name }) {\n  return <div>你好, {name}</div>\n}\n\nfunction App() {\n  return <Greeting name=\"李四\" />\n}\n\nrender(<App />)",
+      "hints": [
+        "在参数位置使用 { name }",
+        "解构后直接用 name，不需要 props.",
+        "这是 ES6 解构赋值语法"
+      ],
+      "testCases": [
+        {
+          "type": "pattern",
+          "description": "应该使用解构参数",
+          "pattern": "function Greeting\\(\\s*\\{\\s*name\\s*\\}\\s*\\)"
+        },
+        {
+          "type": "pattern",
+          "description": "应该直接使用 name 而不是 props.name",
+          "pattern": "\\{\\s*name\\s*\\}"
+        }
+      ]
+    },
+    {
+      "id": "props-3",
+      "title": "多个 Props",
+      "difficulty": "easy",
+      "tags": ["Props"],
+      "estimatedTime": 4,
+      "question": "创建 UserCard 组件，接收 name 和 age 两个 props",
+      "description": "组件可以接收多个 props，全部通过解构获取。",
+      "starterCode": "function UserCard(/* 解构 name 和 age */) {\n  return (\n    <div>\n      <h3>{/* 显示 name */}</h3>\n      <p>年龄: {/* 显示 age */}</p>\n    </div>\n  )\n}\n\nfunction App() {\n  return <UserCard name=\"王五\" age={25} />\n}\n\nrender(<App />)",
+      "solution": "function UserCard({ name, age }) {\n  return (\n    <div>\n      <h3>{name}</h3>\n      <p>年龄: {age}</p>\n    </div>\n  )\n}\n\nfunction App() {\n  return <UserCard name=\"王五\" age={25} />\n}\n\nrender(<App />)",
+      "hints": [
+        "解构多个参数: { name, age }",
+        "数字 props 用 {} 包裹: age={25}",
+        "字符串可以直接写: name=\"王五\""
+      ],
+      "testCases": [
+        {
+          "type": "pattern",
+          "description": "应该解构 name 和 age",
+          "pattern": "\\{\\s*name\\s*,\\s*age\\s*\\}"
+        },
+        {
+          "type": "pattern",
+          "description": "应该显示 name",
+          "pattern": "\\{\\s*name\\s*\\}"
+        },
+        {
+          "type": "pattern",
+          "description": "应该显示 age",
+          "pattern": "\\{\\s*age\\s*\\}"
+        }
+      ]
+    },
+    {
+      "id": "props-4",
+      "title": "Props 默认值",
+      "difficulty": "medium",
+      "tags": ["Props", "默认值"],
+      "estimatedTime": 5,
+      "question": "给 Button 组件的 text 和 type props 设置默认值",
+      "description": "可以使用 = 给 props 设置默认值，当父组件没传时使用默认值。",
+      "starterCode": "function Button({ text, type }) {\n  return (\n    <button className={type}>\n      {text}\n    </button>\n  )\n}\n\nfunction App() {\n  return (\n    <>\n      <Button text=\"点击\" />\n      <Button type=\"primary\" />\n    </>\n  )\n}\n\nrender(<App />)",
+      "solution": "function Button({ text = '按钮', type = 'default' }) {\n  return (\n    <button className={type}>\n      {text}\n    </button>\n  )\n}\n\nfunction App() {\n  return (\n    <>\n      <Button text=\"点击\" />\n      <Button type=\"primary\" />\n    </>\n  )\n}\n\nrender(<App />)",
+      "hints": [
+        "使用 = 设置默认值",
+        "语法: { text = '默认值' }",
+        "没传的 prop 会使用默认值"
+      ],
+      "testCases": [
+        {
+          "type": "pattern",
+          "description": "应该给 text 设置默认值",
+          "pattern": "text\\s*=\\s*['\"]"
+        },
+        {
+          "type": "pattern",
+          "description": "应该给 type 设置默认值",
+          "pattern": "type\\s*=\\s*['\"]"
+        }
+      ]
+    },
+    {
+      "id": "props-5",
+      "title": "传递数字和布尔值",
+      "difficulty": "easy",
+      "tags": ["Props", "类型"],
+      "estimatedTime": 4,
+      "question": "传递数字 count 和布尔值 isActive 给组件",
+      "description": "非字符串的 props 需要用 {} 包裹。",
+      "starterCode": "function Counter({ count, isActive }) {\n  return (\n    <div>\n      <p>计数: {count}</p>\n      <p>状态: {isActive ? '激活' : '未激活'}</p>\n    </div>\n  )\n}\n\nfunction App() {\n  return (\n    <Counter /* 传递 count={10} 和 isActive={true} */ />\n  )\n}\n\nrender(<App />)",
+      "solution": "function Counter({ count, isActive }) {\n  return (\n    <div>\n      <p>计数: {count}</p>\n      <p>状态: {isActive ? '激活' : '未激活'}</p>\n    </div>\n  )\n}\n\nfunction App() {\n  return (\n    <Counter count={10} isActive={true} />\n  )\n}\n\nrender(<App />)",
+      "hints": [
+        "数字用 {} 包裹: count={10}",
+        "布尔值也用 {}: isActive={true}",
+        "只有字符串可以不用 {}"
+      ],
+      "testCases": [
+        {
+          "type": "pattern",
+          "description": "应该传递 count prop",
+          "pattern": "count=\\{\\d+\\}"
+        },
+        {
+          "type": "pattern",
+          "description": "应该传递 isActive prop",
+          "pattern": "isActive=\\{(true|false)\\}"
+        }
+      ]
+    },
+    {
+      "id": "props-6",
+      "title": "传递对象 Props",
+      "difficulty": "medium",
+      "tags": ["Props", "对象"],
+      "estimatedTime": 5,
+      "question": "传递 user 对象给 UserInfo 组件并显示属性",
+      "description": "可以传递对象、数组等复杂数据类型作为 props。",
+      "starterCode": "function UserInfo({ user }) {\n  return (\n    <div>\n      <h3>{/* user.name */}</h3>\n      <p>{/* user.email */}</p>\n    </div>\n  )\n}\n\nfunction App() {\n  const user = {\n    name: '赵六',\n    email: 'zhao@example.com'\n  }\n\n  return <UserInfo /* 传递 user 对象 */ />\n}\n\nrender(<App />)",
+      "solution": "function UserInfo({ user }) {\n  return (\n    <div>\n      <h3>{user.name}</h3>\n      <p>{user.email}</p>\n    </div>\n  )\n}\n\nfunction App() {\n  const user = {\n    name: '赵六',\n    email: 'zhao@example.com'\n  }\n\n  return <UserInfo user={user} />\n}\n\nrender(<App />)",
+      "hints": [
+        "传递对象: user={user}",
+        "访问对象属性: user.name",
+        "对象需要用 {} 包裹"
+      ],
+      "testCases": [
+        {
+          "type": "pattern",
+          "description": "应该传递 user prop",
+          "pattern": "user=\\{user\\}"
+        },
+        {
+          "type": "pattern",
+          "description": "应该访问 user.name",
+          "pattern": "user\\.name"
+        },
+        {
+          "type": "pattern",
+          "description": "应该访问 user.email",
+          "pattern": "user\\.email"
+        }
+      ]
+    },
+    {
+      "id": "props-7",
+      "title": "Props Children",
+      "difficulty": "medium",
+      "tags": ["Props", "children"],
+      "estimatedTime": 5,
+      "question": "创建 Card 组件，使用 children 显示卡片内容",
+      "description": "children 是特殊的 prop，表示组件标签之间的内容。",
+      "starterCode": "function Card({ title, children }) {\n  return (\n    <div className=\"card\">\n      <h3>{title}</h3>\n      <div>{/* 显示 children */}</div>\n    </div>\n  )\n}\n\nfunction App() {\n  return (\n    <Card title=\"我的卡片\">\n      <p>这是卡片内容</p>\n    </Card>\n  )\n}\n\nrender(<App />)",
+      "solution": "function Card({ title, children }) {\n  return (\n    <div className=\"card\">\n      <h3>{title}</h3>\n      <div>{children}</div>\n    </div>\n  )\n}\n\nfunction App() {\n  return (\n    <Card title=\"我的卡片\">\n      <p>这是卡片内容</p>\n    </Card>\n  )\n}\n\nrender(<App />)",
+      "hints": [
+        "children 是特殊的 prop 名称",
+        "直接在 JSX 中显示 {children}",
+        "组件标签之间的内容自动成为 children"
+      ],
+      "testCases": [
+        {
+          "type": "pattern",
+          "description": "应该解构 children",
+          "pattern": "children"
+        },
+        {
+          "type": "pattern",
+          "description": "应该显示 children",
+          "pattern": "\\{\\s*children\\s*\\}"
+        }
+      ]
+    },
+    {
+      "id": "props-8",
+      "title": "展开运算符传递 Props",
+      "difficulty": "medium",
+      "tags": ["Props", "展开运算符"],
+      "estimatedTime": 5,
+      "question": "使用展开运算符 {...props} 传递所有 props",
+      "description": "可以用 ... 展开对象，一次性传递多个 props。",
+      "starterCode": "function Input(props) {\n  return <input {...props} />\n}\n\nfunction App() {\n  const inputProps = {\n    type: 'text',\n    placeholder: '请输入',\n    maxLength: 10\n  }\n\n  return <Input /* 使用展开运算符传递 */ />\n}\n\nrender(<App />)",
+      "solution": "function Input(props) {\n  return <input {...props} />\n}\n\nfunction App() {\n  const inputProps = {\n    type: 'text',\n    placeholder: '请输入',\n    maxLength: 10\n  }\n\n  return <Input {...inputProps} />\n}\n\nrender(<App />)",
+      "hints": [
+        "使用 {...inputProps} 展开对象",
+        "相当于传递所有属性",
+        "常用于透传 props 给原生元素"
+      ],
+      "testCases": [
+        {
+          "type": "pattern",
+          "description": "应该使用展开运算符",
+          "pattern": "\\.\\.\\.\\w+"
+        },
+        {
+          "type": "pattern",
+          "description": "Input 组件应该展开 props",
+          "pattern": "\\{\\s*\\.\\.\\.props\\s*\\}"
+        }
+      ]
+    }
+  ]
+}

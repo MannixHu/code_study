@@ -1,0 +1,276 @@
+{
+  "categoryId": "forms",
+  "name": "表单处理",
+  "description": "学习 React 中的表单控制和验证",
+  "icon": "📝",
+  "order": 8,
+  "lessons": [
+    {
+      "id": "forms-1",
+      "title": "受控输入框",
+      "difficulty": "easy",
+      "tags": ["表单", "受控组件"],
+      "estimatedTime": 4,
+      "question": "创建受控的文本输入框",
+      "description": "受控组件的值由 React state 控制，通过 value 和 onChange 实现。",
+      "starterCode": "function App() {\n  const [name, setName] = useState('')\n\n  return (\n    <div>\n      <input \n        type=\"text\"\n        /* 绑定 value 和 onChange */\n      />\n      <p>你好, {name}</p>\n    </div>\n  )\n}\n\nrender(<App />)",
+      "solution": "function App() {\n  const [name, setName] = useState('')\n\n  return (\n    <div>\n      <input \n        type=\"text\"\n        value={name}\n        onChange={e => setName(e.target.value)}\n      />\n      <p>你好, {name}</p>\n    </div>\n  )\n}\n\nrender(<App />)",
+      "hints": [
+        "value={name} 绑定状态",
+        "onChange={e => setName(e.target.value)}",
+        "这是受控组件模式"
+      ],
+      "testCases": [
+        {
+          "type": "pattern",
+          "description": "应该有 value 属性",
+          "pattern": "value=\\{name\\}"
+        },
+        {
+          "type": "pattern",
+          "description": "应该有 onChange",
+          "pattern": "onChange="
+        },
+        {
+          "type": "pattern",
+          "description": "应该使用 e.target.value",
+          "pattern": "target\\.value"
+        }
+      ]
+    },
+    {
+      "id": "forms-2",
+      "title": "多个输入框",
+      "difficulty": "medium",
+      "tags": ["表单", "对象状态"],
+      "estimatedTime": 6,
+      "question": "管理包含多个字段的表单",
+      "description": "使用对象状态统一管理多个表单字段。",
+      "starterCode": "function App() {\n  const [form, setForm] = useState({\n    name: '',\n    email: ''\n  })\n\n  const handleChange = (e) => {\n    // 更新对应的字段\n  }\n\n  return (\n    <div>\n      <input \n        name=\"name\"\n        value={form.name}\n        onChange={handleChange}\n      />\n      <input \n        name=\"email\"\n        value={form.email}\n        onChange={handleChange}\n      />\n      <p>{form.name} - {form.email}</p>\n    </div>\n  )\n}\n\nrender(<App />)",
+      "solution": "function App() {\n  const [form, setForm] = useState({\n    name: '',\n    email: ''\n  })\n\n  const handleChange = (e) => {\n    setForm({\n      ...form,\n      [e.target.name]: e.target.value\n    })\n  }\n\n  return (\n    <div>\n      <input \n        name=\"name\"\n        value={form.name}\n        onChange={handleChange}\n      />\n      <input \n        name=\"email\"\n        value={form.email}\n        onChange={handleChange}\n      />\n      <p>{form.name} - {form.email}</p>\n    </div>\n  )\n}\n\nrender(<App />)",
+      "hints": [
+        "使用计算属性名: [e.target.name]",
+        "展开原对象: { ...form, ... }",
+        "一个 handleChange 处理所有输入"
+      ],
+      "testCases": [
+        {
+          "type": "pattern",
+          "description": "应该使用展开运算符",
+          "pattern": "\\.\\.\\.form"
+        },
+        {
+          "type": "pattern",
+          "description": "应该使用计算属性名",
+          "pattern": "\\[.*target\\.name.*\\]"
+        },
+        {
+          "type": "pattern",
+          "description": "应该调用 setForm",
+          "pattern": "setForm"
+        }
+      ]
+    },
+    {
+      "id": "forms-3",
+      "title": "复选框",
+      "difficulty": "easy",
+      "tags": ["表单", "checkbox"],
+      "estimatedTime": 5,
+      "question": "创建受控的复选框",
+      "description": "复选框使用 checked 属性和 e.target.checked 获取值。",
+      "starterCode": "function App() {\n  const [agreed, setAgreed] = useState(false)\n\n  return (\n    <div>\n      <label>\n        <input \n          type=\"checkbox\"\n          /* 绑定 checked 和 onChange */\n        />\n        我同意条款\n      </label>\n      <p>{agreed ? '已同意' : '未同意'}</p>\n    </div>\n  )\n}\n\nrender(<App />)",
+      "solution": "function App() {\n  const [agreed, setAgreed] = useState(false)\n\n  return (\n    <div>\n      <label>\n        <input \n          type=\"checkbox\"\n          checked={agreed}\n          onChange={e => setAgreed(e.target.checked)}\n        />\n        我同意条款\n      </label>\n      <p>{agreed ? '已同意' : '未同意'}</p>\n    </div>\n  )\n}\n\nrender(<App />)",
+      "hints": [
+        "checked={agreed}，不是 value",
+        "e.target.checked 获取布尔值",
+        "复选框用 checked 属性"
+      ],
+      "testCases": [
+        {
+          "type": "pattern",
+          "description": "应该有 checked 属性",
+          "pattern": "checked="
+        },
+        {
+          "type": "pattern",
+          "description": "应该使用 e.target.checked",
+          "pattern": "target\\.checked"
+        },
+        {
+          "type": "pattern",
+          "description": "应该有 onChange",
+          "pattern": "onChange="
+        }
+      ]
+    },
+    {
+      "id": "forms-4",
+      "title": "下拉选择框",
+      "difficulty": "easy",
+      "tags": ["表单", "select"],
+      "estimatedTime": 5,
+      "question": "创建受控的下拉选择框",
+      "description": "select 标签使用 value 和 onChange 控制。",
+      "starterCode": "function App() {\n  const [city, setCity] = useState('beijing')\n\n  return (\n    <div>\n      <select /* 绑定 value 和 onChange */>\n        <option value=\"beijing\">北京</option>\n        <option value=\"shanghai\">上海</option>\n        <option value=\"guangzhou\">广州</option>\n      </select>\n      <p>你选择了: {city}</p>\n    </div>\n  )\n}\n\nrender(<App />)",
+      "solution": "function App() {\n  const [city, setCity] = useState('beijing')\n\n  return (\n    <div>\n      <select \n        value={city}\n        onChange={e => setCity(e.target.value)}\n      >\n        <option value=\"beijing\">北京</option>\n        <option value=\"shanghai\">上海</option>\n        <option value=\"guangzhou\">广州</option>\n      </select>\n      <p>你选择了: {city}</p>\n    </div>\n  )\n}\n\nrender(<App />)",
+      "hints": [
+        "value 绑定在 select 上",
+        "不是在 option 上",
+        "onChange 获取选中的值"
+      ],
+      "testCases": [
+        {
+          "type": "pattern",
+          "description": "应该有 value",
+          "pattern": "value=\\{city\\}"
+        },
+        {
+          "type": "pattern",
+          "description": "应该有 onChange",
+          "pattern": "onChange="
+        },
+        {
+          "type": "pattern",
+          "description": "应该调用 setCity",
+          "pattern": "setCity"
+        }
+      ]
+    },
+    {
+      "id": "forms-5",
+      "title": "单选按钮组",
+      "difficulty": "medium",
+      "tags": ["表单", "radio"],
+      "estimatedTime": 6,
+      "question": "创建单选按钮组",
+      "description": "多个 radio 使用相同的 name，通过 checked 判断是否选中。",
+      "starterCode": "function App() {\n  const [gender, setGender] = useState('male')\n\n  return (\n    <div>\n      <label>\n        <input \n          type=\"radio\"\n          name=\"gender\"\n          value=\"male\"\n          /* 绑定 checked 和 onChange */\n        />\n        男\n      </label>\n      <label>\n        <input \n          type=\"radio\"\n          name=\"gender\"\n          value=\"female\"\n          /* 绑定 checked 和 onChange */\n        />\n        女\n      </label>\n      <p>性别: {gender}</p>\n    </div>\n  )\n}\n\nrender(<App />)",
+      "solution": "function App() {\n  const [gender, setGender] = useState('male')\n\n  return (\n    <div>\n      <label>\n        <input \n          type=\"radio\"\n          name=\"gender\"\n          value=\"male\"\n          checked={gender === 'male'}\n          onChange={e => setGender(e.target.value)}\n        />\n        男\n      </label>\n      <label>\n        <input \n          type=\"radio\"\n          name=\"gender\"\n          value=\"female\"\n          checked={gender === 'female'}\n          onChange={e => setGender(e.target.value)}\n        />\n        女\n      </label>\n      <p>性别: {gender}</p>\n    </div>\n  )\n}\n\nrender(<App />)",
+      "hints": [
+        "checked={gender === 'male'}",
+        "判断当前值是否等于 radio 的 value",
+        "onChange 更新 gender"
+      ],
+      "testCases": [
+        {
+          "type": "pattern",
+          "description": "应该有 checked 属性",
+          "pattern": "checked=",
+          "minCount": 2
+        },
+        {
+          "type": "pattern",
+          "description": "应该比较 gender",
+          "pattern": "gender\\s*===",
+          "minCount": 2
+        },
+        {
+          "type": "pattern",
+          "description": "应该有 onChange",
+          "pattern": "onChange=",
+          "minCount": 2
+        }
+      ]
+    },
+    {
+      "id": "forms-6",
+      "title": "文本域",
+      "difficulty": "easy",
+      "tags": ["表单", "textarea"],
+      "estimatedTime": 4,
+      "question": "创建受控的文本域",
+      "description": "textarea 在 React 中也使用 value 属性，而不是子节点。",
+      "starterCode": "function App() {\n  const [message, setMessage] = useState('')\n\n  return (\n    <div>\n      <textarea \n        /* 绑定 value 和 onChange */\n      />\n      <p>字数: {message.length}</p>\n    </div>\n  )\n}\n\nrender(<App />)",
+      "solution": "function App() {\n  const [message, setMessage] = useState('')\n\n  return (\n    <div>\n      <textarea \n        value={message}\n        onChange={e => setMessage(e.target.value)}\n      />\n      <p>字数: {message.length}</p>\n    </div>\n  )\n}\n\nrender(<App />)",
+      "hints": [
+        "textarea 使用 value，不是子节点",
+        "与 input 用法相同",
+        "onChange 获取输入值"
+      ],
+      "testCases": [
+        {
+          "type": "pattern",
+          "description": "应该有 value",
+          "pattern": "value=\\{message\\}"
+        },
+        {
+          "type": "pattern",
+          "description": "应该有 onChange",
+          "pattern": "onChange="
+        },
+        {
+          "type": "pattern",
+          "description": "应该有 textarea",
+          "pattern": "<textarea"
+        }
+      ]
+    },
+    {
+      "id": "forms-7",
+      "title": "表单提交",
+      "difficulty": "medium",
+      "tags": ["表单", "submit"],
+      "estimatedTime": 6,
+      "question": "处理表单提交事件",
+      "description": "在 form 上监听 onSubmit，记得阻止默认行为。",
+      "starterCode": "function App() {\n  const [username, setUsername] = useState('')\n  const [submitted, setSubmitted] = useState(false)\n\n  const handleSubmit = (e) => {\n    // 阻止默认提交\n    // 设置 submitted 为 true\n  }\n\n  return (\n    <div>\n      <form onSubmit={handleSubmit}>\n        <input \n          value={username}\n          onChange={e => setUsername(e.target.value)}\n        />\n        <button type=\"submit\">提交</button>\n      </form>\n      {submitted && <p>欢迎, {username}!</p>}\n    </div>\n  )\n}\n\nrender(<App />)",
+      "solution": "function App() {\n  const [username, setUsername] = useState('')\n  const [submitted, setSubmitted] = useState(false)\n\n  const handleSubmit = (e) => {\n    e.preventDefault()\n    setSubmitted(true)\n  }\n\n  return (\n    <div>\n      <form onSubmit={handleSubmit}>\n        <input \n          value={username}\n          onChange={e => setUsername(e.target.value)}\n        />\n        <button type=\"submit\">提交</button>\n      </form>\n      {submitted && <p>欢迎, {username}!</p>}\n    </div>\n  )\n}\n\nrender(<App />)",
+      "hints": [
+        "e.preventDefault() 阻止刷新",
+        "在 form 上监听 onSubmit",
+        "button type=\"submit\" 触发提交"
+      ],
+      "testCases": [
+        {
+          "type": "pattern",
+          "description": "应该有 onSubmit",
+          "pattern": "onSubmit="
+        },
+        {
+          "type": "pattern",
+          "description": "应该调用 preventDefault",
+          "pattern": "preventDefault"
+        },
+        {
+          "type": "pattern",
+          "description": "应该更新 submitted",
+          "pattern": "setSubmitted"
+        }
+      ]
+    },
+    {
+      "id": "forms-8",
+      "title": "表单验证",
+      "difficulty": "hard",
+      "tags": ["表单", "验证"],
+      "estimatedTime": 8,
+      "question": "实现简单的表单验证",
+      "description": "在提交前验证输入，显示错误信息。",
+      "starterCode": "function App() {\n  const [email, setEmail] = useState('')\n  const [error, setError] = useState('')\n\n  const handleSubmit = (e) => {\n    e.preventDefault()\n    \n    // 验证邮箱格式\n    // 如果包含 @，清空错误\n    // 否则设置错误信息\n  }\n\n  return (\n    <div>\n      <form onSubmit={handleSubmit}>\n        <input \n          value={email}\n          onChange={e => setEmail(e.target.value)}\n          placeholder=\"输入邮箱\"\n        />\n        <button type=\"submit\">提交</button>\n      </form>\n      {error && <p style={{ color: 'red' }}>{error}</p>}\n    </div>\n  )\n}\n\nrender(<App />)",
+      "solution": "function App() {\n  const [email, setEmail] = useState('')\n  const [error, setError] = useState('')\n\n  const handleSubmit = (e) => {\n    e.preventDefault()\n    \n    if (email.includes('@')) {\n      setError('')\n      alert('提交成功')\n    } else {\n      setError('请输入有效的邮箱地址')\n    }\n  }\n\n  return (\n    <div>\n      <form onSubmit={handleSubmit}>\n        <input \n          value={email}\n          onChange={e => setEmail(e.target.value)}\n          placeholder=\"输入邮箱\"\n        />\n        <button type=\"submit\">提交</button>\n      </form>\n      {error && <p style={{ color: 'red' }}>{error}</p>}\n    </div>\n  )\n}\n\nrender(<App />)",
+      "hints": [
+        "email.includes('@') 简单验证",
+        "有错误时设置 error",
+        "成功时清空 error"
+      ],
+      "testCases": [
+        {
+          "type": "pattern",
+          "description": "应该判断邮箱",
+          "pattern": "includes\\(|@"
+        },
+        {
+          "type": "pattern",
+          "description": "应该设置 error",
+          "pattern": "setError"
+        },
+        {
+          "type": "ast",
+          "description": "应该有 if 语句",
+          "checker": "hasIfStatement"
+        }
+      ]
+    }
+  ]
+}

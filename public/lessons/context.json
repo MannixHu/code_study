@@ -1,0 +1,209 @@
+{
+  "categoryId": "context",
+  "name": "Context API",
+  "description": "学习使用 Context 跨组件传递数据",
+  "icon": "🌐",
+  "order": 13,
+  "lessons": [
+    {
+      "id": "context-1",
+      "title": "创建 Context",
+      "difficulty": "medium",
+      "tags": ["Context", "createContext"],
+      "estimatedTime": 7,
+      "question": "使用 createContext 创建主题 Context",
+      "description": "Context 提供跨组件传递数据的方式，避免 props 逐层传递。",
+      "starterCode": "// 创建 ThemeContext\n\nfunction ThemedButton() {\n  // 使用 useContext 获取主题\n  return <button>按钮</button>\n}\n\nfunction App() {\n  return (\n    // 使用 Provider 提供值\n    <div>\n      <ThemedButton />\n    </div>\n  )\n}\n\nrender(<App />)",
+      "solution": "const ThemeContext = createContext('light')\n\nfunction ThemedButton() {\n  const theme = useContext(ThemeContext)\n  return <button>{theme} 主题</button>\n}\n\nfunction App() {\n  return (\n    <ThemeContext.Provider value=\"dark\">\n      <ThemedButton />\n    </ThemeContext.Provider>\n  )\n}\n\nrender(<App />)",
+      "hints": [
+        "createContext('默认值')",
+        "Provider 组件提供值",
+        "useContext 消费值"
+      ],
+      "testCases": [
+        {
+          "type": "pattern",
+          "description": "应该使用 createContext",
+          "pattern": "createContext"
+        },
+        {
+          "type": "pattern",
+          "description": "应该使用 Provider",
+          "pattern": "Provider"
+        },
+        {
+          "type": "pattern",
+          "description": "应该使用 useContext",
+          "pattern": "useContext"
+        }
+      ]
+    },
+    {
+      "id": "context-2",
+      "title": "更新 Context 值",
+      "difficulty": "medium",
+      "tags": ["Context", "状态"],
+      "estimatedTime": 8,
+      "question": "在 Context 中提供状态和更新函数",
+      "description": "Context 可以传递对象，包含状态和修改函数。",
+      "starterCode": "const CountContext = createContext()\n\nfunction Counter() {\n  // 获取 count 和 setCount\n  return (\n    <div>\n      <p>计数: {/* 显示 count */}</p>\n      <button /* 调用 setCount */>增加</button>\n    </div>\n  )\n}\n\nfunction App() {\n  const [count, setCount] = useState(0)\n\n  return (\n    <CountContext.Provider /* 提供对象 */>\n      <Counter />\n    </CountContext.Provider>\n  )\n}\n\nrender(<App />)",
+      "solution": "const CountContext = createContext()\n\nfunction Counter() {\n  const { count, setCount } = useContext(CountContext)\n  return (\n    <div>\n      <p>计数: {count}</p>\n      <button onClick={() => setCount(count + 1)}>增加</button>\n    </div>\n  )\n}\n\nfunction App() {\n  const [count, setCount] = useState(0)\n\n  return (\n    <CountContext.Provider value={{ count, setCount }}>\n      <Counter />\n    </CountContext.Provider>\n  )\n}\n\nrender(<App />)",
+      "hints": [
+        "value={{ count, setCount }}",
+        "传递对象包含状态和函数",
+        "useContext 解构对象"
+      ],
+      "testCases": [
+        {
+          "type": "pattern",
+          "description": "应该传递对象",
+          "pattern": "value=\\{\\{.*\\}\\}"
+        },
+        {
+          "type": "pattern",
+          "description": "应该解构 context",
+          "pattern": "\\{.*count.*setCount.*\\}.*useContext|\\{.*setCount.*count.*\\}.*useContext"
+        },
+        {
+          "type": "pattern",
+          "description": "应该调用 setCount",
+          "pattern": "setCount"
+        }
+      ]
+    },
+    {
+      "id": "context-3",
+      "title": "多层嵌套使用 Context",
+      "difficulty": "easy",
+      "tags": ["Context", "嵌套"],
+      "estimatedTime": 6,
+      "question": "深层组件直接访问 Context",
+      "description": "Context 可以跨越任意层级传递数据。",
+      "starterCode": "const UserContext = createContext()\n\nfunction DeepChild() {\n  // 直接使用 useContext 获取 user\n  return <p>用户: {/* 显示 user.name */}</p>\n}\n\nfunction Middle() {\n  return <DeepChild />\n}\n\nfunction App() {\n  const user = { name: '张三' }\n\n  return (\n    <UserContext.Provider value={user}>\n      <Middle />\n    </UserContext.Provider>\n  )\n}\n\nrender(<App />)",
+      "solution": "const UserContext = createContext()\n\nfunction DeepChild() {\n  const user = useContext(UserContext)\n  return <p>用户: {user.name}</p>\n}\n\nfunction Middle() {\n  return <DeepChild />\n}\n\nfunction App() {\n  const user = { name: '张三' }\n\n  return (\n    <UserContext.Provider value={user}>\n      <Middle />\n    </UserContext.Provider>\n  )\n}\n\nrender(<App />)",
+      "hints": [
+        "无需通过 Middle 传递 props",
+        "DeepChild 直接 useContext",
+        "跨层级传递"
+      ],
+      "testCases": [
+        {
+          "type": "pattern",
+          "description": "应该使用 useContext",
+          "pattern": "useContext"
+        },
+        {
+          "type": "pattern",
+          "description": "应该访问 user.name",
+          "pattern": "user\\.name"
+        },
+        {
+          "type": "pattern",
+          "description": "应该有 Provider",
+          "pattern": "Provider"
+        }
+      ]
+    },
+    {
+      "id": "context-4",
+      "title": "Context Provider 组件",
+      "difficulty": "hard",
+      "tags": ["Context", "封装"],
+      "estimatedTime": 9,
+      "question": "封装 Context Provider 为单独组件",
+      "description": "将 Provider 逻辑封装成组件，更易维护。",
+      "starterCode": "const ThemeContext = createContext()\n\nfunction ThemeProvider({ children }) {\n  // 创建 theme 状态\n  // 创建 toggleTheme 函数\n  // 提供 value={{ theme, toggleTheme }}\n  // 返回 Provider 包裹 children\n}\n\nfunction ThemedButton() {\n  const { theme, toggleTheme } = useContext(ThemeContext)\n  return (\n    <button onClick={toggleTheme}>\n      当前主题: {theme}\n    </button>\n  )\n}\n\nfunction App() {\n  return (\n    <ThemeProvider>\n      <ThemedButton />\n    </ThemeProvider>\n  )\n}\n\nrender(<App />)",
+      "solution": "const ThemeContext = createContext()\n\nfunction ThemeProvider({ children }) {\n  const [theme, setTheme] = useState('light')\n  \n  const toggleTheme = () => {\n    setTheme(t => t === 'light' ? 'dark' : 'light')\n  }\n\n  return (\n    <ThemeContext.Provider value={{ theme, toggleTheme }}>\n      {children}\n    </ThemeContext.Provider>\n  )\n}\n\nfunction ThemedButton() {\n  const { theme, toggleTheme } = useContext(ThemeContext)\n  return (\n    <button onClick={toggleTheme}>\n      当前主题: {theme}\n    </button>\n  )\n}\n\nfunction App() {\n  return (\n    <ThemeProvider>\n      <ThemedButton />\n    </ThemeProvider>\n  )\n}\n\nrender(<App />)",
+      "hints": [
+        "Provider 组件接收 children",
+        "内部管理状态",
+        "返回 Provider 包裹 children"
+      ],
+      "testCases": [
+        {
+          "type": "pattern",
+          "description": "应该定义 ThemeProvider",
+          "pattern": "function ThemeProvider"
+        },
+        {
+          "type": "pattern",
+          "description": "应该使用 children",
+          "pattern": "children"
+        },
+        {
+          "type": "ast",
+          "description": "应该使用 useState",
+          "checker": "usesUseState"
+        }
+      ]
+    },
+    {
+      "id": "context-5",
+      "title": "自定义 useContext Hook",
+      "difficulty": "hard",
+      "tags": ["Context", "自定义Hook"],
+      "estimatedTime": 8,
+      "question": "创建 useTheme Hook 简化 Context 使用",
+      "description": "封装 useContext 为自定义 Hook，提供更好的 API。",
+      "starterCode": "const ThemeContext = createContext()\n\nfunction ThemeProvider({ children }) {\n  const [theme, setTheme] = useState('light')\n  const toggleTheme = () => setTheme(t => t === 'light' ? 'dark' : 'light')\n  return (\n    <ThemeContext.Provider value={{ theme, toggleTheme }}>\n      {children}\n    </ThemeContext.Provider>\n  )\n}\n\n// 创建 useTheme Hook\nfunction useTheme() {\n  // 使用 useContext(ThemeContext)\n  // 如果为 undefined，抛出错误\n  // 返回 context\n}\n\nfunction ThemedButton() {\n  const { theme, toggleTheme } = useTheme()\n  return <button onClick={toggleTheme}>{theme}</button>\n}\n\nfunction App() {\n  return (\n    <ThemeProvider>\n      <ThemedButton />\n    </ThemeProvider>\n  )\n}\n\nrender(<App />)",
+      "solution": "const ThemeContext = createContext()\n\nfunction ThemeProvider({ children }) {\n  const [theme, setTheme] = useState('light')\n  const toggleTheme = () => setTheme(t => t === 'light' ? 'dark' : 'light')\n  return (\n    <ThemeContext.Provider value={{ theme, toggleTheme }}>\n      {children}\n    </ThemeContext.Provider>\n  )\n}\n\nfunction useTheme() {\n  const context = useContext(ThemeContext)\n  if (context === undefined) {\n    throw new Error('useTheme must be used within ThemeProvider')\n  }\n  return context\n}\n\nfunction ThemedButton() {\n  const { theme, toggleTheme } = useTheme()\n  return <button onClick={toggleTheme}>{theme}</button>\n}\n\nfunction App() {\n  return (\n    <ThemeProvider>\n      <ThemedButton />\n    </ThemeProvider>\n  )\n}\n\nrender(<App />)",
+      "hints": [
+        "封装 useContext 调用",
+        "检查 context === undefined",
+        "提供更好的错误提示"
+      ],
+      "testCases": [
+        {
+          "type": "pattern",
+          "description": "应该定义 useTheme",
+          "pattern": "function useTheme"
+        },
+        {
+          "type": "pattern",
+          "description": "应该使用 useContext",
+          "pattern": "useContext"
+        },
+        {
+          "type": "pattern",
+          "description": "应该检查 undefined",
+          "pattern": "undefined"
+        }
+      ]
+    },
+    {
+      "id": "context-6",
+      "title": "多个 Context 组合",
+      "difficulty": "hard",
+      "tags": ["Context", "组合"],
+      "estimatedTime": 10,
+      "question": "组合使用多个 Context",
+      "description": "一个应用可以使用多个 Context，互不干扰。",
+      "starterCode": "const ThemeContext = createContext()\nconst UserContext = createContext()\n\nfunction Profile() {\n  // 同时使用 ThemeContext 和 UserContext\n  return (\n    <div>\n      <p>用户: {/* user.name */}</p>\n      <p>主题: {/* theme */}</p>\n    </div>\n  )\n}\n\nfunction App() {\n  const [theme, setTheme] = useState('light')\n  const [user, setUser] = useState({ name: '张三' })\n\n  return (\n    // 嵌套两个 Provider\n    <div>\n      <Profile />\n    </div>\n  )\n}\n\nrender(<App />)",
+      "solution": "const ThemeContext = createContext()\nconst UserContext = createContext()\n\nfunction Profile() {\n  const theme = useContext(ThemeContext)\n  const user = useContext(UserContext)\n  return (\n    <div>\n      <p>用户: {user.name}</p>\n      <p>主题: {theme}</p>\n    </div>\n  )\n}\n\nfunction App() {\n  const [theme, setTheme] = useState('light')\n  const [user, setUser] = useState({ name: '张三' })\n\n  return (\n    <ThemeContext.Provider value={theme}>\n      <UserContext.Provider value={user}>\n        <Profile />\n      </UserContext.Provider>\n    </ThemeContext.Provider>\n  )\n}\n\nrender(<App />)",
+      "hints": [
+        "嵌套多个 Provider",
+        "分别调用 useContext",
+        "Context 互不影响"
+      ],
+      "testCases": [
+        {
+          "type": "pattern",
+          "description": "应该有两个 Provider",
+          "pattern": "Provider",
+          "minCount": 2
+        },
+        {
+          "type": "pattern",
+          "description": "应该有两个 useContext",
+          "pattern": "useContext",
+          "minCount": 2
+        },
+        {
+          "type": "pattern",
+          "description": "应该显示 user.name",
+          "pattern": "user\\.name"
+        }
+      ]
+    }
+  ]
+}

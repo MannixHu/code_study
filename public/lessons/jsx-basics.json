@@ -1,0 +1,248 @@
+{
+  "categoryId": "jsx-basics",
+  "name": "JSX 基础",
+  "description": "学习 JSX 语法、元素渲染和基本规则",
+  "icon": "📝",
+  "order": 1,
+  "lessons": [
+    {
+      "id": "jsx-1",
+      "title": "Hello World",
+      "difficulty": "easy",
+      "tags": ["JSX", "基础"],
+      "estimatedTime": 3,
+      "question": "创建一个显示 'Hello React' 的 div 元素",
+      "description": "JSX 是 JavaScript 的语法扩展，看起来像 HTML 但实际上是 JavaScript。",
+      "starterCode": "function App() {\n  return (\n    // 在这里写 JSX\n  )\n}\n\nrender(<App />)",
+      "solution": "function App() {\n  return <div>Hello React</div>\n}\n\nrender(<App />)",
+      "hints": [
+        "JSX 元素写法和 HTML 类似",
+        "使用 <div>Hello React</div>",
+        "不需要引号包裹"
+      ],
+      "testCases": [
+        {
+          "type": "ast",
+          "description": "应该返回 JSX 元素",
+          "checker": "hasReturnStatement && isJSXElement"
+        },
+        {
+          "type": "pattern",
+          "description": "应该包含 'Hello React'",
+          "pattern": "Hello React"
+        },
+        {
+          "type": "ast",
+          "description": "应该使用 div 元素",
+          "checker": "jsxElementName === 'div'"
+        }
+      ]
+    },
+    {
+      "id": "jsx-2",
+      "title": "多个元素",
+      "difficulty": "easy",
+      "tags": ["JSX", "Fragment"],
+      "estimatedTime": 5,
+      "question": "创建一个 h1 标题和一个 p 段落，用 Fragment 包裹",
+      "description": "React 组件只能返回一个根元素，使用 Fragment (<>) 可以不添加额外 DOM 节点。",
+      "starterCode": "function App() {\n  return (\n    // 使用 <> </> 包裹多个元素\n  )\n}\n\nrender(<App />)",
+      "solution": "function App() {\n  return (\n    <>\n      <h1>标题</h1>\n      <p>这是一个段落</p>\n    </>\n  )\n}\n\nrender(<App />)",
+      "hints": [
+        "使用 <> 和 </> 包裹多个元素",
+        "Fragment 不会在 DOM 中创建额外节点",
+        "h1 和 p 元素都要在 Fragment 内"
+      ],
+      "testCases": [
+        {
+          "type": "pattern",
+          "description": "应该包含 h1 元素",
+          "pattern": "<h1>"
+        },
+        {
+          "type": "pattern",
+          "description": "应该包含 p 元素",
+          "pattern": "<p>"
+        },
+        {
+          "type": "pattern",
+          "description": "应该使用 Fragment",
+          "pattern": "<>|Fragment"
+        }
+      ]
+    },
+    {
+      "id": "jsx-3",
+      "title": "JSX 中使用变量",
+      "difficulty": "easy",
+      "tags": ["JSX", "表达式"],
+      "estimatedTime": 4,
+      "question": "定义一个变量 name，在 JSX 中使用 {} 显示它",
+      "description": "在 JSX 中使用 {} 可以嵌入 JavaScript 表达式。",
+      "starterCode": "function App() {\n  const name = 'React'\n\n  return (\n    <div>你好, {/* 在这里显示 name */}</div>\n  )\n}\n\nrender(<App />)",
+      "solution": "function App() {\n  const name = 'React'\n\n  return (\n    <div>你好, {name}</div>\n  )\n}\n\nrender(<App />)",
+      "hints": [
+        "使用 {name} 在 JSX 中显示变量",
+        "花括号内可以写任何 JavaScript 表达式",
+        "变量会自动转换为字符串显示"
+      ],
+      "testCases": [
+        {
+          "type": "pattern",
+          "description": "应该定义 name 变量",
+          "pattern": "name"
+        },
+        {
+          "type": "pattern",
+          "description": "应该在 JSX 中使用 {name}",
+          "pattern": "\\{\\s*name\\s*\\}"
+        }
+      ]
+    },
+    {
+      "id": "jsx-4",
+      "title": "JSX 中的表达式",
+      "difficulty": "medium",
+      "tags": ["JSX", "表达式", "运算"],
+      "estimatedTime": 3,
+      "question": "在 JSX 中计算并显示 1 + 2 的结果",
+      "description": "花括号内可以放任何 JavaScript 表达式，包括运算、函数调用等。",
+      "starterCode": "function App() {\n  return (\n    <div>结果是: {/* 在这里计算 1 + 2 */}</div>\n  )\n}\n\nrender(<App />)",
+      "solution": "function App() {\n  return (\n    <div>结果是: {1 + 2}</div>\n  )\n}\n\nrender(<App />)",
+      "hints": [
+        "在 {} 中直接写 1 + 2",
+        "表达式会自动计算并显示结果",
+        "可以写任何有效的 JavaScript 表达式"
+      ],
+      "testCases": [
+        {
+          "type": "pattern",
+          "description": "应该包含加法运算",
+          "pattern": "1\\s*\\+\\s*2"
+        },
+        {
+          "type": "pattern",
+          "description": "应该在花括号中",
+          "pattern": "\\{.*1.*\\+.*2.*\\}"
+        }
+      ]
+    },
+    {
+      "id": "jsx-5",
+      "title": "className 样式",
+      "difficulty": "easy",
+      "tags": ["JSX", "样式", "className"],
+      "estimatedTime": 3,
+      "question": "给 div 添加 className='container'",
+      "description": "在 JSX 中使用 className 而不是 class（因为 class 是 JavaScript 关键字）。",
+      "starterCode": "function App() {\n  return (\n    <div>我需要样式</div>\n  )\n}\n\nrender(<App />)",
+      "solution": "function App() {\n  return (\n    <div className=\"container\">我需要样式</div>\n  )\n}\n\nrender(<App />)",
+      "hints": [
+        "使用 className 而不是 class",
+        "className=\"container\"",
+        "HTML 的 class 在 JSX 中要改为 className"
+      ],
+      "testCases": [
+        {
+          "type": "pattern",
+          "description": "应该使用 className",
+          "pattern": "className"
+        },
+        {
+          "type": "pattern",
+          "description": "值应该是 'container'",
+          "pattern": "className=\"container\""
+        }
+      ]
+    },
+    {
+      "id": "jsx-6",
+      "title": "内联样式",
+      "difficulty": "medium",
+      "tags": ["JSX", "样式", "style"],
+      "estimatedTime": 5,
+      "question": "给 div 添加内联样式：颜色为蓝色，字体大小 20px",
+      "description": "JSX 中的 style 属性接受一个 JavaScript 对象，属性名使用驼峰命名。",
+      "starterCode": "function App() {\n  return (\n    <div>带样式的文本</div>\n  )\n}\n\nrender(<App />)",
+      "solution": "function App() {\n  return (\n    <div style={{ color: 'blue', fontSize: '20px' }}>\n      带样式的文本\n    </div>\n  )\n}\n\nrender(<App />)",
+      "hints": [
+        "style 属性接受对象: style={{ ... }}",
+        "CSS 属性名改为驼峰: fontSize 而不是 font-size",
+        "外层 {} 是 JSX，内层 {} 是对象"
+      ],
+      "testCases": [
+        {
+          "type": "pattern",
+          "description": "应该使用 style 属性",
+          "pattern": "style="
+        },
+        {
+          "type": "pattern",
+          "description": "应该包含 color",
+          "pattern": "color"
+        },
+        {
+          "type": "pattern",
+          "description": "应该包含 fontSize",
+          "pattern": "fontSize"
+        }
+      ]
+    },
+    {
+      "id": "jsx-7",
+      "title": "JSX 注释",
+      "difficulty": "easy",
+      "tags": ["JSX", "注释"],
+      "estimatedTime": 3,
+      "question": "在 JSX 中添加一个注释",
+      "description": "JSX 中的注释需要用 {/* */} 包裹，不能直接使用 // 或 /* */。",
+      "starterCode": "function App() {\n  return (\n    <div>\n      // 添加 JSX 注释\n      内容\n    </div>\n  )\n}\n\nrender(<App />)",
+      "solution": "function App() {\n  return (\n    <div>\n      {/* 这是一个注释 */}\n      内容\n    </div>\n  )\n}\n\nrender(<App />)",
+      "hints": [
+        "JSX 注释格式: {/* 注释内容 */}",
+        "必须用花括号包裹",
+        "不能直接使用 // 或 /* */"
+      ],
+      "testCases": [
+        {
+          "type": "pattern",
+          "description": "应该包含 JSX 注释",
+          "pattern": "\\{/\\*.*\\*/\\}"
+        }
+      ]
+    },
+    {
+      "id": "jsx-8",
+      "title": "自闭合标签",
+      "difficulty": "easy",
+      "tags": ["JSX", "标签"],
+      "estimatedTime": 3,
+      "question": "使用自闭合标签渲染一个 <img /> 和一个 <br />",
+      "description": "没有子元素的标签可以使用自闭合形式 <Tag />，JSX 中所有标签都必须闭合。",
+      "starterCode": "function App() {\n  return (\n    <div>\n      {/* 添加 img 和 br 标签 */}\n    </div>\n  )\n}\n\nrender(<App />)",
+      "solution": "function App() {\n  return (\n    <div>\n      <img src=\"https://via.placeholder.com/150\" alt=\"示例\" />\n      <br />\n      文本\n    </div>\n  )\n}\n\nrender(<App />)",
+      "hints": [
+        "使用 <img /> 而不是 <img>",
+        "使用 <br /> 而不是 <br>",
+        "JSX 中所有标签都要闭合"
+      ],
+      "testCases": [
+        {
+          "type": "pattern",
+          "description": "应该包含 img 标签",
+          "pattern": "<img"
+        },
+        {
+          "type": "pattern",
+          "description": "应该包含 br 标签",
+          "pattern": "<br"
+        },
+        {
+          "type": "pattern",
+          "description": "应该是自闭合形式",
+          "pattern": "/>"
+        }
+      ]
+    }
+  ]
+}

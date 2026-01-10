@@ -1,0 +1,278 @@
+{
+  "categoryId": "components",
+  "name": "组件基础",
+  "description": "学习 React 组件的创建和组织",
+  "icon": "🧩",
+  "order": 2,
+  "lessons": [
+    {
+      "id": "components-1",
+      "title": "创建函数组件",
+      "difficulty": "easy",
+      "tags": ["组件", "函数组件"],
+      "estimatedTime": 3,
+      "question": "创建一个名为 Welcome 的函数组件，返回一个包含文字 '欢迎来到 React' 的 h1 标签",
+      "description": "函数组件是 React 中最简单的组件形式，它就是一个返回 JSX 的函数。",
+      "starterCode": "// 创建 Welcome 组件\nfunction Welcome() {\n  // 在这里返回 JSX\n}",
+      "solution": "function Welcome() {\n  return <h1>欢迎来到 React</h1>\n}",
+      "hints": [
+        "函数组件就是一个普通的 JavaScript 函数",
+        "函数需要返回 JSX 元素",
+        "使用 return 语句返回 h1 标签"
+      ],
+      "testCases": [
+        {
+          "type": "ast",
+          "description": "应该定义 Welcome 函数",
+          "checker": "hasFunction('Welcome')"
+        },
+        {
+          "type": "ast",
+          "description": "应该返回 h1 元素",
+          "checker": "hasJSXElement('h1')"
+        },
+        {
+          "type": "pattern",
+          "description": "h1 应该包含正确的文字",
+          "pattern": "欢迎来到 React"
+        }
+      ]
+    },
+    {
+      "id": "components-2",
+      "title": "组件嵌套",
+      "difficulty": "easy",
+      "tags": ["组件", "嵌套"],
+      "estimatedTime": 4,
+      "question": "创建一个 Header 组件和一个 App 组件，App 组件中要使用 Header 组件",
+      "description": "React 的强大之处在于组件可以嵌套使用，构建复杂的 UI 结构。",
+      "starterCode": "// 创建 Header 组件\nfunction Header() {\n  return <h1>网站标题</h1>\n}\n\n// 创建 App 组件，使用 Header\nfunction App() {\n  // 在这里使用 Header 组件\n}",
+      "solution": "function Header() {\n  return <h1>网站标题</h1>\n}\n\nfunction App() {\n  return (\n    <div>\n      <Header />\n    </div>\n  )\n}",
+      "hints": [
+        "在 JSX 中使用组件就像使用 HTML 标签一样",
+        "组件标签需要大写字母开头",
+        "自闭合标签使用 <Header /> 语法"
+      ],
+      "testCases": [
+        {
+          "type": "ast",
+          "description": "应该定义 Header 函数",
+          "checker": "hasFunction('Header')"
+        },
+        {
+          "type": "ast",
+          "description": "应该定义 App 函数",
+          "checker": "hasFunction('App')"
+        },
+        {
+          "type": "ast",
+          "description": "App 中应该使用 Header 组件",
+          "checker": "hasJSXElement('Header')"
+        }
+      ]
+    },
+    {
+      "id": "components-3",
+      "title": "多组件组合",
+      "difficulty": "easy",
+      "tags": ["组件", "组合"],
+      "estimatedTime": 5,
+      "question": "创建 Header、Content、Footer 三个组件，然后在 Page 组件中组合它们",
+      "description": "真实的应用通常由多个组件组合而成，每个组件负责一部分 UI。",
+      "starterCode": "function Header() {\n  return <header>头部</header>\n}\n\nfunction Content() {\n  return <main>内容</main>\n}\n\nfunction Footer() {\n  return <footer>底部</footer>\n}\n\n// 创建 Page 组件，组合上面三个组件\nfunction Page() {\n  // 返回包含 Header, Content, Footer 的 div\n}",
+      "solution": "function Header() {\n  return <header>头部</header>\n}\n\nfunction Content() {\n  return <main>内容</main>\n}\n\nfunction Footer() {\n  return <footer>底部</footer>\n}\n\nfunction Page() {\n  return (\n    <div>\n      <Header />\n      <Content />\n      <Footer />\n    </div>\n  )\n}",
+      "hints": [
+        "在 Page 的 return 中依次使用三个组件",
+        "用一个 div 包裹所有组件",
+        "组件顺序应该是 Header -> Content -> Footer"
+      ],
+      "testCases": [
+        {
+          "type": "ast",
+          "description": "应该定义 Page 函数",
+          "checker": "hasFunction('Page')"
+        },
+        {
+          "type": "ast",
+          "description": "Page 中应该使用 Header 组件",
+          "checker": "hasJSXElement('Header')"
+        },
+        {
+          "type": "ast",
+          "description": "Page 中应该使用 Content 组件",
+          "checker": "hasJSXElement('Content')"
+        },
+        {
+          "type": "ast",
+          "description": "Page 中应该使用 Footer 组件",
+          "checker": "hasJSXElement('Footer')"
+        }
+      ]
+    },
+    {
+      "id": "components-4",
+      "title": "组件返回片段",
+      "difficulty": "medium",
+      "tags": ["组件", "Fragment"],
+      "estimatedTime": 4,
+      "question": "创建一个 List 组件，使用 React Fragment (<>...</>) 返回两个并列的 li 元素，不要使用额外的包裹元素",
+      "description": "React Fragment 允许你返回多个元素而不添加额外的 DOM 节点。",
+      "starterCode": "function List() {\n  // 使用 Fragment 返回两个 li 元素\n  // <li>项目 1</li>\n  // <li>项目 2</li>\n}",
+      "solution": "function List() {\n  return (\n    <>\n      <li>项目 1</li>\n      <li>项目 2</li>\n    </>\n  )\n}",
+      "hints": [
+        "Fragment 的简写语法是 <> 和 </>",
+        "Fragment 不会在 DOM 中创建额外节点",
+        "两个 li 元素应该是并列的"
+      ],
+      "testCases": [
+        {
+          "type": "ast",
+          "description": "应该定义 List 函数",
+          "checker": "hasFunction('List')"
+        },
+        {
+          "type": "pattern",
+          "description": "应该使用 Fragment 语法",
+          "pattern": "<>"
+        },
+        {
+          "type": "ast",
+          "description": "应该有 li 元素",
+          "checker": "hasJSXElement('li')"
+        }
+      ]
+    },
+    {
+      "id": "components-5",
+      "title": "组件默认导出",
+      "difficulty": "easy",
+      "tags": ["组件", "导出"],
+      "estimatedTime": 3,
+      "question": "创建一个 Card 组件并使用 export default 导出它",
+      "description": "在实际项目中，组件通常需要导出以便其他文件使用。",
+      "starterCode": "// 创建并导出 Card 组件\nfunction Card() {\n  return <div className=\"card\">卡片内容</div>\n}\n\n// 添加默认导出",
+      "solution": "function Card() {\n  return <div className=\"card\">卡片内容</div>\n}\n\nexport default Card",
+      "hints": [
+        "使用 export default 语句",
+        "export default 后面跟组件名",
+        "一个文件只能有一个默认导出"
+      ],
+      "testCases": [
+        {
+          "type": "ast",
+          "description": "应该定义 Card 函数",
+          "checker": "hasFunction('Card')"
+        },
+        {
+          "type": "pattern",
+          "description": "应该有 export default",
+          "pattern": "export default"
+        }
+      ]
+    },
+    {
+      "id": "components-6",
+      "title": "箭头函数组件",
+      "difficulty": "easy",
+      "tags": ["组件", "箭头函数"],
+      "estimatedTime": 3,
+      "question": "使用箭头函数语法创建一个 Button 组件，显示一个带有文字 '点击我' 的 button 元素",
+      "description": "箭头函数是创建组件的另一种常见方式。",
+      "starterCode": "// 使用箭头函数创建 Button 组件\nconst Button = () => {\n  // 返回 button 元素\n}",
+      "solution": "const Button = () => {\n  return <button>点击我</button>\n}",
+      "hints": [
+        "箭头函数使用 const 声明",
+        "语法是 const Name = () => { }",
+        "同样需要 return JSX"
+      ],
+      "testCases": [
+        {
+          "type": "pattern",
+          "description": "应该使用箭头函数语法",
+          "pattern": "const Button"
+        },
+        {
+          "type": "pattern",
+          "description": "应该使用箭头符号",
+          "pattern": "=>"
+        },
+        {
+          "type": "ast",
+          "description": "应该有 button 元素",
+          "checker": "hasJSXElement('button')"
+        }
+      ]
+    },
+    {
+      "id": "components-7",
+      "title": "纯展示组件",
+      "difficulty": "medium",
+      "tags": ["组件", "展示组件"],
+      "estimatedTime": 5,
+      "question": "创建一个 UserCard 组件，展示用户名和邮箱。组件内部定义 user 对象 {name: '张三', email: 'zhang@example.com'}",
+      "description": "展示组件专注于 UI 渲染，数据可以来自内部定义或外部传入。",
+      "starterCode": "function UserCard() {\n  // 定义 user 对象\n  const user = {\n    name: '张三',\n    email: 'zhang@example.com'\n  }\n  \n  // 返回展示用户信息的 JSX\n}",
+      "solution": "function UserCard() {\n  const user = {\n    name: '张三',\n    email: 'zhang@example.com'\n  }\n  \n  return (\n    <div>\n      <h2>{user.name}</h2>\n      <p>{user.email}</p>\n    </div>\n  )\n}",
+      "hints": [
+        "使用大括号 {} 在 JSX 中嵌入变量",
+        "通过 user.name 和 user.email 访问对象属性",
+        "可以用 h2 显示名字，p 显示邮箱"
+      ],
+      "testCases": [
+        {
+          "type": "ast",
+          "description": "应该定义 UserCard 函数",
+          "checker": "hasFunction('UserCard')"
+        },
+        {
+          "type": "pattern",
+          "description": "应该使用 user.name",
+          "pattern": "user.name"
+        },
+        {
+          "type": "pattern",
+          "description": "应该使用 user.email",
+          "pattern": "user.email"
+        }
+      ]
+    },
+    {
+      "id": "components-8",
+      "title": "条件组件渲染",
+      "difficulty": "medium",
+      "tags": ["组件", "条件渲染"],
+      "estimatedTime": 5,
+      "question": "创建一个 Greeting 组件，内部定义 isLoggedIn = true，如果为 true 显示 '欢迎回来'，否则显示 '请登录'",
+      "description": "组件可以根据条件渲染不同的内容。",
+      "starterCode": "function Greeting() {\n  const isLoggedIn = true\n  \n  // 根据 isLoggedIn 返回不同内容\n}",
+      "solution": "function Greeting() {\n  const isLoggedIn = true\n  \n  return (\n    <div>\n      {isLoggedIn ? '欢迎回来' : '请登录'}\n    </div>\n  )\n}",
+      "hints": [
+        "使用三元运算符 condition ? a : b",
+        "在 JSX 的大括号中使用条件表达式",
+        "记得用 div 或其他元素包裹"
+      ],
+      "testCases": [
+        {
+          "type": "ast",
+          "description": "应该定义 Greeting 函数",
+          "checker": "hasFunction('Greeting')"
+        },
+        {
+          "type": "pattern",
+          "description": "应该有条件判断",
+          "pattern": "isLoggedIn"
+        },
+        {
+          "type": "pattern",
+          "description": "应该有 '欢迎回来' 文字",
+          "pattern": "欢迎回来"
+        },
+        {
+          "type": "pattern",
+          "description": "应该有 '请登录' 文字",
+          "pattern": "请登录"
+        }
+      ]
+    }
+  ]
+}

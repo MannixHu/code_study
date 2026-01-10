@@ -1,0 +1,274 @@
+{
+  "categoryId": "custom-hooks",
+  "name": "自定义 Hook",
+  "description": "学习创建和使用自定义 Hook 复用逻辑",
+  "icon": "🔧",
+  "order": 12,
+  "lessons": [
+    {
+      "id": "custom-hooks-1",
+      "title": "创建基础 Hook",
+      "difficulty": "medium",
+      "tags": ["自定义Hook", "基础"],
+      "estimatedTime": 7,
+      "question": "创建 useCounter Hook 封装计数器逻辑",
+      "description": "自定义 Hook 是以 use 开头的函数，可以调用其他 Hook。",
+      "starterCode": "function useCounter(initialValue = 0) {\n  // 创建 count 状态\n  // 创建 increment 函数\n  // 创建 decrement 函数\n  // 返回 { count, increment, decrement }\n}\n\nfunction App() {\n  const { count, increment, decrement } = useCounter(0)\n\n  return (\n    <div>\n      <p>计数: {count}</p>\n      <button onClick={increment}>+</button>\n      <button onClick={decrement}>-</button>\n    </div>\n  )\n}\n\nrender(<App />)",
+      "solution": "function useCounter(initialValue = 0) {\n  const [count, setCount] = useState(initialValue)\n\n  const increment = () => setCount(c => c + 1)\n  const decrement = () => setCount(c => c - 1)\n\n  return { count, increment, decrement }\n}\n\nfunction App() {\n  const { count, increment, decrement } = useCounter(0)\n\n  return (\n    <div>\n      <p>计数: {count}</p>\n      <button onClick={increment}>+</button>\n      <button onClick={decrement}>-</button>\n    </div>\n  )\n}\n\nrender(<App />)",
+      "hints": [
+        "Hook 函数以 use 开头",
+        "内部使用 useState",
+        "返回对象包含状态和方法"
+      ],
+      "testCases": [
+        {
+          "type": "pattern",
+          "description": "应该定义 useCounter",
+          "pattern": "function useCounter"
+        },
+        {
+          "type": "ast",
+          "description": "应该使用 useState",
+          "checker": "usesUseState"
+        },
+        {
+          "type": "pattern",
+          "description": "应该返回对象",
+          "pattern": "return\\s*\\{"
+        }
+      ]
+    },
+    {
+      "id": "custom-hooks-2",
+      "title": "useToggle Hook",
+      "difficulty": "easy",
+      "tags": ["自定义Hook", "布尔值"],
+      "estimatedTime": 6,
+      "question": "创建 useToggle Hook 处理布尔值切换",
+      "description": "封装常见的布尔值切换逻辑。",
+      "starterCode": "function useToggle(initialValue = false) {\n  // 创建布尔状态\n  // 创建 toggle 函数切换值\n  // 返回 [value, toggle]\n}\n\nfunction App() {\n  const [visible, toggleVisible] = useToggle(false)\n\n  return (\n    <div>\n      <button onClick={toggleVisible}>\n        {visible ? '隐藏' : '显示'}\n      </button>\n      {visible && <p>内容已显示</p>}\n    </div>\n  )\n}\n\nrender(<App />)",
+      "solution": "function useToggle(initialValue = false) {\n  const [value, setValue] = useState(initialValue)\n  const toggle = () => setValue(v => !v)\n  return [value, toggle]\n}\n\nfunction App() {\n  const [visible, toggleVisible] = useToggle(false)\n\n  return (\n    <div>\n      <button onClick={toggleVisible}>\n        {visible ? '隐藏' : '显示'}\n      </button>\n      {visible && <p>内容已显示</p>}\n    </div>\n  )\n}\n\nrender(<App />)",
+      "hints": [
+        "返回数组 [value, toggle]",
+        "toggle 函数: () => setValue(v => !v)",
+        "类似 useState 的用法"
+      ],
+      "testCases": [
+        {
+          "type": "pattern",
+          "description": "应该定义 useToggle",
+          "pattern": "function useToggle"
+        },
+        {
+          "type": "pattern",
+          "description": "应该返回数组",
+          "pattern": "return\\s*\\["
+        },
+        {
+          "type": "pattern",
+          "description": "应该有 toggle 函数",
+          "pattern": "toggle"
+        }
+      ]
+    },
+    {
+      "id": "custom-hooks-3",
+      "title": "useLocalStorage Hook",
+      "difficulty": "hard",
+      "tags": ["自定义Hook", "localStorage"],
+      "estimatedTime": 9,
+      "question": "创建 useLocalStorage Hook 同步状态到 localStorage",
+      "description": "封装 localStorage 的读写逻辑。",
+      "starterCode": "function useLocalStorage(key, initialValue) {\n  // 从 localStorage 读取初始值\n  // 创建状态\n  // 创建 setValue 函数，同时更新 state 和 localStorage\n  // 返回 [value, setValue]\n}\n\nfunction App() {\n  const [name, setName] = useLocalStorage('name', '')\n\n  return (\n    <div>\n      <input \n        value={name}\n        onChange={e => setName(e.target.value)}\n        placeholder=\"输入姓名\"\n      />\n      <p>保存的姓名: {name}</p>\n    </div>\n  )\n}\n\nrender(<App />)",
+      "solution": "function useLocalStorage(key, initialValue) {\n  const [value, setValue] = useState(() => {\n    const saved = localStorage.getItem(key)\n    return saved !== null ? JSON.parse(saved) : initialValue\n  })\n\n  const setStoredValue = (newValue) => {\n    setValue(newValue)\n    localStorage.setItem(key, JSON.stringify(newValue))\n  }\n\n  return [value, setStoredValue]\n}\n\nfunction App() {\n  const [name, setName] = useLocalStorage('name', '')\n\n  return (\n    <div>\n      <input \n        value={name}\n        onChange={e => setName(e.target.value)}\n        placeholder=\"输入姓名\"\n      />\n      <p>保存的姓名: {name}</p>\n    </div>\n  )\n}\n\nrender(<App />)",
+      "hints": [
+        "初始化时读取 localStorage",
+        "更新时同步到 localStorage",
+        "使用 JSON.parse 和 JSON.stringify"
+      ],
+      "testCases": [
+        {
+          "type": "pattern",
+          "description": "应该定义 useLocalStorage",
+          "pattern": "function useLocalStorage"
+        },
+        {
+          "type": "pattern",
+          "description": "应该访问 localStorage",
+          "pattern": "localStorage"
+        },
+        {
+          "type": "pattern",
+          "description": "应该返回数组",
+          "pattern": "return\\s*\\["
+        }
+      ]
+    },
+    {
+      "id": "custom-hooks-4",
+      "title": "useDebounce Hook",
+      "difficulty": "hard",
+      "tags": ["自定义Hook", "防抖"],
+      "estimatedTime": 9,
+      "question": "创建 useDebounce Hook 实现防抖",
+      "description": "延迟更新值，常用于搜索输入。",
+      "starterCode": "function useDebounce(value, delay) {\n  // 创建 debouncedValue 状态\n  // 使用 useEffect 设置定时器\n  // delay 毫秒后更新 debouncedValue\n  // 清理定时器\n  // 返回 debouncedValue\n}\n\nfunction App() {\n  const [text, setText] = useState('')\n  const debouncedText = useDebounce(text, 500)\n\n  return (\n    <div>\n      <input \n        value={text}\n        onChange={e => setText(e.target.value)}\n      />\n      <p>实时: {text}</p>\n      <p>防抖: {debouncedText}</p>\n    </div>\n  )\n}\n\nrender(<App />)",
+      "solution": "function useDebounce(value, delay) {\n  const [debouncedValue, setDebouncedValue] = useState(value)\n\n  useEffect(() => {\n    const timer = setTimeout(() => {\n      setDebouncedValue(value)\n    }, delay)\n\n    return () => clearTimeout(timer)\n  }, [value, delay])\n\n  return debouncedValue\n}\n\nfunction App() {\n  const [text, setText] = useState('')\n  const debouncedText = useDebounce(text, 500)\n\n  return (\n    <div>\n      <input \n        value={text}\n        onChange={e => setText(e.target.value)}\n      />\n      <p>实时: {text}</p>\n      <p>防抖: {debouncedText}</p>\n    </div>\n  )\n}\n\nrender(<App />)",
+      "hints": [
+        "useEffect 中设置 setTimeout",
+        "依赖 value 和 delay",
+        "返回清理函数 clearTimeout"
+      ],
+      "testCases": [
+        {
+          "type": "pattern",
+          "description": "应该定义 useDebounce",
+          "pattern": "function useDebounce"
+        },
+        {
+          "type": "ast",
+          "description": "应该使用 useEffect",
+          "checker": "usesUseEffect"
+        },
+        {
+          "type": "pattern",
+          "description": "应该使用 setTimeout",
+          "pattern": "setTimeout"
+        }
+      ]
+    },
+    {
+      "id": "custom-hooks-5",
+      "title": "useWindowSize Hook",
+      "difficulty": "medium",
+      "tags": ["自定义Hook", "窗口"],
+      "estimatedTime": 7,
+      "question": "创建 useWindowSize Hook 获取窗口尺寸",
+      "description": "监听窗口 resize 事件，返回当前尺寸。",
+      "starterCode": "function useWindowSize() {\n  // 创建 size 状态 { width, height }\n  // useEffect 监听 resize 事件\n  // 更新 size\n  // 清理事件监听\n  // 返回 size\n}\n\nfunction App() {\n  const { width, height } = useWindowSize()\n\n  return (\n    <div>\n      <p>宽度: {width}px</p>\n      <p>高度: {height}px</p>\n    </div>\n  )\n}\n\nrender(<App />)",
+      "solution": "function useWindowSize() {\n  const [size, setSize] = useState({\n    width: window.innerWidth,\n    height: window.innerHeight\n  })\n\n  useEffect(() => {\n    const handleResize = () => {\n      setSize({\n        width: window.innerWidth,\n        height: window.innerHeight\n      })\n    }\n\n    window.addEventListener('resize', handleResize)\n    return () => window.removeEventListener('resize', handleResize)\n  }, [])\n\n  return size\n}\n\nfunction App() {\n  const { width, height } = useWindowSize()\n\n  return (\n    <div>\n      <p>宽度: {width}px</p>\n      <p>高度: {height}px</p>\n    </div>\n  )\n}\n\nrender(<App />)",
+      "hints": [
+        "初始值: window.innerWidth/innerHeight",
+        "addEventListener('resize', ...)",
+        "清理: removeEventListener"
+      ],
+      "testCases": [
+        {
+          "type": "pattern",
+          "description": "应该定义 useWindowSize",
+          "pattern": "function useWindowSize"
+        },
+        {
+          "type": "pattern",
+          "description": "应该监听 resize",
+          "pattern": "addEventListener.*resize|resize.*addEventListener"
+        },
+        {
+          "type": "pattern",
+          "description": "应该返回对象",
+          "pattern": "return\\s+size|return\\s*\\{"
+        }
+      ]
+    },
+    {
+      "id": "custom-hooks-6",
+      "title": "usePrevious Hook",
+      "difficulty": "medium",
+      "tags": ["自定义Hook", "ref"],
+      "estimatedTime": 7,
+      "question": "创建 usePrevious Hook 获取前一个值",
+      "description": "使用 useRef 保存上一次的值。",
+      "starterCode": "function usePrevious(value) {\n  // 使用 useRef 保存值\n  // useEffect 中更新 ref\n  // 返回 ref.current\n}\n\nfunction App() {\n  const [count, setCount] = useState(0)\n  const prevCount = usePrevious(count)\n\n  return (\n    <div>\n      <p>当前: {count}</p>\n      <p>之前: {prevCount}</p>\n      <button onClick={() => setCount(count + 1)}>增加</button>\n    </div>\n  )\n}\n\nrender(<App />)",
+      "solution": "function usePrevious(value) {\n  const ref = useRef()\n\n  useEffect(() => {\n    ref.current = value\n  })\n\n  return ref.current\n}\n\nfunction App() {\n  const [count, setCount] = useState(0)\n  const prevCount = usePrevious(count)\n\n  return (\n    <div>\n      <p>当前: {count}</p>\n      <p>之前: {prevCount}</p>\n      <button onClick={() => setCount(count + 1)}>增加</button>\n    </div>\n  )\n}\n\nrender(<App />)",
+      "hints": [
+        "useRef 保存值",
+        "useEffect 无依赖数组",
+        "每次渲染后更新 ref"
+      ],
+      "testCases": [
+        {
+          "type": "pattern",
+          "description": "应该定义 usePrevious",
+          "pattern": "function usePrevious"
+        },
+        {
+          "type": "pattern",
+          "description": "应该使用 useRef",
+          "pattern": "useRef"
+        },
+        {
+          "type": "ast",
+          "description": "应该使用 useEffect",
+          "checker": "usesUseEffect"
+        }
+      ]
+    },
+    {
+      "id": "custom-hooks-7",
+      "title": "useOnClickOutside Hook",
+      "difficulty": "hard",
+      "tags": ["自定义Hook", "事件"],
+      "estimatedTime": 9,
+      "question": "创建 useOnClickOutside Hook 检测外部点击",
+      "description": "点击元素外部时触发回调，常用于关闭弹窗。",
+      "starterCode": "function useOnClickOutside(ref, handler) {\n  // useEffect 监听 mousedown 事件\n  // 判断点击是否在 ref 元素外部\n  // 是则调用 handler\n  // 清理事件监听\n}\n\nfunction App() {\n  const [visible, setVisible] = useState(false)\n  const boxRef = useRef(null)\n\n  useOnClickOutside(boxRef, () => setVisible(false))\n\n  return (\n    <div>\n      <button onClick={() => setVisible(true)}>打开</button>\n      {visible && (\n        <div \n          ref={boxRef}\n          style={{ padding: '20px', background: '#f0f0f0' }}\n        >\n          点击外部关闭\n        </div>\n      )}\n    </div>\n  )\n}\n\nrender(<App />)",
+      "solution": "function useOnClickOutside(ref, handler) {\n  useEffect(() => {\n    const listener = (event) => {\n      if (!ref.current || ref.current.contains(event.target)) {\n        return\n      }\n      handler(event)\n    }\n\n    document.addEventListener('mousedown', listener)\n    return () => document.removeEventListener('mousedown', listener)\n  }, [ref, handler])\n}\n\nfunction App() {\n  const [visible, setVisible] = useState(false)\n  const boxRef = useRef(null)\n\n  useOnClickOutside(boxRef, () => setVisible(false))\n\n  return (\n    <div>\n      <button onClick={() => setVisible(true)}>打开</button>\n      {visible && (\n        <div \n          ref={boxRef}\n          style={{ padding: '20px', background: '#f0f0f0' }}\n        >\n          点击外部关闭\n        </div>\n      )}\n    </div>\n  )\n}\n\nrender(<App />)",
+      "hints": [
+        "监听 document 的 mousedown",
+        "ref.current.contains(event.target) 判断",
+        "不在内部则调用 handler"
+      ],
+      "testCases": [
+        {
+          "type": "pattern",
+          "description": "应该定义 useOnClickOutside",
+          "pattern": "function useOnClickOutside"
+        },
+        {
+          "type": "pattern",
+          "description": "应该监听事件",
+          "pattern": "addEventListener"
+        },
+        {
+          "type": "pattern",
+          "description": "应该判断 contains",
+          "pattern": "contains"
+        }
+      ]
+    },
+    {
+      "id": "custom-hooks-8",
+      "title": "组合多个 Hook",
+      "difficulty": "hard",
+      "tags": ["自定义Hook", "组合"],
+      "estimatedTime": 10,
+      "question": "创建 useFetch Hook 组合多个 Hook",
+      "description": "组合 useState、useEffect 实现数据获取。",
+      "starterCode": "function useFetch(url) {\n  // 创建 data、loading、error 状态\n  // useEffect 中获取数据\n  // 模拟 fetch: setTimeout\n  // 返回 { data, loading, error }\n}\n\nfunction App() {\n  const { data, loading, error } = useFetch('/api/user')\n\n  if (loading) return <div>加载中...</div>\n  if (error) return <div>错误: {error}</div>\n  return <div>数据: {data}</div>\n}\n\nrender(<App />)",
+      "solution": "function useFetch(url) {\n  const [data, setData] = useState(null)\n  const [loading, setLoading] = useState(true)\n  const [error, setError] = useState(null)\n\n  useEffect(() => {\n    setLoading(true)\n    setTimeout(() => {\n      setData('模拟数据')\n      setLoading(false)\n    }, 1000)\n  }, [url])\n\n  return { data, loading, error }\n}\n\nfunction App() {\n  const { data, loading, error } = useFetch('/api/user')\n\n  if (loading) return <div>加载中...</div>\n  if (error) return <div>错误: {error}</div>\n  return <div>数据: {data}</div>\n}\n\nrender(<App />)",
+      "hints": [
+        "三个状态: data、loading、error",
+        "useEffect 依赖 url",
+        "返回对象包含所有状态"
+      ],
+      "testCases": [
+        {
+          "type": "pattern",
+          "description": "应该定义 useFetch",
+          "pattern": "function useFetch"
+        },
+        {
+          "type": "pattern",
+          "description": "应该有三个 useState",
+          "pattern": "useState",
+          "minCount": 3
+        },
+        {
+          "type": "ast",
+          "description": "应该使用 useEffect",
+          "checker": "usesUseEffect"
+        }
+      ]
+    }
+  ]
+}

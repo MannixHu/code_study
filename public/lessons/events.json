@@ -1,0 +1,271 @@
+{
+  "categoryId": "events",
+  "name": "事件处理",
+  "description": "学习 React 中的事件绑定和处理",
+  "icon": "⚡",
+  "order": 5,
+  "lessons": [
+    {
+      "id": "events-1",
+      "title": "onClick 事件",
+      "difficulty": "easy",
+      "tags": ["事件", "onClick"],
+      "estimatedTime": 3,
+      "question": "给按钮添加 onClick 事件，点击时弹出提示",
+      "description": "React 事件使用驼峰命名（onClick），传入函数而不是字符串。",
+      "starterCode": "function App() {\n  const handleClick = () => {\n    alert('按钮被点击了')\n  }\n\n  return (\n    <button>点击我</button>\n  )\n}\n\nrender(<App />)",
+      "solution": "function App() {\n  const handleClick = () => {\n    alert('按钮被点击了')\n  }\n\n  return (\n    <button onClick={handleClick}>点击我</button>\n  )\n}\n\nrender(<App />)",
+      "hints": [
+        "使用 onClick={handleClick}",
+        "传入函数引用，不是调用 handleClick()",
+        "React 事件名用驼峰命名"
+      ],
+      "testCases": [
+        {
+          "type": "pattern",
+          "description": "应该有 onClick 属性",
+          "pattern": "onClick="
+        },
+        {
+          "type": "pattern",
+          "description": "应该传入 handleClick",
+          "pattern": "onClick=\\{handleClick\\}"
+        },
+        {
+          "type": "ast",
+          "description": "应该有函数定义",
+          "checker": "hasFunctionDeclaration || hasArrowFunction"
+        }
+      ]
+    },
+    {
+      "id": "events-2",
+      "title": "内联事件处理",
+      "difficulty": "easy",
+      "tags": ["事件", "箭头函数"],
+      "estimatedTime": 3,
+      "question": "使用内联箭头函数处理点击事件",
+      "description": "可以直接在 JSX 中写箭头函数处理事件。",
+      "starterCode": "function App() {\n  return (\n    <button /* 添加内联 onClick */>\n      点击我\n    </button>\n  )\n}\n\nrender(<App />)",
+      "solution": "function App() {\n  return (\n    <button onClick={() => alert('点击了')}>\n      点击我\n    </button>\n  )\n}\n\nrender(<App />)",
+      "hints": [
+        "onClick={() => ...}",
+        "内联写法适合简单逻辑",
+        "复杂逻辑建议提取函数"
+      ],
+      "testCases": [
+        {
+          "type": "pattern",
+          "description": "应该有 onClick",
+          "pattern": "onClick="
+        },
+        {
+          "type": "pattern",
+          "description": "应该使用箭头函数",
+          "pattern": "onClick=\\{\\s*\\(\\s*\\)\\s*=>"
+        }
+      ]
+    },
+    {
+      "id": "events-3",
+      "title": "事件对象",
+      "difficulty": "easy",
+      "tags": ["事件", "event"],
+      "estimatedTime": 4,
+      "question": "获取事件对象，阻止默认行为",
+      "description": "React 事件处理函数会自动接收事件对象参数。",
+      "starterCode": "function App() {\n  const handleSubmit = () => {\n    // 阻止表单提交\n    alert('表单已拦截')\n  }\n\n  return (\n    <form onSubmit={handleSubmit}>\n      <button type=\"submit\">提交</button>\n    </form>\n  )\n}\n\nrender(<App />)",
+      "solution": "function App() {\n  const handleSubmit = (e) => {\n    e.preventDefault()\n    alert('表单已拦截')\n  }\n\n  return (\n    <form onSubmit={handleSubmit}>\n      <button type=\"submit\">提交</button>\n    </form>\n  )\n}\n\nrender(<App />)",
+      "hints": [
+        "函数接收 e 参数",
+        "调用 e.preventDefault()",
+        "阻止表单默认提交行为"
+      ],
+      "testCases": [
+        {
+          "type": "pattern",
+          "description": "应该接收 event 参数",
+          "pattern": "\\(\\s*e\\s*\\)|\\(\\s*event\\s*\\)"
+        },
+        {
+          "type": "pattern",
+          "description": "应该调用 preventDefault",
+          "pattern": "preventDefault"
+        },
+        {
+          "type": "pattern",
+          "description": "应该有 onSubmit",
+          "pattern": "onSubmit="
+        }
+      ]
+    },
+    {
+      "id": "events-4",
+      "title": "传递参数",
+      "difficulty": "medium",
+      "tags": ["事件", "参数"],
+      "estimatedTime": 5,
+      "question": "给事件处理函数传递额外参数",
+      "description": "使用箭头函数或 bind 可以给事件处理函数传递参数。",
+      "starterCode": "function App() {\n  const handleClick = (name) => {\n    alert(`你好, ${name}`)\n  }\n\n  return (\n    <div>\n      <button /* 传递 '张三' */>按钮1</button>\n      <button /* 传递 '李四' */>按钮2</button>\n    </div>\n  )\n}\n\nrender(<App />)",
+      "solution": "function App() {\n  const handleClick = (name) => {\n    alert(`你好, ${name}`)\n  }\n\n  return (\n    <div>\n      <button onClick={() => handleClick('张三')}>按钮1</button>\n      <button onClick={() => handleClick('李四')}>按钮2</button>\n    </div>\n  )\n}\n\nrender(<App />)",
+      "hints": [
+        "onClick={() => handleClick(参数)}",
+        "用箭头函数包裹",
+        "每个按钮传递不同参数"
+      ],
+      "testCases": [
+        {
+          "type": "pattern",
+          "description": "应该有两个 onClick",
+          "pattern": "onClick=",
+          "minCount": 2
+        },
+        {
+          "type": "pattern",
+          "description": "应该调用 handleClick",
+          "pattern": "handleClick\\(",
+          "minCount": 2
+        },
+        {
+          "type": "pattern",
+          "description": "应该传递参数",
+          "pattern": "handleClick\\(['\"]"
+        }
+      ]
+    },
+    {
+      "id": "events-5",
+      "title": "input onChange 事件",
+      "difficulty": "easy",
+      "tags": ["事件", "表单"],
+      "estimatedTime": 5,
+      "question": "实现受控输入框，同步显示输入内容",
+      "description": "onChange 事件监听输入变化，通过 e.target.value 获取值。",
+      "starterCode": "function App() {\n  const [text, setText] = useState('')\n\n  return (\n    <div>\n      <input /* 添加 value 和 onChange */ />\n      <p>你输入了: {text}</p>\n    </div>\n  )\n}\n\nrender(<App />)",
+      "solution": "function App() {\n  const [text, setText] = useState('')\n\n  return (\n    <div>\n      <input \n        value={text}\n        onChange={e => setText(e.target.value)}\n      />\n      <p>你输入了: {text}</p>\n    </div>\n  )\n}\n\nrender(<App />)",
+      "hints": [
+        "value={text} 绑定状态",
+        "onChange={e => setText(e.target.value)}",
+        "这叫受控组件"
+      ],
+      "testCases": [
+        {
+          "type": "pattern",
+          "description": "应该有 value 属性",
+          "pattern": "value=\\{text\\}"
+        },
+        {
+          "type": "pattern",
+          "description": "应该有 onChange",
+          "pattern": "onChange="
+        },
+        {
+          "type": "pattern",
+          "description": "应该使用 e.target.value",
+          "pattern": "target\\.value"
+        }
+      ]
+    },
+    {
+      "id": "events-6",
+      "title": "键盘事件",
+      "difficulty": "medium",
+      "tags": ["事件", "键盘"],
+      "estimatedTime": 5,
+      "question": "监听 Enter 键按下",
+      "description": "onKeyDown 监听键盘事件，通过 e.key 判断按键。",
+      "starterCode": "function App() {\n  const [text, setText] = useState('')\n  const [list, setList] = useState([])\n\n  const handleKeyDown = (e) => {\n    // 如果按下 Enter，添加到列表\n  }\n\n  return (\n    <div>\n      <input \n        value={text}\n        onChange={e => setText(e.target.value)}\n        onKeyDown={handleKeyDown}\n      />\n      <ul>\n        {list.map((item, i) => <li key={i}>{item}</li>)}\n      </ul>\n    </div>\n  )\n}\n\nrender(<App />)",
+      "solution": "function App() {\n  const [text, setText] = useState('')\n  const [list, setList] = useState([])\n\n  const handleKeyDown = (e) => {\n    if (e.key === 'Enter') {\n      setList([...list, text])\n      setText('')\n    }\n  }\n\n  return (\n    <div>\n      <input \n        value={text}\n        onChange={e => setText(e.target.value)}\n        onKeyDown={handleKeyDown}\n      />\n      <ul>\n        {list.map((item, i) => <li key={i}>{item}</li>)}\n      </ul>\n    </div>\n  )\n}\n\nrender(<App />)",
+      "hints": [
+        "判断 e.key === 'Enter'",
+        "添加到列表并清空输入",
+        "onKeyDown 监听键盘按下"
+      ],
+      "testCases": [
+        {
+          "type": "pattern",
+          "description": "应该判断 Enter 键",
+          "pattern": "key\\s*===\\s*['\"]Enter['\"]"
+        },
+        {
+          "type": "pattern",
+          "description": "应该更新 list",
+          "pattern": "setList"
+        },
+        {
+          "type": "pattern",
+          "description": "应该有 onKeyDown",
+          "pattern": "onKeyDown="
+        }
+      ]
+    },
+    {
+      "id": "events-7",
+      "title": "鼠标事件",
+      "difficulty": "easy",
+      "tags": ["事件", "鼠标"],
+      "estimatedTime": 4,
+      "question": "实现 hover 显示/隐藏效果",
+      "description": "onMouseEnter 和 onMouseLeave 处理鼠标进入/离开。",
+      "starterCode": "function App() {\n  const [visible, setVisible] = useState(false)\n\n  return (\n    <div \n      /* 添加 onMouseEnter 和 onMouseLeave */\n      style={{ padding: '20px', background: '#f0f0f0' }}\n    >\n      鼠标移到这里\n      {visible && <p>显示了！</p>}\n    </div>\n  )\n}\n\nrender(<App />)",
+      "solution": "function App() {\n  const [visible, setVisible] = useState(false)\n\n  return (\n    <div \n      onMouseEnter={() => setVisible(true)}\n      onMouseLeave={() => setVisible(false)}\n      style={{ padding: '20px', background: '#f0f0f0' }}\n    >\n      鼠标移到这里\n      {visible && <p>显示了！</p>}\n    </div>\n  )\n}\n\nrender(<App />)",
+      "hints": [
+        "onMouseEnter={() => setVisible(true)}",
+        "onMouseLeave={() => setVisible(false)}",
+        "移入显示，移出隐藏"
+      ],
+      "testCases": [
+        {
+          "type": "pattern",
+          "description": "应该有 onMouseEnter",
+          "pattern": "onMouseEnter="
+        },
+        {
+          "type": "pattern",
+          "description": "应该有 onMouseLeave",
+          "pattern": "onMouseLeave="
+        },
+        {
+          "type": "pattern",
+          "description": "应该调用 setVisible",
+          "pattern": "setVisible",
+          "minCount": 2
+        }
+      ]
+    },
+    {
+      "id": "events-8",
+      "title": "事件委托模式",
+      "difficulty": "hard",
+      "tags": ["事件", "性能"],
+      "estimatedTime": 7,
+      "question": "使用事件委托处理列表项点击",
+      "description": "在父元素上监听事件，通过 e.target 判断点击的子元素。",
+      "starterCode": "function App() {\n  const [items] = useState(['Apple', 'Banana', 'Orange'])\n\n  const handleListClick = (e) => {\n    // 获取点击的元素文本\n    // 判断是否是 li 元素\n  }\n\n  return (\n    <ul onClick={handleListClick}>\n      {items.map((item, i) => (\n        <li key={i} data-name={item}>{item}</li>\n      ))}\n    </ul>\n  )\n}\n\nrender(<App />)",
+      "solution": "function App() {\n  const [items] = useState(['Apple', 'Banana', 'Orange'])\n\n  const handleListClick = (e) => {\n    if (e.target.tagName === 'LI') {\n      alert(`点击了: ${e.target.textContent}`)\n    }\n  }\n\n  return (\n    <ul onClick={handleListClick}>\n      {items.map((item, i) => (\n        <li key={i} data-name={item}>{item}</li>\n      ))}\n    </ul>\n  )\n}\n\nrender(<App />)",
+      "hints": [
+        "在 ul 上监听 onClick",
+        "判断 e.target.tagName === 'LI'",
+        "获取 e.target.textContent"
+      ],
+      "testCases": [
+        {
+          "type": "pattern",
+          "description": "应该在 ul 上添加 onClick",
+          "pattern": "<ul[^>]*onClick"
+        },
+        {
+          "type": "pattern",
+          "description": "应该判断 tagName",
+          "pattern": "tagName"
+        },
+        {
+          "type": "pattern",
+          "description": "应该有 handleListClick",
+          "pattern": "handleListClick"
+        }
+      ]
+    }
+  ]
+}

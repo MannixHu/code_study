@@ -1,0 +1,336 @@
+{
+  "categoryId": "state",
+  "name": "State 状态",
+  "description": "学习 useState 管理组件状态",
+  "icon": "🔄",
+  "order": 4,
+  "lessons": [
+    {
+      "id": "state-1",
+      "title": "useState 基础",
+      "difficulty": "easy",
+      "tags": ["useState", "基础"],
+      "estimatedTime": 4,
+      "question": "使用 useState 创建一个计数器，初始值为 0",
+      "description": "useState 是 React Hook，用于在函数组件中添加状态。返回 [state, setState]。",
+      "starterCode": "function App() {\n  // 使用 useState 创建 count 状态\n\n  return (\n    <div>\n      <p>计数: {count}</p>\n    </div>\n  )\n}\n\nrender(<App />)",
+      "solution": "function App() {\n  const [count, setCount] = useState(0)\n\n  return (\n    <div>\n      <p>计数: {count}</p>\n    </div>\n  )\n}\n\nrender(<App />)",
+      "hints": [
+        "使用 const [count, setCount] = useState(0)",
+        "useState 返回数组，第一项是值，第二项是更新函数",
+        "类似 Vue 的 ref，但需要用 setter 更新"
+      ],
+      "testCases": [
+        {
+          "type": "ast",
+          "description": "应该使用 useState",
+          "checker": "usesUseState"
+        },
+        {
+          "type": "pattern",
+          "description": "应该解构 useState 返回值",
+          "pattern": "\\[\\s*\\w+\\s*,\\s*\\w+\\s*\\]\\s*=\\s*useState"
+        },
+        {
+          "type": "pattern",
+          "description": "应该显示 count",
+          "pattern": "\\{\\s*count\\s*\\}"
+        }
+      ]
+    },
+    {
+      "id": "state-2",
+      "title": "更新状态",
+      "difficulty": "easy",
+      "tags": ["useState", "事件"],
+      "estimatedTime": 5,
+      "question": "添加按钮，点击时增加计数",
+      "description": "调用 setState 函数更新状态，组件会重新渲染。",
+      "starterCode": "function App() {\n  const [count, setCount] = useState(0)\n\n  return (\n    <div>\n      <p>计数: {count}</p>\n      <button onClick={/* 增加 count */}>\n        增加\n      </button>\n    </div>\n  )\n}\n\nrender(<App />)",
+      "solution": "function App() {\n  const [count, setCount] = useState(0)\n\n  return (\n    <div>\n      <p>计数: {count}</p>\n      <button onClick={() => setCount(count + 1)}>\n        增加\n      </button>\n    </div>\n  )\n}\n\nrender(<App />)",
+      "hints": [
+        "onClick={() => setCount(count + 1)}",
+        "setState 会触发重新渲染",
+        "不能直接修改 count，必须用 setCount"
+      ],
+      "testCases": [
+        {
+          "type": "pattern",
+          "description": "应该有 onClick 事件",
+          "pattern": "onClick="
+        },
+        {
+          "type": "pattern",
+          "description": "应该调用 setCount",
+          "pattern": "setCount"
+        },
+        {
+          "type": "pattern",
+          "description": "应该有箭头函数",
+          "pattern": "=>|function"
+        }
+      ]
+    },
+    {
+      "id": "state-3",
+      "title": "多个状态",
+      "difficulty": "easy",
+      "tags": ["useState"],
+      "estimatedTime": 5,
+      "question": "创建 name 和 age 两个状态",
+      "description": "一个组件可以使用多个 useState。",
+      "starterCode": "function App() {\n  // 创建 name 状态，初始值 ''\n  // 创建 age 状态，初始值 0\n\n  return (\n    <div>\n      <p>姓名: {name}</p>\n      <p>年龄: {age}</p>\n    </div>\n  )\n}\n\nrender(<App />)",
+      "solution": "function App() {\n  const [name, setName] = useState('')\n  const [age, setAge] = useState(0)\n\n  return (\n    <div>\n      <p>姓名: {name}</p>\n      <p>年龄: {age}</p>\n    </div>\n  )\n}\n\nrender(<App />)",
+      "hints": [
+        "每个状态单独使用 useState",
+        "const [name, setName] = useState('')",
+        "const [age, setAge] = useState(0)"
+      ],
+      "testCases": [
+        {
+          "type": "pattern",
+          "description": "应该有两个 useState",
+          "pattern": "useState",
+          "minCount": 2
+        },
+        {
+          "type": "pattern",
+          "description": "应该有 name 变量",
+          "pattern": "\\[\\s*name\\s*,"
+        },
+        {
+          "type": "pattern",
+          "description": "应该有 age 变量",
+          "pattern": "\\[\\s*age\\s*,"
+        }
+      ]
+    },
+    {
+      "id": "state-4",
+      "title": "状态的异步性",
+      "difficulty": "medium",
+      "tags": ["useState", "异步"],
+      "estimatedTime": 6,
+      "question": "点击按钮连续增加 3 次，使用函数式更新",
+      "description": "多次调用 setState 时，应使用函数式更新保证正确性。",
+      "starterCode": "function App() {\n  const [count, setCount] = useState(0)\n\n  const handleClick = () => {\n    // 连续调用 3 次 setCount，每次 +1\n    // 使用 setCount(prev => prev + 1)\n  }\n\n  return (\n    <div>\n      <p>计数: {count}</p>\n      <button onClick={handleClick}>+3</button>\n    </div>\n  )\n}\n\nrender(<App />)",
+      "solution": "function App() {\n  const [count, setCount] = useState(0)\n\n  const handleClick = () => {\n    setCount(prev => prev + 1)\n    setCount(prev => prev + 1)\n    setCount(prev => prev + 1)\n  }\n\n  return (\n    <div>\n      <p>计数: {count}</p>\n      <button onClick={handleClick}>+3</button>\n    </div>\n  )\n}\n\nrender(<App />)",
+      "hints": [
+        "使用函数式更新: setCount(prev => prev + 1)",
+        "prev 代表上一次的状态值",
+        "连续调用 3 次"
+      ],
+      "testCases": [
+        {
+          "type": "pattern",
+          "description": "应该使用函数式更新",
+          "pattern": "setCount\\(\\s*\\w+\\s*=>"
+        },
+        {
+          "type": "pattern",
+          "description": "应该有 handleClick 函数",
+          "pattern": "handleClick"
+        },
+        {
+          "type": "pattern",
+          "description": "应该多次调用 setCount",
+          "pattern": "setCount",
+          "minCount": 3
+        }
+      ]
+    },
+    {
+      "id": "state-5",
+      "title": "对象状态",
+      "difficulty": "medium",
+      "tags": ["useState", "对象"],
+      "estimatedTime": 6,
+      "question": "创建对象状态 user，更新时保留其他属性",
+      "description": "更新对象状态时，需要使用展开运算符保留其他属性。",
+      "starterCode": "function App() {\n  const [user, setUser] = useState({\n    name: '张三',\n    age: 25\n  })\n\n  const updateName = () => {\n    // 更新 name 为 '李四'，保留 age\n  }\n\n  return (\n    <div>\n      <p>{user.name} - {user.age}岁</p>\n      <button onClick={updateName}>改名</button>\n    </div>\n  )\n}\n\nrender(<App />)",
+      "solution": "function App() {\n  const [user, setUser] = useState({\n    name: '张三',\n    age: 25\n  })\n\n  const updateName = () => {\n    setUser({ ...user, name: '李四' })\n  }\n\n  return (\n    <div>\n      <p>{user.name} - {user.age}岁</p>\n      <button onClick={updateName}>改名</button>\n    </div>\n  )\n}\n\nrender(<App />)",
+      "hints": [
+        "使用展开运算符: { ...user, name: '新值' }",
+        "必须创建新对象，不能直接修改",
+        "类似 Vue 的 reactive，但更新方式不同"
+      ],
+      "testCases": [
+        {
+          "type": "pattern",
+          "description": "应该使用展开运算符",
+          "pattern": "\\.\\.\\.user"
+        },
+        {
+          "type": "pattern",
+          "description": "应该更新 name 属性",
+          "pattern": "name:\\s*['\"]"
+        },
+        {
+          "type": "pattern",
+          "description": "应该调用 setUser",
+          "pattern": "setUser"
+        }
+      ]
+    },
+    {
+      "id": "state-6",
+      "title": "数组状态 - 添加",
+      "difficulty": "medium",
+      "tags": ["useState", "数组"],
+      "estimatedTime": 6,
+      "question": "创建待办列表，实现添加功能",
+      "description": "更新数组状态时，使用展开运算符或数组方法创建新数组。",
+      "starterCode": "function App() {\n  const [todos, setTodos] = useState(['学习 React'])\n  const [input, setInput] = useState('')\n\n  const addTodo = () => {\n    // 添加 input 到 todos 数组\n    // 清空 input\n  }\n\n  return (\n    <div>\n      <input \n        value={input}\n        onChange={e => setInput(e.target.value)}\n      />\n      <button onClick={addTodo}>添加</button>\n      <ul>\n        {todos.map((todo, i) => <li key={i}>{todo}</li>)}\n      </ul>\n    </div>\n  )\n}\n\nrender(<App />)",
+      "solution": "function App() {\n  const [todos, setTodos] = useState(['学习 React'])\n  const [input, setInput] = useState('')\n\n  const addTodo = () => {\n    setTodos([...todos, input])\n    setInput('')\n  }\n\n  return (\n    <div>\n      <input \n        value={input}\n        onChange={e => setInput(e.target.value)}\n      />\n      <button onClick={addTodo}>添加</button>\n      <ul>\n        {todos.map((todo, i) => <li key={i}>{todo}</li>)}\n      </ul>\n    </div>\n  )\n}\n\nrender(<App />)",
+      "hints": [
+        "使用展开: setTodos([...todos, input])",
+        "或使用 concat: setTodos(todos.concat(input))",
+        "记得清空 input: setInput('')"
+      ],
+      "testCases": [
+        {
+          "type": "pattern",
+          "description": "应该更新 todos",
+          "pattern": "setTodos"
+        },
+        {
+          "type": "pattern",
+          "description": "应该使用展开运算符或 concat",
+          "pattern": "\\.\\.\\.todos|concat"
+        },
+        {
+          "type": "pattern",
+          "description": "应该清空 input",
+          "pattern": "setInput\\(\\s*['\"]\\s*['\"]\\s*\\)"
+        }
+      ]
+    },
+    {
+      "id": "state-7",
+      "title": "数组状态 - 删除",
+      "difficulty": "medium",
+      "tags": ["useState", "数组"],
+      "estimatedTime": 6,
+      "question": "实现删除待办项功能",
+      "description": "使用 filter 方法删除数组元素。",
+      "starterCode": "function App() {\n  const [todos, setTodos] = useState([\n    '学习 React',\n    '做项目',\n    '写文档'\n  ])\n\n  const deleteTodo = (index) => {\n    // 删除指定索引的项\n  }\n\n  return (\n    <ul>\n      {todos.map((todo, i) => (\n        <li key={i}>\n          {todo}\n          <button onClick={() => deleteTodo(i)}>删除</button>\n        </li>\n      ))}\n    </ul>\n  )\n}\n\nrender(<App />)",
+      "solution": "function App() {\n  const [todos, setTodos] = useState([\n    '学习 React',\n    '做项目',\n    '写文档'\n  ])\n\n  const deleteTodo = (index) => {\n    setTodos(todos.filter((_, i) => i !== index))\n  }\n\n  return (\n    <ul>\n      {todos.map((todo, i) => (\n        <li key={i}>\n          {todo}\n          <button onClick={() => deleteTodo(i)}>删除</button>\n        </li>\n      ))}\n    </ul>\n  )\n}\n\nrender(<App />)",
+      "hints": [
+        "使用 filter: todos.filter((_, i) => i !== index)",
+        "filter 返回新数组",
+        "保留索引不等于删除索引的项"
+      ],
+      "testCases": [
+        {
+          "type": "pattern",
+          "description": "应该使用 filter",
+          "pattern": "\\.filter\\("
+        },
+        {
+          "type": "pattern",
+          "description": "应该调用 setTodos",
+          "pattern": "setTodos"
+        },
+        {
+          "type": "pattern",
+          "description": "应该有 deleteTodo 函数",
+          "pattern": "deleteTodo"
+        }
+      ]
+    },
+    {
+      "id": "state-8",
+      "title": "布尔状态切换",
+      "difficulty": "easy",
+      "tags": ["useState", "布尔值"],
+      "estimatedTime": 4,
+      "question": "创建显示/隐藏切换功能",
+      "description": "布尔状态常用于控制显示隐藏、开关等。",
+      "starterCode": "function App() {\n  const [visible, setVisible] = useState(true)\n\n  return (\n    <div>\n      <button onClick={/* 切换 visible */}>\n        {visible ? '隐藏' : '显示'}\n      </button>\n      {visible && <p>这是可以切换的内容</p>}\n    </div>\n  )\n}\n\nrender(<App />)",
+      "solution": "function App() {\n  const [visible, setVisible] = useState(true)\n\n  return (\n    <div>\n      <button onClick={() => setVisible(!visible)}>\n        {visible ? '隐藏' : '显示'}\n      </button>\n      {visible && <p>这是可以切换的内容</p>}\n    </div>\n  )\n}\n\nrender(<App />)",
+      "hints": [
+        "使用 !visible 取反",
+        "setVisible(!visible)",
+        "布尔值切换很简单"
+      ],
+      "testCases": [
+        {
+          "type": "pattern",
+          "description": "应该使用取反操作",
+          "pattern": "!visible"
+        },
+        {
+          "type": "pattern",
+          "description": "应该调用 setVisible",
+          "pattern": "setVisible"
+        },
+        {
+          "type": "pattern",
+          "description": "应该使用条件渲染",
+          "pattern": "visible\\s*&&"
+        }
+      ]
+    },
+    {
+      "id": "state-9",
+      "title": "惰性初始化",
+      "difficulty": "medium",
+      "tags": ["useState", "性能"],
+      "estimatedTime": 5,
+      "question": "使用函数初始化 localStorage 中的值",
+      "description": "当初始值需要计算时，传入函数避免每次渲染都计算。",
+      "starterCode": "function App() {\n  // 使用函数初始化，从 localStorage 读取\n  const [count, setCount] = useState()\n\n  const increment = () => {\n    const newCount = count + 1\n    setCount(newCount)\n    localStorage.setItem('count', newCount)\n  }\n\n  return (\n    <div>\n      <p>计数: {count}</p>\n      <button onClick={increment}>增加</button>\n    </div>\n  )\n}\n\nrender(<App />)",
+      "solution": "function App() {\n  const [count, setCount] = useState(() => {\n    const saved = localStorage.getItem('count')\n    return saved ? Number(saved) : 0\n  })\n\n  const increment = () => {\n    const newCount = count + 1\n    setCount(newCount)\n    localStorage.setItem('count', newCount)\n  }\n\n  return (\n    <div>\n      <p>计数: {count}</p>\n      <button onClick={increment}>增加</button>\n    </div>\n  )\n}\n\nrender(<App />)",
+      "hints": [
+        "useState(() => { ... })",
+        "函数只在首次渲染时执行",
+        "适合读取 localStorage 等耗时操作"
+      ],
+      "testCases": [
+        {
+          "type": "pattern",
+          "description": "应该使用函数初始化",
+          "pattern": "useState\\(\\s*\\(\\s*\\)\\s*=>|useState\\(\\s*function"
+        },
+        {
+          "type": "pattern",
+          "description": "应该访问 localStorage",
+          "pattern": "localStorage"
+        }
+      ]
+    },
+    {
+      "id": "state-10",
+      "title": "状态提升",
+      "difficulty": "hard",
+      "tags": ["useState", "组件通信"],
+      "estimatedTime": 8,
+      "question": "将 count 状态提升到父组件，子组件接收 props",
+      "description": "当多个组件需要共享状态时，将状态提升到最近的共同父组件。",
+      "starterCode": "function Counter({ count, onIncrement }) {\n  return (\n    <div>\n      <p>计数: {count}</p>\n      <button onClick={onIncrement}>增加</button>\n    </div>\n  )\n}\n\nfunction Display({ count }) {\n  return <h2>当前: {count}</h2>\n}\n\nfunction App() {\n  // 在这里创建状态\n  // 传递给子组件\n\n  return (\n    <div>\n      <Display />\n      <Counter />\n    </div>\n  )\n}\n\nrender(<App />)",
+      "solution": "function Counter({ count, onIncrement }) {\n  return (\n    <div>\n      <p>计数: {count}</p>\n      <button onClick={onIncrement}>增加</button>\n    </div>\n  )\n}\n\nfunction Display({ count }) {\n  return <h2>当前: {count}</h2>\n}\n\nfunction App() {\n  const [count, setCount] = useState(0)\n\n  return (\n    <div>\n      <Display count={count} />\n      <Counter \n        count={count} \n        onIncrement={() => setCount(count + 1)} \n      />\n    </div>\n  )\n}\n\nrender(<App />)",
+      "hints": [
+        "在 App 中创建 useState",
+        "通过 props 传递 count 和更新函数",
+        "这叫状态提升（Lifting State Up）"
+      ],
+      "testCases": [
+        {
+          "type": "ast",
+          "description": "App 应该使用 useState",
+          "checker": "usesUseState"
+        },
+        {
+          "type": "pattern",
+          "description": "应该传递 count prop",
+          "pattern": "count=\\{count\\}"
+        },
+        {
+          "type": "pattern",
+          "description": "应该传递 onIncrement",
+          "pattern": "onIncrement="
+        }
+      ]
+    }
+  ]
+}

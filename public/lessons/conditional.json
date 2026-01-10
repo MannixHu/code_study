@@ -1,0 +1,279 @@
+{
+  "categoryId": "conditional",
+  "name": "条件渲染",
+  "description": "学习 React 中的条件渲染技巧",
+  "icon": "🔀",
+  "order": 6,
+  "lessons": [
+    {
+      "id": "conditional-1",
+      "title": "if-else 条件渲染",
+      "difficulty": "easy",
+      "tags": ["条件渲染", "if-else"],
+      "estimatedTime": 4,
+      "question": "根据 isLoggedIn 状态显示不同内容",
+      "description": "在 render 函数中使用 if-else 语句进行条件渲染。",
+      "starterCode": "function App() {\n  const [isLoggedIn, setIsLoggedIn] = useState(false)\n\n  // 使用 if-else 返回不同内容\n\n  return (\n    <div>\n      <button onClick={() => setIsLoggedIn(!isLoggedIn)}>\n        切换\n      </button>\n    </div>\n  )\n}\n\nrender(<App />)",
+      "solution": "function App() {\n  const [isLoggedIn, setIsLoggedIn] = useState(false)\n\n  if (isLoggedIn) {\n    return <div>欢迎回来！</div>\n  } else {\n    return <div>请先登录</div>\n  }\n}\n\nrender(<App />)",
+      "hints": [
+        "在 return 前使用 if 语句",
+        "根据条件返回不同 JSX",
+        "适合差异较大的渲染"
+      ],
+      "testCases": [
+        {
+          "type": "ast",
+          "description": "应该有 if 语句",
+          "checker": "hasIfStatement"
+        },
+        {
+          "type": "ast",
+          "description": "应该有 return 语句",
+          "checker": "hasReturnStatement"
+        },
+        {
+          "type": "pattern",
+          "description": "应该检查 isLoggedIn",
+          "pattern": "isLoggedIn"
+        }
+      ]
+    },
+    {
+      "id": "conditional-2",
+      "title": "三元运算符",
+      "difficulty": "easy",
+      "tags": ["条件渲染", "三元"],
+      "estimatedTime": 4,
+      "question": "使用三元运算符显示不同文本",
+      "description": "三元运算符 (condition ? a : b) 可以在 JSX 中直接使用。",
+      "starterCode": "function App() {\n  const [isOnline, setIsOnline] = useState(true)\n\n  return (\n    <div>\n      <p>状态: {/* 使用三元运算符 */}</p>\n      <button onClick={() => setIsOnline(!isOnline)}>\n        切换\n      </button>\n    </div>\n  )\n}\n\nrender(<App />)",
+      "solution": "function App() {\n  const [isOnline, setIsOnline] = useState(true)\n\n  return (\n    <div>\n      <p>状态: {isOnline ? '在线' : '离线'}</p>\n      <button onClick={() => setIsOnline(!isOnline)}>\n        切换\n      </button>\n    </div>\n  )\n}\n\nrender(<App />)",
+      "hints": [
+        "语法: {condition ? '值1' : '值2'}",
+        "在 {} 内使用三元运算符",
+        "简洁的二选一渲染"
+      ],
+      "testCases": [
+        {
+          "type": "pattern",
+          "description": "应该使用三元运算符",
+          "pattern": "\\?.*:"
+        },
+        {
+          "type": "pattern",
+          "description": "应该在花括号中",
+          "pattern": "\\{.*\\?.*:.*\\}"
+        },
+        {
+          "type": "pattern",
+          "description": "应该检查 isOnline",
+          "pattern": "isOnline"
+        }
+      ]
+    },
+    {
+      "id": "conditional-3",
+      "title": "&& 短路运算",
+      "difficulty": "easy",
+      "tags": ["条件渲染", "&&"],
+      "estimatedTime": 4,
+      "question": "使用 && 条件渲染提示消息",
+      "description": "condition && <JSX> 当条件为 true 时渲染，false 时不渲染。",
+      "starterCode": "function App() {\n  const [showMessage, setShowMessage] = useState(false)\n\n  return (\n    <div>\n      <button onClick={() => setShowMessage(!showMessage)}>\n        切换消息\n      </button>\n      {/* 使用 && 条件渲染 */}\n    </div>\n  )\n}\n\nrender(<App />)",
+      "solution": "function App() {\n  const [showMessage, setShowMessage] = useState(false)\n\n  return (\n    <div>\n      <button onClick={() => setShowMessage(!showMessage)}>\n        切换消息\n      </button>\n      {showMessage && <p>这是一条提示消息</p>}\n    </div>\n  )\n}\n\nrender(<App />)",
+      "hints": [
+        "语法: {condition && <JSX>}",
+        "条件为 true 才渲染",
+        "适合可选内容的显示"
+      ],
+      "testCases": [
+        {
+          "type": "pattern",
+          "description": "应该使用 && 运算符",
+          "pattern": "&&\\s*<"
+        },
+        {
+          "type": "pattern",
+          "description": "应该在花括号中",
+          "pattern": "\\{.*&&.*\\}"
+        },
+        {
+          "type": "pattern",
+          "description": "应该检查 showMessage",
+          "pattern": "showMessage"
+        }
+      ]
+    },
+    {
+      "id": "conditional-4",
+      "title": "多条件渲染",
+      "difficulty": "medium",
+      "tags": ["条件渲染", "多条件"],
+      "estimatedTime": 6,
+      "question": "根据 status 渲染不同状态（loading, success, error）",
+      "description": "使用多个 if-else 或 switch 处理多种情况。",
+      "starterCode": "function App() {\n  const [status, setStatus] = useState('loading')\n\n  // 根据 status 返回不同内容\n  // 'loading' -> 加载中...\n  // 'success' -> 加载成功！\n  // 'error' -> 加载失败\n\n  return (\n    <div>\n      {/* 渲染不同状态 */}\n      <div>\n        <button onClick={() => setStatus('loading')}>加载中</button>\n        <button onClick={() => setStatus('success')}>成功</button>\n        <button onClick={() => setStatus('error')}>失败</button>\n      </div>\n    </div>\n  )\n}\n\nrender(<App />)",
+      "solution": "function App() {\n  const [status, setStatus] = useState('loading')\n\n  let content\n  if (status === 'loading') {\n    content = <p>加载中...</p>\n  } else if (status === 'success') {\n    content = <p>加载成功！</p>\n  } else if (status === 'error') {\n    content = <p>加载失败</p>\n  }\n\n  return (\n    <div>\n      {content}\n      <div>\n        <button onClick={() => setStatus('loading')}>加载中</button>\n        <button onClick={() => setStatus('success')}>成功</button>\n        <button onClick={() => setStatus('error')}>失败</button>\n      </div>\n    </div>\n  )\n}\n\nrender(<App />)",
+      "hints": [
+        "定义变量存储 JSX",
+        "使用 if-else if 判断",
+        "最后渲染 {content}"
+      ],
+      "testCases": [
+        {
+          "type": "pattern",
+          "description": "应该判断 loading",
+          "pattern": "loading"
+        },
+        {
+          "type": "pattern",
+          "description": "应该判断 success",
+          "pattern": "success"
+        },
+        {
+          "type": "pattern",
+          "description": "应该判断 error",
+          "pattern": "error"
+        },
+        {
+          "type": "ast",
+          "description": "应该有 if 语句",
+          "checker": "hasIfStatement"
+        }
+      ]
+    },
+    {
+      "id": "conditional-5",
+      "title": "元素变量",
+      "difficulty": "medium",
+      "tags": ["条件渲染", "变量"],
+      "estimatedTime": 5,
+      "question": "使用变量存储 JSX 元素，根据条件赋值",
+      "description": "将 JSX 存储在变量中，可以让逻辑更清晰。",
+      "starterCode": "function App() {\n  const [hasNotification, setHasNotification] = useState(true)\n\n  // 定义 icon 变量\n  // hasNotification ? '🔔' : '🔕'\n\n  return (\n    <div>\n      <button onClick={() => setHasNotification(!hasNotification)}>\n        {/* 显示 icon */} 通知\n      </button>\n    </div>\n  )\n}\n\nrender(<App />)",
+      "solution": "function App() {\n  const [hasNotification, setHasNotification] = useState(true)\n\n  const icon = hasNotification ? '🔔' : '🔕'\n\n  return (\n    <div>\n      <button onClick={() => setHasNotification(!hasNotification)}>\n        {icon} 通知\n      </button>\n    </div>\n  )\n}\n\nrender(<App />)",
+      "hints": [
+        "const icon = condition ? '值1' : '值2'",
+        "在 JSX 中使用 {icon}",
+        "让代码更易读"
+      ],
+      "testCases": [
+        {
+          "type": "pattern",
+          "description": "应该定义 icon 变量",
+          "pattern": "const\\s+icon\\s*="
+        },
+        {
+          "type": "pattern",
+          "description": "应该使用三元运算符",
+          "pattern": "\\?.*:"
+        },
+        {
+          "type": "pattern",
+          "description": "应该在 JSX 中显示 icon",
+          "pattern": "\\{\\s*icon\\s*\\}"
+        }
+      ]
+    },
+    {
+      "id": "conditional-6",
+      "title": "switch 语句",
+      "difficulty": "medium",
+      "tags": ["条件渲染", "switch"],
+      "estimatedTime": 6,
+      "question": "使用 switch 语句处理用户角色渲染",
+      "description": "当有多个具体值需要匹配时，switch 更清晰。",
+      "starterCode": "function App() {\n  const [role, setRole] = useState('user')\n\n  const renderContent = () => {\n    // 使用 switch 返回不同内容\n    // 'admin' -> 管理员面板\n    // 'user' -> 用户面板\n    // 'guest' -> 访客面板\n  }\n\n  return (\n    <div>\n      {renderContent()}\n      <button onClick={() => setRole('admin')}>管理员</button>\n      <button onClick={() => setRole('user')}>用户</button>\n      <button onClick={() => setRole('guest')}>访客</button>\n    </div>\n  )\n}\n\nrender(<App />)",
+      "solution": "function App() {\n  const [role, setRole] = useState('user')\n\n  const renderContent = () => {\n    switch (role) {\n      case 'admin':\n        return <h2>管理员面板</h2>\n      case 'user':\n        return <h2>用户面板</h2>\n      case 'guest':\n        return <h2>访客面板</h2>\n      default:\n        return <h2>未知角色</h2>\n    }\n  }\n\n  return (\n    <div>\n      {renderContent()}\n      <button onClick={() => setRole('admin')}>管理员</button>\n      <button onClick={() => setRole('user')}>用户</button>\n      <button onClick={() => setRole('guest')}>访客</button>\n    </div>\n  )\n}\n\nrender(<App />)",
+      "hints": [
+        "switch (role) { case 'admin': ... }",
+        "每个 case 返回不同 JSX",
+        "别忘了 default 情况"
+      ],
+      "testCases": [
+        {
+          "type": "pattern",
+          "description": "应该使用 switch",
+          "pattern": "switch"
+        },
+        {
+          "type": "pattern",
+          "description": "应该有 case 语句",
+          "pattern": "case",
+          "minCount": 2
+        },
+        {
+          "type": "pattern",
+          "description": "应该有 renderContent 函数",
+          "pattern": "renderContent"
+        }
+      ]
+    },
+    {
+      "id": "conditional-7",
+      "title": "防止渲染",
+      "difficulty": "medium",
+      "tags": ["条件渲染", "null"],
+      "estimatedTime": 5,
+      "question": "组件返回 null 防止渲染",
+      "description": "组件返回 null 不会渲染任何内容，但不影响生命周期。",
+      "starterCode": "function Warning({ show, message }) {\n  // 如果 show 为 false，返回 null\n\n  return (\n    <div style={{ background: 'yellow', padding: '10px' }}>\n      ⚠️ {message}\n    </div>\n  )\n}\n\nfunction App() {\n  const [showWarning, setShowWarning] = useState(false)\n\n  return (\n    <div>\n      <button onClick={() => setShowWarning(!showWarning)}>\n        切换警告\n      </button>\n      <Warning show={showWarning} message=\"这是警告信息\" />\n    </div>\n  )\n}\n\nrender(<App />)",
+      "solution": "function Warning({ show, message }) {\n  if (!show) {\n    return null\n  }\n\n  return (\n    <div style={{ background: 'yellow', padding: '10px' }}>\n      ⚠️ {message}\n    </div>\n  )\n}\n\nfunction App() {\n  const [showWarning, setShowWarning] = useState(false)\n\n  return (\n    <div>\n      <button onClick={() => setShowWarning(!showWarning)}>\n        切换警告\n      </button>\n      <Warning show={showWarning} message=\"这是警告信息\" />\n    </div>\n  )\n}\n\nrender(<App />)",
+      "hints": [
+        "if (!show) return null",
+        "提前返回 null",
+        "组件不会被渲染"
+      ],
+      "testCases": [
+        {
+          "type": "pattern",
+          "description": "应该返回 null",
+          "pattern": "return\\s+null"
+        },
+        {
+          "type": "pattern",
+          "description": "应该检查 show",
+          "pattern": "!show|show\\s*==|show\\s*!="
+        },
+        {
+          "type": "ast",
+          "description": "应该有 if 语句",
+          "checker": "hasIfStatement"
+        }
+      ]
+    },
+    {
+      "id": "conditional-8",
+      "title": "立即执行函数",
+      "difficulty": "hard",
+      "tags": ["条件渲染", "IIFE"],
+      "estimatedTime": 7,
+      "question": "在 JSX 中使用立即执行函数处理复杂条件",
+      "description": "当条件逻辑复杂时，可以在 {} 中使用立即执行函数。",
+      "starterCode": "function App() {\n  const [score, setScore] = useState(85)\n\n  return (\n    <div>\n      <p>分数: {score}</p>\n      <p>等级: {\n        // 使用立即执行函数\n        // >= 90: 优秀\n        // >= 80: 良好\n        // >= 60: 及格\n        // < 60: 不及格\n      }</p>\n      <input \n        type=\"number\" \n        value={score}\n        onChange={e => setScore(Number(e.target.value))}\n      />\n    </div>\n  )\n}\n\nrender(<App />)",
+      "solution": "function App() {\n  const [score, setScore] = useState(85)\n\n  return (\n    <div>\n      <p>分数: {score}</p>\n      <p>等级: {(() => {\n        if (score >= 90) return '优秀'\n        if (score >= 80) return '良好'\n        if (score >= 60) return '及格'\n        return '不及格'\n      })()}</p>\n      <input \n        type=\"number\" \n        value={score}\n        onChange={e => setScore(Number(e.target.value))}\n      />\n    </div>\n  )\n}\n\nrender(<App />)",
+      "hints": [
+        "{(() => { ... })()}",
+        "在函数内写 if-else 逻辑",
+        "适合复杂的条件判断"
+      ],
+      "testCases": [
+        {
+          "type": "pattern",
+          "description": "应该使用立即执行函数",
+          "pattern": "\\(\\(\\)\\s*=>.*\\)\\(\\)"
+        },
+        {
+          "type": "pattern",
+          "description": "应该判断分数",
+          "pattern": "score\\s*(>=|<=|>|<|===|!==)"
+        },
+        {
+          "type": "ast",
+          "description": "应该有 return 语句",
+          "checker": "hasReturnStatement"
+        }
+      ]
+    }
+  ]
+}

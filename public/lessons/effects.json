@@ -1,0 +1,274 @@
+{
+  "categoryId": "effects",
+  "name": "副作用处理",
+  "description": "学习 useEffect 处理副作用和生命周期",
+  "icon": "⚙️",
+  "order": 9,
+  "lessons": [
+    {
+      "id": "effects-1",
+      "title": "useEffect 基础",
+      "difficulty": "easy",
+      "tags": ["useEffect", "基础"],
+      "estimatedTime": 5,
+      "question": "使用 useEffect 在组件挂载时打印消息",
+      "description": "useEffect 在组件渲染后执行，用于处理副作用。",
+      "starterCode": "function App() {\n  // 使用 useEffect 打印 'Component mounted'\n\n  return <div>检查控制台</div>\n}\n\nrender(<App />)",
+      "solution": "function App() {\n  useEffect(() => {\n    console.log('Component mounted')\n  }, [])\n\n  return <div>检查控制台</div>\n}\n\nrender(<App />)",
+      "hints": [
+        "useEffect(() => { ... }, [])",
+        "空依赖数组表示只在挂载时执行",
+        "类似 Vue 的 mounted"
+      ],
+      "testCases": [
+        {
+          "type": "ast",
+          "description": "应该使用 useEffect",
+          "checker": "usesUseEffect"
+        },
+        {
+          "type": "pattern",
+          "description": "应该有空依赖数组",
+          "pattern": "\\[\\s*\\]"
+        },
+        {
+          "type": "pattern",
+          "description": "应该有回调函数",
+          "pattern": "useEffect\\(\\s*\\(\\s*\\)\\s*=>"
+        }
+      ]
+    },
+    {
+      "id": "effects-2",
+      "title": "依赖项数组",
+      "difficulty": "medium",
+      "tags": ["useEffect", "依赖"],
+      "estimatedTime": 6,
+      "question": "当 count 变化时执行 effect",
+      "description": "依赖数组中的值变化时，effect 会重新执行。",
+      "starterCode": "function App() {\n  const [count, setCount] = useState(0)\n\n  // 当 count 变化时，打印新值\n\n  return (\n    <div>\n      <p>计数: {count}</p>\n      <button onClick={() => setCount(count + 1)}>增加</button>\n    </div>\n  )\n}\n\nrender(<App />)",
+      "solution": "function App() {\n  const [count, setCount] = useState(0)\n\n  useEffect(() => {\n    console.log('Count changed:', count)\n  }, [count])\n\n  return (\n    <div>\n      <p>计数: {count}</p>\n      <button onClick={() => setCount(count + 1)}>增加</button>\n    </div>\n  )\n}\n\nrender(<App />)",
+      "hints": [
+        "依赖数组: [count]",
+        "count 变化时执行",
+        "类似 Vue 的 watch"
+      ],
+      "testCases": [
+        {
+          "type": "ast",
+          "description": "应该使用 useEffect",
+          "checker": "usesUseEffect"
+        },
+        {
+          "type": "pattern",
+          "description": "依赖数组应包含 count",
+          "pattern": "\\[\\s*count\\s*\\]"
+        },
+        {
+          "type": "pattern",
+          "description": "应该在 effect 中使用 count",
+          "pattern": "useEffect.*count"
+        }
+      ]
+    },
+    {
+      "id": "effects-3",
+      "title": "清理函数",
+      "difficulty": "medium",
+      "tags": ["useEffect", "cleanup"],
+      "estimatedTime": 7,
+      "question": "使用定时器，并在卸载时清理",
+      "description": "effect 可以返回清理函数，在组件卸载或下次 effect 执行前调用。",
+      "starterCode": "function App() {\n  const [count, setCount] = useState(0)\n\n  useEffect(() => {\n    const timer = setInterval(() => {\n      setCount(c => c + 1)\n    }, 1000)\n\n    // 返回清理函数\n  }, [])\n\n  return <div>计数: {count}</div>\n}\n\nrender(<App />)",
+      "solution": "function App() {\n  const [count, setCount] = useState(0)\n\n  useEffect(() => {\n    const timer = setInterval(() => {\n      setCount(c => c + 1)\n    }, 1000)\n\n    return () => {\n      clearInterval(timer)\n    }\n  }, [])\n\n  return <div>计数: {count}</div>\n}\n\nrender(<App />)",
+      "hints": [
+        "返回函数: return () => { ... }",
+        "清理定时器: clearInterval(timer)",
+        "防止内存泄漏"
+      ],
+      "testCases": [
+        {
+          "type": "pattern",
+          "description": "应该返回清理函数",
+          "pattern": "return\\s*\\(\\s*\\)\\s*=>"
+        },
+        {
+          "type": "pattern",
+          "description": "应该清理定时器",
+          "pattern": "clearInterval"
+        },
+        {
+          "type": "pattern",
+          "description": "应该使用 setInterval",
+          "pattern": "setInterval"
+        }
+      ]
+    },
+    {
+      "id": "effects-4",
+      "title": "获取数据",
+      "difficulty": "medium",
+      "tags": ["useEffect", "异步"],
+      "estimatedTime": 7,
+      "question": "模拟异步获取数据并显示",
+      "description": "在 effect 中处理异步操作，更新状态。",
+      "starterCode": "function App() {\n  const [data, setData] = useState(null)\n  const [loading, setLoading] = useState(true)\n\n  useEffect(() => {\n    // 模拟异步获取数据\n    setTimeout(() => {\n      setData('数据加载完成')\n      setLoading(false)\n    }, 1000)\n  }, [])\n\n  if (loading) return <div>加载中...</div>\n  return <div>{data}</div>\n}\n\nrender(<App />)",
+      "solution": "function App() {\n  const [data, setData] = useState(null)\n  const [loading, setLoading] = useState(true)\n\n  useEffect(() => {\n    setTimeout(() => {\n      setData('数据加载完成')\n      setLoading(false)\n    }, 1000)\n  }, [])\n\n  if (loading) return <div>加载中...</div>\n  return <div>{data}</div>\n}\n\nrender(<App />)",
+      "hints": [
+        "在 effect 中调用异步操作",
+        "更新 loading 和 data 状态",
+        "条件渲染显示加载状态"
+      ],
+      "testCases": [
+        {
+          "type": "ast",
+          "description": "应该使用 useEffect",
+          "checker": "usesUseEffect"
+        },
+        {
+          "type": "pattern",
+          "description": "应该更新 data",
+          "pattern": "setData"
+        },
+        {
+          "type": "pattern",
+          "description": "应该更新 loading",
+          "pattern": "setLoading"
+        }
+      ]
+    },
+    {
+      "id": "effects-5",
+      "title": "多个 Effect",
+      "difficulty": "easy",
+      "tags": ["useEffect"],
+      "estimatedTime": 5,
+      "question": "使用多个 useEffect 分离关注点",
+      "description": "可以使用多个 useEffect 来分离不同的副作用逻辑。",
+      "starterCode": "function App() {\n  const [count, setCount] = useState(0)\n  const [name, setName] = useState('张三')\n\n  // 第一个 effect：监听 count\n  // 第二个 effect：监听 name\n\n  return (\n    <div>\n      <p>{count} - {name}</p>\n      <button onClick={() => setCount(count + 1)}>计数</button>\n      <button onClick={() => setName('李四')}>改名</button>\n    </div>\n  )\n}\n\nrender(<App />)",
+      "solution": "function App() {\n  const [count, setCount] = useState(0)\n  const [name, setName] = useState('张三')\n\n  useEffect(() => {\n    console.log('Count:', count)\n  }, [count])\n\n  useEffect(() => {\n    console.log('Name:', name)\n  }, [name])\n\n  return (\n    <div>\n      <p>{count} - {name}</p>\n      <button onClick={() => setCount(count + 1)}>计数</button>\n      <button onClick={() => setName('李四')}>改名</button>\n    </div>\n  )\n}\n\nrender(<App />)",
+      "hints": [
+        "多次调用 useEffect",
+        "每个 effect 独立依赖",
+        "分离关注点"
+      ],
+      "testCases": [
+        {
+          "type": "pattern",
+          "description": "应该有两个 useEffect",
+          "pattern": "useEffect",
+          "minCount": 2
+        },
+        {
+          "type": "pattern",
+          "description": "应该监听 count",
+          "pattern": "\\[\\s*count\\s*\\]"
+        },
+        {
+          "type": "pattern",
+          "description": "应该监听 name",
+          "pattern": "\\[\\s*name\\s*\\]"
+        }
+      ]
+    },
+    {
+      "id": "effects-6",
+      "title": "文档标题更新",
+      "difficulty": "easy",
+      "tags": ["useEffect", "DOM"],
+      "estimatedTime": 5,
+      "question": "根据 count 更新文档标题",
+      "description": "使用 effect 操作 DOM 或浏览器 API。",
+      "starterCode": "function App() {\n  const [count, setCount] = useState(0)\n\n  // 使用 useEffect 更新 document.title\n\n  return (\n    <div>\n      <p>计数: {count}</p>\n      <button onClick={() => setCount(count + 1)}>增加</button>\n    </div>\n  )\n}\n\nrender(<App />)",
+      "solution": "function App() {\n  const [count, setCount] = useState(0)\n\n  useEffect(() => {\n    document.title = `计数: ${count}`\n  }, [count])\n\n  return (\n    <div>\n      <p>计数: {count}</p>\n      <button onClick={() => setCount(count + 1)}>增加</button>\n    </div>\n  )\n}\n\nrender(<App />)",
+      "hints": [
+        "document.title = ...",
+        "依赖 count",
+        "count 变化时更新标题"
+      ],
+      "testCases": [
+        {
+          "type": "ast",
+          "description": "应该使用 useEffect",
+          "checker": "usesUseEffect"
+        },
+        {
+          "type": "pattern",
+          "description": "应该更新 document.title",
+          "pattern": "document\\.title"
+        },
+        {
+          "type": "pattern",
+          "description": "应该依赖 count",
+          "pattern": "\\[\\s*count\\s*\\]"
+        }
+      ]
+    },
+    {
+      "id": "effects-7",
+      "title": "事件监听器",
+      "difficulty": "medium",
+      "tags": ["useEffect", "事件"],
+      "estimatedTime": 7,
+      "question": "监听窗口 resize 事件",
+      "description": "添加事件监听器，并在清理函数中移除。",
+      "starterCode": "function App() {\n  const [width, setWidth] = useState(window.innerWidth)\n\n  useEffect(() => {\n    const handleResize = () => {\n      setWidth(window.innerWidth)\n    }\n\n    // 添加事件监听\n    // 返回清理函数移除监听\n  }, [])\n\n  return <div>窗口宽度: {width}px</div>\n}\n\nrender(<App />)",
+      "solution": "function App() {\n  const [width, setWidth] = useState(window.innerWidth)\n\n  useEffect(() => {\n    const handleResize = () => {\n      setWidth(window.innerWidth)\n    }\n\n    window.addEventListener('resize', handleResize)\n\n    return () => {\n      window.removeEventListener('resize', handleResize)\n    }\n  }, [])\n\n  return <div>窗口宽度: {width}px</div>\n}\n\nrender(<App />)",
+      "hints": [
+        "addEventListener('resize', ...)",
+        "清理: removeEventListener",
+        "防止内存泄漏"
+      ],
+      "testCases": [
+        {
+          "type": "pattern",
+          "description": "应该添加事件监听",
+          "pattern": "addEventListener"
+        },
+        {
+          "type": "pattern",
+          "description": "应该移除事件监听",
+          "pattern": "removeEventListener"
+        },
+        {
+          "type": "pattern",
+          "description": "应该返回清理函数",
+          "pattern": "return\\s*\\(\\s*\\)\\s*=>"
+        }
+      ]
+    },
+    {
+      "id": "effects-8",
+      "title": "条件执行 Effect",
+      "difficulty": "hard",
+      "tags": ["useEffect", "条件"],
+      "estimatedTime": 7,
+      "question": "只在 count 大于 5 时执行 effect",
+      "description": "在 effect 内部使用条件判断控制执行。",
+      "starterCode": "function App() {\n  const [count, setCount] = useState(0)\n\n  useEffect(() => {\n    // 只在 count > 5 时打印警告\n  }, [count])\n\n  return (\n    <div>\n      <p>计数: {count}</p>\n      <button onClick={() => setCount(count + 1)}>增加</button>\n    </div>\n  )\n}\n\nrender(<App />)",
+      "solution": "function App() {\n  const [count, setCount] = useState(0)\n\n  useEffect(() => {\n    if (count > 5) {\n      console.log('警告: 计数超过 5')\n    }\n  }, [count])\n\n  return (\n    <div>\n      <p>计数: {count}</p>\n      <button onClick={() => setCount(count + 1)}>增加</button>\n    </div>\n  )\n}\n\nrender(<App />)",
+      "hints": [
+        "在 effect 中使用 if",
+        "判断 count > 5",
+        "依赖数组仍然是 [count]"
+      ],
+      "testCases": [
+        {
+          "type": "ast",
+          "description": "应该使用 useEffect",
+          "checker": "usesUseEffect"
+        },
+        {
+          "type": "ast",
+          "description": "应该有 if 语句",
+          "checker": "hasIfStatement"
+        },
+        {
+          "type": "pattern",
+          "description": "应该比较 count",
+          "pattern": "count\\s*>"
+        }
+      ]
+    }
+  ]
+}

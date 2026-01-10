@@ -1,0 +1,207 @@
+{
+  "categoryId": "refs",
+  "name": "Refs 引用",
+  "description": "学习 useRef 访问 DOM 和保存值",
+  "icon": "🔗",
+  "order": 10,
+  "lessons": [
+    {
+      "id": "refs-1",
+      "title": "useRef 基础",
+      "difficulty": "easy",
+      "tags": ["useRef", "DOM"],
+      "estimatedTime": 5,
+      "question": "使用 useRef 获取输入框并让它自动聚焦",
+      "description": "useRef 返回可变的 ref 对象，用于访问 DOM 元素。",
+      "starterCode": "function App() {\n  // 创建 ref\n\n  useEffect(() => {\n    // 让输入框聚焦\n  }, [])\n\n  return <input /* 绑定 ref */ />\n}\n\nrender(<App />)",
+      "solution": "function App() {\n  const inputRef = useRef(null)\n\n  useEffect(() => {\n    inputRef.current.focus()\n  }, [])\n\n  return <input ref={inputRef} />\n}\n\nrender(<App />)",
+      "hints": [
+        "const inputRef = useRef(null)",
+        "ref={inputRef} 绑定到元素",
+        "inputRef.current.focus() 调用方法"
+      ],
+      "testCases": [
+        {
+          "type": "pattern",
+          "description": "应该使用 useRef",
+          "pattern": "useRef"
+        },
+        {
+          "type": "pattern",
+          "description": "应该绑定 ref",
+          "pattern": "ref="
+        },
+        {
+          "type": "pattern",
+          "description": "应该访问 current",
+          "pattern": "\\.current"
+        }
+      ]
+    },
+    {
+      "id": "refs-2",
+      "title": "操作 DOM",
+      "difficulty": "medium",
+      "tags": ["useRef", "DOM"],
+      "estimatedTime": 6,
+      "question": "点击按钮清空输入框",
+      "description": "通过 ref 直接操作 DOM 元素。",
+      "starterCode": "function App() {\n  const inputRef = useRef(null)\n\n  const handleClear = () => {\n    // 清空输入框的值\n  }\n\n  return (\n    <div>\n      <input ref={inputRef} defaultValue=\"测试文本\" />\n      <button onClick={handleClear}>清空</button>\n    </div>\n  )\n}\n\nrender(<App />)",
+      "solution": "function App() {\n  const inputRef = useRef(null)\n\n  const handleClear = () => {\n    inputRef.current.value = ''\n  }\n\n  return (\n    <div>\n      <input ref={inputRef} defaultValue=\"测试文本\" />\n      <button onClick={handleClear}>清空</button>\n    </div>\n  )\n}\n\nrender(<App />)",
+      "hints": [
+        "inputRef.current.value = ''",
+        "通过 ref 直接修改 DOM",
+        "不需要 state"
+      ],
+      "testCases": [
+        {
+          "type": "pattern",
+          "description": "应该访问 current.value",
+          "pattern": "\\.current\\.value"
+        },
+        {
+          "type": "pattern",
+          "description": "应该有 useRef",
+          "pattern": "useRef"
+        },
+        {
+          "type": "pattern",
+          "description": "应该有 handleClear",
+          "pattern": "handleClear"
+        }
+      ]
+    },
+    {
+      "id": "refs-3",
+      "title": "保存不触发渲染的值",
+      "difficulty": "medium",
+      "tags": ["useRef", "变量"],
+      "estimatedTime": 7,
+      "question": "使用 ref 保存定时器 ID",
+      "description": "ref 可以保存任意值，且修改不会触发渲染。",
+      "starterCode": "function App() {\n  const [count, setCount] = useState(0)\n  // 用 ref 保存定时器 ID\n\n  const start = () => {\n    // 启动定时器，每秒 +1\n    // 保存定时器 ID\n  }\n\n  const stop = () => {\n    // 清除定时器\n  }\n\n  return (\n    <div>\n      <p>计数: {count}</p>\n      <button onClick={start}>开始</button>\n      <button onClick={stop}>停止</button>\n    </div>\n  )\n}\n\nrender(<App />)",
+      "solution": "function App() {\n  const [count, setCount] = useState(0)\n  const timerRef = useRef(null)\n\n  const start = () => {\n    timerRef.current = setInterval(() => {\n      setCount(c => c + 1)\n    }, 1000)\n  }\n\n  const stop = () => {\n    clearInterval(timerRef.current)\n  }\n\n  return (\n    <div>\n      <p>计数: {count}</p>\n      <button onClick={start}>开始</button>\n      <button onClick={stop}>停止</button>\n    </div>\n  )\n}\n\nrender(<App />)",
+      "hints": [
+        "timerRef.current = setInterval(...)",
+        "clearInterval(timerRef.current)",
+        "ref 保存值不触发渲染"
+      ],
+      "testCases": [
+        {
+          "type": "pattern",
+          "description": "应该使用 useRef",
+          "pattern": "useRef"
+        },
+        {
+          "type": "pattern",
+          "description": "应该保存到 ref.current",
+          "pattern": "\\.current\\s*=\\s*setInterval"
+        },
+        {
+          "type": "pattern",
+          "description": "应该清除定时器",
+          "pattern": "clearInterval"
+        }
+      ]
+    },
+    {
+      "id": "refs-4",
+      "title": "获取前一次的值",
+      "difficulty": "hard",
+      "tags": ["useRef", "自定义Hook"],
+      "estimatedTime": 8,
+      "question": "使用 ref 保存 count 的前一个值",
+      "description": "ref 在渲染之间保持不变，可以用来保存之前的状态。",
+      "starterCode": "function App() {\n  const [count, setCount] = useState(0)\n  const prevCountRef = useRef()\n\n  useEffect(() => {\n    // 在 effect 中更新前一个值\n  })\n\n  const prevCount = prevCountRef.current\n\n  return (\n    <div>\n      <p>当前: {count}</p>\n      <p>之前: {prevCount}</p>\n      <button onClick={() => setCount(count + 1)}>增加</button>\n    </div>\n  )\n}\n\nrender(<App />)",
+      "solution": "function App() {\n  const [count, setCount] = useState(0)\n  const prevCountRef = useRef()\n\n  useEffect(() => {\n    prevCountRef.current = count\n  })\n\n  const prevCount = prevCountRef.current\n\n  return (\n    <div>\n      <p>当前: {count}</p>\n      <p>之前: {prevCount}</p>\n      <button onClick={() => setCount(count + 1)}>增加</button>\n    </div>\n  )\n}\n\nrender(<App />)",
+      "hints": [
+        "在 useEffect 中更新 ref",
+        "不传依赖数组，每次渲染后执行",
+        "prevCountRef.current = count"
+      ],
+      "testCases": [
+        {
+          "type": "ast",
+          "description": "应该使用 useEffect",
+          "checker": "usesUseEffect"
+        },
+        {
+          "type": "pattern",
+          "description": "应该更新 ref.current",
+          "pattern": "\\.current\\s*=\\s*count"
+        },
+        {
+          "type": "pattern",
+          "description": "应该使用 useRef",
+          "pattern": "useRef"
+        }
+      ]
+    },
+    {
+      "id": "refs-5",
+      "title": "滚动到元素",
+      "difficulty": "medium",
+      "tags": ["useRef", "DOM"],
+      "estimatedTime": 6,
+      "question": "点击按钮滚动到底部",
+      "description": "使用 ref 调用 DOM 方法实现滚动。",
+      "starterCode": "function App() {\n  const bottomRef = useRef(null)\n\n  const scrollToBottom = () => {\n    // 滚动到 bottomRef 所在位置\n  }\n\n  return (\n    <div>\n      <button onClick={scrollToBottom}>滚动到底部</button>\n      <div style={{ height: '200px', overflow: 'auto' }}>\n        <p>内容1</p>\n        <p>内容2</p>\n        <p>内容3</p>\n        <p>内容4</p>\n        <p>内容5</p>\n        <div ref={bottomRef}>底部</div>\n      </div>\n    </div>\n  )\n}\n\nrender(<App />)",
+      "solution": "function App() {\n  const bottomRef = useRef(null)\n\n  const scrollToBottom = () => {\n    bottomRef.current.scrollIntoView({ behavior: 'smooth' })\n  }\n\n  return (\n    <div>\n      <button onClick={scrollToBottom}>滚动到底部</button>\n      <div style={{ height: '200px', overflow: 'auto' }}>\n        <p>内容1</p>\n        <p>内容2</p>\n        <p>内容3</p>\n        <p>内容4</p>\n        <p>内容5</p>\n        <div ref={bottomRef}>底部</div>\n      </div>\n    </div>\n  )\n}\n\nrender(<App />)",
+      "hints": [
+        "scrollIntoView() 方法",
+        "{ behavior: 'smooth' } 平滑滚动",
+        "bottomRef.current.scrollIntoView(...)"
+      ],
+      "testCases": [
+        {
+          "type": "pattern",
+          "description": "应该调用 scrollIntoView",
+          "pattern": "scrollIntoView"
+        },
+        {
+          "type": "pattern",
+          "description": "应该使用 useRef",
+          "pattern": "useRef"
+        },
+        {
+          "type": "pattern",
+          "description": "应该绑定 ref",
+          "pattern": "ref=\\{bottomRef\\}"
+        }
+      ]
+    },
+    {
+      "id": "refs-6",
+      "title": "Ref 回调",
+      "difficulty": "hard",
+      "tags": ["useRef", "回调"],
+      "estimatedTime": 8,
+      "question": "使用 ref 回调函数测量元素尺寸",
+      "description": "ref 可以传入回调函数，元素挂载时调用。",
+      "starterCode": "function App() {\n  const [height, setHeight] = useState(0)\n\n  const measureRef = (node) => {\n    // node 是 DOM 元素\n    // 获取并设置高度\n  }\n\n  return (\n    <div>\n      <div ref={measureRef} style={{ padding: '20px', background: '#f0f0f0' }}>\n        这个 div 的高度是多少？\n      </div>\n      <p>高度: {height}px</p>\n    </div>\n  )\n}\n\nrender(<App />)",
+      "solution": "function App() {\n  const [height, setHeight] = useState(0)\n\n  const measureRef = (node) => {\n    if (node) {\n      setHeight(node.getBoundingClientRect().height)\n    }\n  }\n\n  return (\n    <div>\n      <div ref={measureRef} style={{ padding: '20px', background: '#f0f0f0' }}>\n        这个 div 的高度是多少？\n      </div>\n      <p>高度: {height}px</p>\n    </div>\n  )\n}\n\nrender(<App />)",
+      "hints": [
+        "ref 可以传入函数",
+        "node.getBoundingClientRect().height",
+        "检查 node 是否存在"
+      ],
+      "testCases": [
+        {
+          "type": "pattern",
+          "description": "应该定义 measureRef 函数",
+          "pattern": "measureRef\\s*="
+        },
+        {
+          "type": "pattern",
+          "description": "应该使用 getBoundingClientRect",
+          "pattern": "getBoundingClientRect"
+        },
+        {
+          "type": "pattern",
+          "description": "应该设置 height",
+          "pattern": "setHeight"
+        }
+      ]
+    }
+  ]
+}
