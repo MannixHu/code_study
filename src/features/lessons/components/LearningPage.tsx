@@ -3,42 +3,93 @@
  * 主学习页面，包含代码编辑器和实时预览
  */
 
-import { Spin } from 'antd'
-import { PlayCircleOutlined, CodeOutlined } from '@ant-design/icons'
-import { useLesson } from '../hooks/useLesson'
-import { useEditor, useTestRunner, CodeEditor } from '../../editor'
-import { TestResults } from '../../progress'
+import { useState } from "react";
+import { Spin } from "antd";
+import { PlayCircleOutlined, CodeOutlined } from "@ant-design/icons";
+import { useLesson } from "../hooks/useLesson";
+import { useEditor, useTestRunner, CodeEditor } from "../../editor";
+import { TestResults } from "../../progress";
+import { useHint, HintButton, HintPanel } from "../../hints";
 
 function LearningPage() {
-  const { currentLesson, loading } = useLesson()
+  const { currentLesson, loading } = useLesson();
   const { userCode, isSaved, setUserCode, resetCode, saveCode } = useEditor(
-    currentLesson?.id || '',
-    currentLesson?.starterCode
-  )
+    currentLesson?.id || "",
+    currentLesson?.starterCode,
+  );
   const { testResults, isRunningTests, isCorrect, runTests } = useTestRunner(
-    currentLesson?.id || ''
-  )
+    currentLesson?.id || "",
+  );
+
+  // Show/hide hint panel
+  const [showHintPanel, setShowHintPanel] = useState(false);
+
+  // Hint system - only initialize when lesson is available
+  const hintOptions = currentLesson
+    ? {
+        lesson: currentLesson,
+        userCode,
+        testResults,
+      }
+    : null;
+
+  const {
+    currentHint,
+    hintHistory,
+    isLoading: isHintLoading,
+    error: hintError,
+    currentLevel,
+    maxLevel,
+    requestHint,
+    resetHints,
+    canRequestHint,
+    isAIEnabled,
+  } = useHint(
+    hintOptions || {
+      lesson: {
+        id: "",
+        title: "",
+        difficulty: "easy",
+        tags: [],
+        estimatedTime: 0,
+        question: "",
+        description: "",
+        starterCode: "",
+        solution: "",
+        hints: [],
+        testCases: [],
+      },
+      userCode: "",
+      testResults: [],
+    },
+  );
 
   if (loading || !currentLesson) {
     return (
       <div className="learning-page loading-state">
         <Spin size="large" />
       </div>
-    )
+    );
   }
 
   const handleRunTests = async () => {
-    await runTests(userCode, currentLesson.testCases)
-  }
+    await runTests(userCode, currentLesson.testCases);
+  };
 
   const handleShowSolution = () => {
-    setUserCode(currentLesson.solution)
-  }
+    setUserCode(currentLesson.solution);
+  };
 
   const handleReset = async () => {
-    await resetCode(currentLesson.id)
-    setUserCode(currentLesson.starterCode)
-  }
+    await resetCode(currentLesson.id);
+    setUserCode(currentLesson.starterCode);
+    resetHints();
+  };
+
+  const handleRequestHint = async () => {
+    await requestHint();
+    setShowHintPanel(true);
+  };
 
   return (
     <div className="learning-page">
@@ -67,6 +118,19 @@ function LearningPage() {
         </div>
 
         <div className="preview-wrapper">
+          {/* Hint Panel */}
+          {showHintPanel && (hintHistory.length > 0 || hintError) && (
+            <div style={{ marginBottom: 12 }}>
+              <HintPanel
+                currentHint={currentHint}
+                hintHistory={hintHistory}
+                error={hintError}
+                isAIEnabled={isAIEnabled}
+                onClose={() => setShowHintPanel(false)}
+              />
+            </div>
+          )}
+
           {testResults.length > 0 && (
             <TestResults
               results={testResults}
@@ -75,7 +139,7 @@ function LearningPage() {
             />
           )}
 
-          {testResults.length === 0 && (
+          {testResults.length === 0 && !showHintPanel && (
             <div className="preview-placeholder">
               <p>运行测试查看结果</p>
             </div>
@@ -89,18 +153,22 @@ function LearningPage() {
             onClick={handleRunTests}
             disabled={isRunningTests}
           >
-            {isRunningTests ? '运行中...' : '运行测试'}
+            {isRunningTests ? "运行中..." : "运行测试"}
           </button>
-          <button
-            className="btn btn-default"
-            onClick={handleReset}
-          >
+
+          <HintButton
+            onClick={handleRequestHint}
+            isLoading={isHintLoading}
+            currentLevel={currentLevel}
+            maxLevel={maxLevel}
+            disabled={!canRequestHint}
+            hintsUsed={hintHistory.length}
+          />
+
+          <button className="btn btn-default" onClick={handleReset}>
             重置代码
           </button>
-          <button
-            className="btn btn-default"
-            onClick={handleShowSolution}
-          >
+          <button className="btn btn-default" onClick={handleShowSolution}>
             查看答案
           </button>
           <button
@@ -112,7 +180,7 @@ function LearningPage() {
         </div>
       </div>
     </div>
-  )
+  );
 }
 
-export default LearningPage
+export default LearningPage;

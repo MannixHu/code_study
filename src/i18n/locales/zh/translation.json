@@ -56,7 +56,25 @@
   "hints": {
     "title": "提示",
     "noMoreHints": "没有更多提示了",
-    "hintNumber": "提示 {{number}}"
+    "hintNumber": "提示 {{number}}",
+    "getHint": "获取提示",
+    "generating": "生成中...",
+    "noMoreAvailable": "无更多提示",
+    "maxLevelReached": "已达到最大提示次数",
+    "generatingHint": "正在生成提示...",
+    "levelIndicator": "获取提示 (级别 {{current}}/{{max}})",
+    "history": "提示历史",
+    "getFailed": "获取提示失败",
+    "clickToGetHelp": "点击\"获取提示\"按钮获取帮助",
+    "levels": {
+      "gentle": "温和提示",
+      "specific": "具体提示",
+      "detailed": "详细提示"
+    },
+    "source": {
+      "ai": "AI",
+      "static": "静态"
+    }
   },
   "settings": {
     "language": "语言",
