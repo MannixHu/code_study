@@ -69,8 +69,14 @@ describe("AppSidebar", () => {
   };
 
   const mockSetCurrentLesson = vi.fn();
+  const mockSetCurrentCategory = vi.fn();
   const mockResetHint = vi.fn();
   const mockNextHint = vi.fn();
+
+  const mockCategories = [
+    { id: "jsx", name: "JSX 基础", icon: "📝", total: 3, completed: 0 },
+    { id: "components", name: "组件基础", icon: "🧩", total: 2, completed: 0 },
+  ];
 
   beforeEach(() => {
     vi.clearAllMocks();
@@ -79,7 +85,10 @@ describe("AppSidebar", () => {
       currentCategory: mockCategory,
       currentLesson: mockCategory.lessons[0],
       currentLessonId: "1",
+      currentCategoryId: "jsx",
+      categories: mockCategories,
       setCurrentLesson: mockSetCurrentLesson,
+      setCurrentCategory: mockSetCurrentCategory,
     });
 
     mockUseProgress.mockReturnValue({
@@ -164,7 +173,10 @@ describe("AppSidebar", () => {
         currentCategory: null,
         currentLesson: null,
         currentLessonId: null,
+        currentCategoryId: null,
+        categories: mockCategories,
         setCurrentLesson: mockSetCurrentLesson,
+        setCurrentCategory: mockSetCurrentCategory,
       });
 
       const { container } = render(<AppSidebar />);
@@ -177,7 +189,10 @@ describe("AppSidebar", () => {
         currentCategory: mockCategory,
         currentLesson: null,
         currentLessonId: null,
+        currentCategoryId: "jsx",
+        categories: mockCategories,
         setCurrentLesson: mockSetCurrentLesson,
+        setCurrentCategory: mockSetCurrentCategory,
       });
 
       const { container } = render(<AppSidebar />);
@@ -206,7 +221,10 @@ describe("AppSidebar", () => {
         currentCategory: mockCategory,
         currentLesson: mockCategory.lessons[2],
         currentLessonId: "3",
+        currentCategoryId: "jsx",
+        categories: mockCategories,
         setCurrentLesson: mockSetCurrentLesson,
+        setCurrentCategory: mockSetCurrentCategory,
       });
 
       render(<AppSidebar />);
@@ -220,7 +238,10 @@ describe("AppSidebar", () => {
         currentCategory: mockCategory,
         currentLesson: mockCategory.lessons[1],
         currentLessonId: "2",
+        currentCategoryId: "jsx",
+        categories: mockCategories,
         setCurrentLesson: mockSetCurrentLesson,
+        setCurrentCategory: mockSetCurrentCategory,
       });
 
       render(<AppSidebar />);
@@ -249,7 +270,10 @@ describe("AppSidebar", () => {
         currentCategory: mockCategory,
         currentLesson: mockCategory.lessons[1],
         currentLessonId: "2",
+        currentCategoryId: "jsx",
+        categories: mockCategories,
         setCurrentLesson: mockSetCurrentLesson,
+        setCurrentCategory: mockSetCurrentCategory,
       });
 
       render(<AppSidebar />);
@@ -313,7 +337,10 @@ describe("AppSidebar", () => {
         currentCategory: mockCategory,
         currentLesson: mockCategory.lessons[1],
         currentLessonId: "2",
+        currentCategoryId: "jsx",
+        categories: mockCategories,
         setCurrentLesson: mockSetCurrentLesson,
+        setCurrentCategory: mockSetCurrentCategory,
       });
 
       render(<AppSidebar />);
@@ -327,7 +354,10 @@ describe("AppSidebar", () => {
         currentCategory: mockCategory,
         currentLesson: mockCategory.lessons[2],
         currentLessonId: "3",
+        currentCategoryId: "jsx",
+        categories: mockCategories,
         setCurrentLesson: mockSetCurrentLesson,
+        setCurrentCategory: mockSetCurrentCategory,
       });
 
       render(<AppSidebar />);

@@ -5,7 +5,8 @@
 
 import { useEffect } from "react";
 import { useLessonStore } from "../../../store";
-import type { Category, Lesson } from "../types/lesson";
+import { lessonService } from "../services/lesson-service";
+import type { Category, CategoryMeta, Lesson } from "../types/lesson";
 
 // 模块级别的初始化标志，确保只初始化一次
 let isInitialized = false;
@@ -20,6 +21,7 @@ export interface UseLessonResult {
   currentLesson: Lesson | null;
   currentCategoryId: string;
   currentLessonId: string;
+  categories: CategoryMeta[];
   loading: boolean;
   error: string | null;
   setCurrentCategory: (categoryId: string) => Promise<void>;
@@ -35,28 +37,51 @@ export function useLesson(): UseLessonResult {
     currentLesson,
     currentCategoryId,
     currentLessonId,
+    categories,
     loading,
     error,
     setCurrentCategoryId,
     setCurrentLessonId,
+    setCategories,
   } = useLessonStore();
 
-  // 在组件挂载时加载初始分类（仅一次，模块级别）
+  // 在组件挂载时加载初始分类和分类列表（仅一次，模块级别）
   useEffect(() => {
-    if (!isInitialized && !loading && currentCategoryId && !currentCategory) {
+    if (!isInitialized && !loading) {
       isInitialized = true;
-      setCurrentCategoryId(currentCategoryId).catch((err) => {
-        console.error("Failed to load initial category:", err);
-        isInitialized = false; // 允许重试
-      });
+
+      // 加载分类列表
+      if (!categories || categories.length === 0) {
+        lessonService.getAllCategoryMetadata().then((result) => {
+          if (result.success) {
+            setCategories(result.data);
+          }
+        });
+      }
+
+      // 加载当前分类
+      if (currentCategoryId && !currentCategory) {
+        setCurrentCategoryId(currentCategoryId).catch((err) => {
+          console.error("Failed to load initial category:", err);
+          isInitialized = false; // 允许重试
+        });
+      }
     }
-  }, [loading, currentCategoryId, currentCategory, setCurrentCategoryId]);
+  }, [
+    loading,
+    currentCategoryId,
+    currentCategory,
+    categories?.length,
+    setCurrentCategoryId,
+    setCategories,
+  ]);
 
   return {
     currentCategory,
     currentLesson,
     currentCategoryId,
     currentLessonId,
+    categories: categories || [],
     loading,
     error,
     setCurrentCategory: setCurrentCategoryId,

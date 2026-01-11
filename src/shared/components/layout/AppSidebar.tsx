@@ -14,8 +14,15 @@ import "./layout.css";
 const { Sider } = Layout;
 
 function AppSidebar() {
-  const { currentCategory, currentLesson, currentLessonId, setCurrentLesson } =
-    useLesson();
+  const {
+    currentCategory,
+    currentLesson,
+    currentLessonId,
+    currentCategoryId,
+    categories,
+    setCurrentCategory,
+    setCurrentLesson,
+  } = useLesson();
   const { completedLessonIds } = useProgress();
   const { showHint, hintIndex, resetHint } = useUIStore();
 
@@ -87,29 +94,64 @@ function AppSidebar() {
           className="border-b border-gray-100"
           style={{ padding: "20px 20px 16px" }}
         >
-          <div className="space-y-3">
-            <label className="block text-xs font-semibold uppercase tracking-wide text-gray-500">
-              选择题目
-            </label>
-            <Select
-              value={currentLessonId}
-              onChange={setCurrentLesson}
-              className="w-full"
-              size="middle"
-              options={currentCategory.lessons.map((lesson, idx) => ({
-                value: lesson.id,
-                label: (
-                  <span className="flex items-center gap-2 min-w-0">
-                    {completedLessonIds.has(lesson.id) && (
-                      <span className="text-green-500">✓</span>
-                    )}
-                    <span className="truncate">
-                      {idx + 1}. {lesson.title}
+          <div className="space-y-4">
+            {/* 分类选择器 */}
+            <div className="space-y-2">
+              <label className="block text-xs font-semibold uppercase tracking-wide text-gray-500">
+                选择分类
+              </label>
+              <Select
+                value={currentCategoryId}
+                onChange={(value) => {
+                  setCurrentCategory(value);
+                  resetHint();
+                }}
+                className="w-full"
+                size="middle"
+                options={categories.map((cat) => ({
+                  value: cat.id,
+                  label: (
+                    <span className="flex items-center gap-2">
+                      <span>{cat.icon}</span>
+                      <span>{cat.name}</span>
+                      <span className="text-gray-400 text-xs ml-auto">
+                        {cat.total} 题
+                      </span>
                     </span>
-                  </span>
-                ),
-              }))}
-            />
+                  ),
+                }))}
+              />
+            </div>
+
+            {/* 题目选择器 */}
+            <div className="space-y-2">
+              <label className="block text-xs font-semibold uppercase tracking-wide text-gray-500">
+                选择题目
+              </label>
+              <Select
+                value={currentLessonId}
+                onChange={(value) => {
+                  setCurrentLesson(value);
+                  resetHint();
+                }}
+                className="w-full"
+                size="middle"
+                options={currentCategory.lessons.map((lesson, idx) => ({
+                  value: lesson.id,
+                  label: (
+                    <span className="flex items-center gap-2 min-w-0">
+                      {completedLessonIds.has(lesson.id) && (
+                        <span className="text-green-500">✓</span>
+                      )}
+                      <span className="truncate">
+                        {idx + 1}. {lesson.title}
+                      </span>
+                    </span>
+                  ),
+                }))}
+              />
+            </div>
+
             <div className="flex flex-wrap gap-2 pt-0.5">
               <Tag color={getDifficultyColor(currentLesson.difficulty)}>
                 {getDifficultyText(currentLesson.difficulty)}
