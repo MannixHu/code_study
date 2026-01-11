@@ -2,7 +2,7 @@
 
 **Status:** Task 1 Complete ✅ | Tasks 2-10 Ready for Execution
 
-**Worktree Location:** `/Users/mannix/Project/MeFlow3_prod_study/.worktrees/refactor-phase1`
+**Worktree Location:** `/Users/mannix/Project/_prod_study/.worktrees/refactor-phase1`
 
 **Branch:** `refactor/phase1-architecture`
 
@@ -13,16 +13,19 @@
 ## ✅ What's Been Done
 
 ### 1. Design & Planning
+
 - Completed brainstorming session (Method A: Aggressive Refactoring)
 - Full implementation plan generated: `docs/plans/2025-01-10-refactor-phase1-architecture.md`
 - 10 detailed tasks with full specs, code examples, and verification steps
 
 ### 2. Worktree Setup
+
 - Created isolated workspace: `.worktrees/refactor-phase1`
 - Clean baseline: all dependencies installed, no build errors
 - Git configured with proper .gitignore for worktrees
 
 ### 3. Task 1 Complete: Directory Structure Created
+
 - ✅ All 33 directories created:
   - `src/features/{lessons,editor,progress,testing}/{components,hooks,services,types}`
   - `src/shared/{components,hooks,types,constants,utils,styles,db}`
@@ -36,29 +39,34 @@
 All tasks are fully specified in: `docs/plans/2025-01-10-refactor-phase1-architecture.md`
 
 ### Task 2: Migrate Lesson Feature
+
 - Move lesson components, hooks, services, types
 - Create `features/lessons/index.ts` with public API
 - Update imports in App.tsx
 - Expected commit: "refactor: migrate lesson feature to features/lessons"
 
 ### Task 3: Migrate Editor Feature
+
 - Move editor components, hooks, services, utils, workers
 - Create `features/editor/index.ts`
 - Update all editor imports
 - Expected commit: "refactor: migrate editor feature to features/editor"
 
 ### Task 4: Migrate Progress Feature
+
 - Move progress components, hooks, services, repository
 - Create `features/progress/index.ts` and types
 - Expected commit: "refactor: migrate progress feature to features/progress"
 
 ### Task 5: Migrate Shared Code
+
 - Move layout components to `shared/components/layout`
 - Move database to `shared/db`
 - Create shared types and index files
 - Expected commit: "refactor: migrate shared resources to shared directory"
 
 ### Task 6: Reorganize Stores with Slices
+
 - Copy existing stores to `store/slices/`
 - Create `store/slices/index.ts` for unified exports
 - Simplify main `store/index.ts`
@@ -66,24 +74,28 @@ All tasks are fully specified in: `docs/plans/2025-01-10-refactor-phase1-archite
 - Expected commit: "refactor: reorganize stores using slices pattern"
 
 ### Task 7: Delete Old Directory Structure
+
 - Delete: `src/components`, `src/hooks`, `src/services`, `src/types`, `src/utils`, `src/repository`, `src/workers`
 - Delete old store files: `lessonStore.ts`, `editorStore.ts`, `progressStore.ts`, `uiStore.ts`
 - Update App.tsx final imports
 - Expected commit: "refactor: remove old directory structure, migration complete"
 
 ### Task 8: Fix Import Paths
+
 - Scan all files for correct relative imports
 - Ensure: same-feature uses relative (./), other features via public API, shared via path
 - Check for circular dependencies
 - Expected commit: "refactor: fix internal import paths across features"
 
 ### Task 9: Create Documentation
+
 - Create `src/features/README.md` - feature structure explanation
 - Create `src/shared/README.md` - shared resources explanation
 - Document naming conventions and import rules
 - Expected commit: "docs: add README and structure documentation"
 
 ### Task 10: Verify Build & Run
+
 - Full build: `npm run build`
 - Dev server: `npm run dev`
 - Manual testing (load app, test functionality)
@@ -94,12 +106,14 @@ All tasks are fully specified in: `docs/plans/2025-01-10-refactor-phase1-archite
 ## 🚀 How to Continue in New Session
 
 ### Step 1: Open New Session in Worktree
+
 ```bash
-cd /Users/mannix/Project/MeFlow3_prod_study/.worktrees/refactor-phase1
+cd /Users/mannix/Project/_prod_study/.worktrees/refactor-phase1
 # Start Claude Code in this directory
 ```
 
 ### Step 2: Invoke the Execution Skill
+
 ```
 Use: /superpowers:execute-plan
 
@@ -114,6 +128,7 @@ The executing-plans skill will:
 ```
 
 ### Step 3: Monitor Progress
+
 - Check git log: `git log --oneline`
 - Verify builds: `npm run build`
 - Test dev server: `npm run dev`
@@ -199,12 +214,14 @@ src/
 ## 📝 Next Phases (After Phase 1)
 
 **Phase 2: Code Quality & Standardization**
+
 - Naming conventions (files, functions, variables)
 - TypeScript strict mode enforcement
 - Unified error handling pattern
 - Unit test coverage for critical paths
 
 **Phase 3: UI Modernization**
+
 - Color system upgrade
 - Component style enhancements
 - Dark mode support

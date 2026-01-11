@@ -1,6 +1,6 @@
-# Contributing to MeFlow3
+# Contributing to
 
-Thank you for your interest in contributing to MeFlow3!
+Thank you for your interest in contributing to !
 
 ## Development Workflow
 

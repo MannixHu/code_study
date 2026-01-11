@@ -1,6 +1,6 @@
 # Phase 4: CI/CD, Performance & Monitoring - Design Document
 
-**Project:** MeFlow3 - React Learning Platform
+**Project:** - React Learning Platform
 **Phase:** Phase 4 - CI/CD, Automation & Production Readiness
 **Design Date:** 2026-01-10
 **Estimated Duration:** 7-10 days
@@ -13,12 +13,14 @@
 ### Scope
 
 **Included in Phase 4:**
+
 - ✅ GitHub Actions CI workflows (testing + building)
 - ✅ Pre-commit & Pre-push hooks (quality gates)
 - ✅ Performance optimization (bundle, lazy loading, React.memo)
 - ✅ Monitoring setup (error boundaries, Web Vitals, local logging)
 
 **Excluded from Phase 4:**
+
 - ❌ Deployment (deferred to later)
 - ❌ Extensive documentation (only essentials)
 - ❌ External monitoring services (Sentry - optional future upgrade)
@@ -42,10 +44,12 @@
 **Workflow 1: CI Pipeline (`.github/workflows/ci.yml`)**
 
 **Trigger Conditions:**
+
 - Pull Request creation/update
 - Push to `main` branch
 
 **Jobs:**
+
 1. **Type Check Job**
    - Run TypeScript compiler (`tsc --noEmit`)
    - Fail fast if type errors
@@ -64,6 +68,7 @@
    - Ensure no build errors
 
 **Parallelization:**
+
 - Type check, lint, test run in parallel
 - Build runs after tests pass
 - Estimated time: 3-5 minutes
@@ -71,9 +76,11 @@
 **Workflow 2: Performance Check (`.github/workflows/performance.yml`)**
 
 **Trigger Conditions:**
+
 - Pull Request to `main` branch
 
 **Jobs:**
+
 1. **Bundle Analysis**
    - Build production bundle
    - Analyze bundle size with rollup-plugin-visualizer
@@ -105,6 +112,7 @@
 ```
 
 **Benefits:**
+
 - Faster CI runs (50-70% speedup)
 - Reduced network usage
 - Consistent builds
@@ -116,6 +124,7 @@
 #### Husky + Lint-staged Setup
 
 **Tools:**
+
 - **Husky**: Git hooks manager
 - **Lint-staged**: Run linters on staged files only
 
@@ -124,6 +133,7 @@
 **Purpose:** Quick sanity checks before commit
 
 **Checks:**
+
 1. **Lint-staged** (staged files only)
    - ESLint with auto-fix
    - Prettier formatting
@@ -136,16 +146,12 @@
    - Only tests related to changed files
 
 **Configuration:**
+
 ```json
 {
   "lint-staged": {
-    "*.{ts,tsx}": [
-      "eslint --fix",
-      "prettier --write"
-    ],
-    "*.{json,md,css}": [
-      "prettier --write"
-    ]
+    "*.{ts,tsx}": ["eslint --fix", "prettier --write"],
+    "*.{json,md,css}": ["prettier --write"]
   }
 }
 ```
@@ -155,6 +161,7 @@
 **Purpose:** Comprehensive validation before push
 
 **Checks:**
+
 1. **Full TypeScript build**
    - `npm run build -- --noEmit`
    - Catch all type errors
@@ -168,12 +175,14 @@
    - Ensure production build works
 
 **Bypass Option:**
+
 - Allow `--no-verify` for emergency situations
 - Document when to use it
 
 #### Hook Performance
 
 **Optimization strategies:**
+
 - Use `--findRelatedTests` in pre-commit
 - Cache TypeScript incremental builds
 - Skip tests that haven't changed
@@ -186,6 +195,7 @@
 #### Bundle Optimization
 
 **Analysis Tools:**
+
 - `rollup-plugin-visualizer` for bundle analysis
 - Vite built-in code splitting
 
@@ -199,6 +209,7 @@
 **Optimization Strategies:**
 
 1. **Code Splitting by Routes**
+
 ```typescript
 // App.tsx
 import { lazy, Suspense } from 'react'
@@ -219,28 +230,31 @@ function App() {
 ```
 
 2. **Lazy Load Heavy Dependencies**
+
 ```typescript
 // Monaco Editor (large dependency ~2MB)
-const CodeEditor = lazy(() => import('@monaco-editor/react'))
+const CodeEditor = lazy(() => import("@monaco-editor/react"));
 
 // Babel (only needed at runtime)
 const loadBabel = async () => {
-  const { transform } = await import('@babel/standalone')
-  return transform
-}
+  const { transform } = await import("@babel/standalone");
+  return transform;
+};
 ```
 
 3. **Optimize Antd Imports**
+
 ```typescript
 // ❌ Bad: Imports entire library
-import { Button, Modal } from 'antd'
+import { Button, Modal } from "antd";
 
 // ✅ Good: Tree-shakeable imports (if using babel-plugin-import)
-import Button from 'antd/es/button'
-import Modal from 'antd/es/modal'
+import Button from "antd/es/button";
+import Modal from "antd/es/modal";
 ```
 
 4. **Remove Unused Dependencies**
+
 - Audit package.json
 - Run `npx depcheck`
 - Remove unused imports
@@ -254,22 +268,24 @@ Only memoize expensive components:
 ```typescript
 // 1. CodeEditor - prevents editor re-renders
 export default memo(CodeEditor, (prev, next) => {
-  return prev.value === next.value && prev.language === next.language
-})
+  return prev.value === next.value && prev.language === next.language;
+});
 
 // 2. TestResults - expensive rendering
-export default memo(TestResults)
+export default memo(TestResults);
 
 // 3. CategoryTabs - static content
-export default memo(CategoryTabs)
+export default memo(CategoryTabs);
 ```
 
 **Avoid over-optimization:**
+
 - Don't memo every component
 - Measure with React DevTools Profiler first
 - Only optimize actual bottlenecks
 
 **Other optimizations:**
+
 - `useMemo` for expensive calculations
 - `useCallback` for stable references
 - Virtual scrolling for long lists (if needed)
@@ -286,6 +302,7 @@ export default memo(CategoryTabs)
 ```
 
 **lighthouserc.json:**
+
 ```json
 {
   "ci": {
@@ -295,10 +312,10 @@ export default memo(CategoryTabs)
     },
     "assert": {
       "assertions": {
-        "categories:performance": ["error", {"minScore": 0.85}],
-        "categories:accessibility": ["error", {"minScore": 0.90}],
-        "categories:best-practices": ["error", {"minScore": 0.90}],
-        "categories:seo": ["error", {"minScore": 0.80}]
+        "categories:performance": ["error", { "minScore": 0.85 }],
+        "categories:accessibility": ["error", { "minScore": 0.9 }],
+        "categories:best-practices": ["error", { "minScore": 0.9 }],
+        "categories:seo": ["error", { "minScore": 0.8 }]
       }
     },
     "upload": {
@@ -309,6 +326,7 @@ export default memo(CategoryTabs)
 ```
 
 **PR Comments:**
+
 - Lighthouse bot posts results to PR
 - Shows score changes from base branch
 - Warns if scores drop > 5 points
@@ -320,6 +338,7 @@ export default memo(CategoryTabs)
 #### Lightweight Monitoring Architecture
 
 **Design Philosophy:**
+
 - No external services (yet)
 - Local-first approach
 - Easy to upgrade to Sentry later
@@ -381,46 +400,44 @@ class GlobalErrorBoundary extends Component<Props, State> {
 **Storage:** IndexedDB (via existing Dexie setup)
 
 **Schema:**
+
 ```typescript
 interface ErrorLog {
-  id?: number
-  message: string
-  stack?: string
-  componentStack?: string
-  timestamp: number
-  url: string
-  userAgent: string
-  severity: 'error' | 'warning' | 'info'
+  id?: number;
+  message: string;
+  stack?: string;
+  componentStack?: string;
+  timestamp: number;
+  url: string;
+  userAgent: string;
+  severity: "error" | "warning" | "info";
 }
 ```
 
 **Error Logger Service:**
+
 ```typescript
 // src/services/error-logger.ts
 class ErrorLogger {
   async log(error: ErrorLog) {
-    await db.errorLogs.add(error)
+    await db.errorLogs.add(error);
 
     // Development: Also log to console
     if (import.meta.env.DEV) {
-      console.error('[ErrorLogger]', error)
+      console.error("[ErrorLogger]", error);
     }
   }
 
   async getLogs(limit = 50) {
-    return db.errorLogs
-      .orderBy('timestamp')
-      .reverse()
-      .limit(limit)
-      .toArray()
+    return db.errorLogs.orderBy("timestamp").reverse().limit(limit).toArray();
   }
 
   async clear() {
-    await db.errorLogs.clear()
+    await db.errorLogs.clear();
   }
 }
 
-export const errorLogger = new ErrorLogger()
+export const errorLogger = new ErrorLogger();
 ```
 
 #### Web Vitals Monitoring
@@ -429,12 +446,12 @@ export const errorLogger = new ErrorLogger()
 
 ```typescript
 // src/utils/web-vitals.ts
-import { onCLS, onFID, onLCP, onFCP, onTTFB } from 'web-vitals'
+import { onCLS, onFID, onLCP, onFCP, onTTFB } from "web-vitals";
 
 function sendToAnalytics(metric: Metric) {
   // Log to console in development
   if (import.meta.env.DEV) {
-    console.log(`[Web Vitals] ${metric.name}:`, metric.value)
+    console.log(`[Web Vitals] ${metric.name}:`, metric.value);
   }
 
   // Store in IndexedDB for analysis
@@ -442,19 +459,20 @@ function sendToAnalytics(metric: Metric) {
     name: metric.name,
     value: metric.value,
     rating: metric.rating,
-    timestamp: Date.now()
-  })
+    timestamp: Date.now(),
+  });
 }
 
 // Initialize
-onCLS(sendToAnalytics)
-onFID(sendToAnalytics)
-onLCP(sendToAnalytics)
-onFCP(sendToAnalytics)
-onTTFB(sendToAnalytics)
+onCLS(sendToAnalytics);
+onFID(sendToAnalytics);
+onLCP(sendToAnalytics);
+onFCP(sendToAnalytics);
+onTTFB(sendToAnalytics);
 ```
 
 **Metrics Targets:**
+
 - LCP (Largest Contentful Paint): < 2.5s
 - FID (First Input Delay): < 100ms
 - CLS (Cumulative Layout Shift): < 0.1
@@ -478,6 +496,7 @@ onTTFB(sendToAnalytics)
 ```
 
 **Features:**
+
 - Pre-filled error details
 - User can add context
 - One-click report
@@ -490,32 +509,33 @@ onTTFB(sendToAnalytics)
 ```typescript
 // src/services/monitoring.ts
 interface MonitoringService {
-  logError(error: Error, context?: any): void
-  logMessage(message: string, level: string): void
+  logError(error: Error, context?: any): void;
+  logMessage(message: string, level: string): void;
 }
 
 // Current: Local implementation
 class LocalMonitoring implements MonitoringService {
   logError(error: Error, context?: any) {
-    errorLogger.log({ ...error, ...context })
+    errorLogger.log({ ...error, ...context });
   }
 }
 
 // Future: Sentry implementation
 class SentryMonitoring implements MonitoringService {
   logError(error: Error, context?: any) {
-    Sentry.captureException(error, { extra: context })
+    Sentry.captureException(error, { extra: context });
   }
 }
 
 // Factory
 export const monitoring: MonitoringService =
-  import.meta.env.VITE_ENABLE_SENTRY === 'true'
+  import.meta.env.VITE_ENABLE_SENTRY === "true"
     ? new SentryMonitoring()
-    : new LocalMonitoring()
+    : new LocalMonitoring();
 ```
 
 **Benefits:**
+
 - Easy to swap implementations
 - No vendor lock-in
 - Start local, upgrade when needed
@@ -527,6 +547,7 @@ export const monitoring: MonitoringService =
 ### Phase 1: CI Foundation (2-3 days)
 
 **Day 1: CI Workflow Setup**
+
 - [ ] Create `.github/workflows/ci.yml`
 - [ ] Configure Node.js setup and caching
 - [ ] Add TypeScript check job
@@ -534,6 +555,7 @@ export const monitoring: MonitoringService =
 - [ ] Test workflow on feature branch
 
 **Day 2: Test & Build Jobs**
+
 - [ ] Add Jest test job with coverage
 - [ ] Configure coverage reporting
 - [ ] Add build verification job
@@ -541,6 +563,7 @@ export const monitoring: MonitoringService =
 - [ ] Test complete workflow
 
 **Day 3: Performance Workflow**
+
 - [ ] Create `.github/workflows/performance.yml`
 - [ ] Add bundle size analysis
 - [ ] Configure Lighthouse CI
@@ -548,6 +571,7 @@ export const monitoring: MonitoringService =
 - [ ] Test on sample PR
 
 **Deliverables:**
+
 - ✅ Working CI workflow
 - ✅ Performance workflow with Lighthouse
 - ✅ Coverage reports
@@ -558,6 +582,7 @@ export const monitoring: MonitoringService =
 ### Phase 2: Git Hooks (1 day)
 
 **Tasks:**
+
 - [ ] Install Husky: `npm install --save-dev husky`
 - [ ] Install lint-staged: `npm install --save-dev lint-staged`
 - [ ] Initialize Husky: `npx husky install`
@@ -568,6 +593,7 @@ export const monitoring: MonitoringService =
 - [ ] Document bypass procedures
 
 **Deliverables:**
+
 - ✅ Pre-commit hook (fast checks)
 - ✅ Pre-push hook (full checks)
 - ✅ Lint-staged configuration
@@ -578,6 +604,7 @@ export const monitoring: MonitoringService =
 ### Phase 3: Performance Optimization (2-3 days)
 
 **Day 1: Bundle Analysis & Code Splitting**
+
 - [ ] Add rollup-plugin-visualizer
 - [ ] Generate initial bundle report
 - [ ] Implement route-based code splitting
@@ -585,6 +612,7 @@ export const monitoring: MonitoringService =
 - [ ] Lazy load Babel transform
 
 **Day 2: React Optimization**
+
 - [ ] Add React.memo to CodeEditor
 - [ ] Add React.memo to TestResults
 - [ ] Add React.memo to CategoryTabs
@@ -592,6 +620,7 @@ export const monitoring: MonitoringService =
 - [ ] Optimize re-renders
 
 **Day 3: Lighthouse & Validation**
+
 - [ ] Run Lighthouse locally
 - [ ] Fix performance issues
 - [ ] Configure lighthouserc.json
@@ -599,6 +628,7 @@ export const monitoring: MonitoringService =
 - [ ] Document performance targets
 
 **Deliverables:**
+
 - ✅ Bundle < 500KB (uncompressed)
 - ✅ Lazy loading implemented
 - ✅ React.memo optimizations
@@ -609,6 +639,7 @@ export const monitoring: MonitoringService =
 ### Phase 4: Monitoring Setup (1-2 days)
 
 **Day 1: Error Boundaries**
+
 - [ ] Create GlobalErrorBoundary component
 - [ ] Create feature-level error boundaries
 - [ ] Add ErrorFallback UI components
@@ -616,6 +647,7 @@ export const monitoring: MonitoringService =
 - [ ] Add IndexedDB error log table
 
 **Day 2: Web Vitals & Testing**
+
 - [ ] Install web-vitals library
 - [ ] Implement Web Vitals tracking
 - [ ] Create error report dialog
@@ -623,6 +655,7 @@ export const monitoring: MonitoringService =
 - [ ] Add Web Vitals dashboard (optional)
 
 **Deliverables:**
+
 - ✅ Error boundary hierarchy
 - ✅ Error logging to IndexedDB
 - ✅ Web Vitals tracking
@@ -633,6 +666,7 @@ export const monitoring: MonitoringService =
 ### Phase 5: Documentation & Validation (1 day)
 
 **Tasks:**
+
 - [ ] Update README with CI badges
 - [ ] Add development setup guide
 - [ ] Create CONTRIBUTING.md (minimal)
@@ -642,6 +676,7 @@ export const monitoring: MonitoringService =
 - [ ] Create Phase 4 completion report
 
 **Validation Checklist:**
+
 - [ ] All CI workflows passing
 - [ ] Pre-commit hook < 20s
 - [ ] Pre-push hook runs all tests
@@ -651,6 +686,7 @@ export const monitoring: MonitoringService =
 - [ ] Web Vitals tracking works
 
 **Deliverables:**
+
 - ✅ Updated documentation
 - ✅ Validation complete
 - ✅ Phase 4 completion report
@@ -703,31 +739,31 @@ export const monitoring: MonitoringService =
 
 ## 📊 Success Metrics
 
-| Metric | Target | Measurement |
-|--------|--------|-------------|
-| **CI Success Rate** | > 95% | GitHub Actions dashboard |
-| **CI Duration** | < 5 min | Workflow timing |
-| **Pre-commit Time** | < 20s | Local testing |
-| **Pre-push Time** | < 60s | Local testing |
-| **Bundle Size** | < 500KB | Build output |
-| **Lighthouse Performance** | ≥ 85 | Lighthouse CI |
-| **Lighthouse Accessibility** | ≥ 90 | Lighthouse CI |
-| **Error Capture Rate** | 100% | Manual testing |
-| **Web Vitals LCP** | < 2.5s | Performance API |
-| **Web Vitals FID** | < 100ms | Performance API |
+| Metric                       | Target  | Measurement              |
+| ---------------------------- | ------- | ------------------------ |
+| **CI Success Rate**          | > 95%   | GitHub Actions dashboard |
+| **CI Duration**              | < 5 min | Workflow timing          |
+| **Pre-commit Time**          | < 20s   | Local testing            |
+| **Pre-push Time**            | < 60s   | Local testing            |
+| **Bundle Size**              | < 500KB | Build output             |
+| **Lighthouse Performance**   | ≥ 85    | Lighthouse CI            |
+| **Lighthouse Accessibility** | ≥ 90    | Lighthouse CI            |
+| **Error Capture Rate**       | 100%    | Manual testing           |
+| **Web Vitals LCP**           | < 2.5s  | Performance API          |
+| **Web Vitals FID**           | < 100ms | Performance API          |
 
 ---
 
 ## 🚨 Risks & Mitigation
 
-| Risk | Impact | Likelihood | Mitigation |
-|------|--------|------------|------------|
-| **CI too slow** | Medium | Medium | Optimize caching, parallelize jobs |
-| **Hooks too strict** | Low | High | Balance checks, allow bypass |
-| **Bundle size creep** | Medium | Medium | Automated size checks in CI |
-| **Performance regression** | Medium | Medium | Lighthouse CI catches issues |
-| **Error boundary bugs** | Low | Low | Comprehensive testing |
-| **Web Vitals inaccurate** | Low | Low | Multiple measurement runs |
+| Risk                       | Impact | Likelihood | Mitigation                         |
+| -------------------------- | ------ | ---------- | ---------------------------------- |
+| **CI too slow**            | Medium | Medium     | Optimize caching, parallelize jobs |
+| **Hooks too strict**       | Low    | High       | Balance checks, allow bypass       |
+| **Bundle size creep**      | Medium | Medium     | Automated size checks in CI        |
+| **Performance regression** | Medium | Medium     | Lighthouse CI catches issues       |
+| **Error boundary bugs**    | Low    | Low        | Comprehensive testing              |
+| **Web Vitals inaccurate**  | Low    | Low        | Multiple measurement runs          |
 
 ---
 
@@ -736,6 +772,7 @@ export const monitoring: MonitoringService =
 ### New Dependencies
 
 **Development:**
+
 - `husky`: ^8.0.0 - Git hooks
 - `lint-staged`: ^15.0.0 - Staged files linting
 - `@lhci/cli`: ^0.12.0 - Lighthouse CI
@@ -743,11 +780,13 @@ export const monitoring: MonitoringService =
 - `web-vitals`: ^3.5.0 - Performance monitoring
 
 **Runtime:**
+
 - None (monitoring is built-in)
 
 ### Configuration Files
 
 **New files:**
+
 - `.github/workflows/ci.yml`
 - `.github/workflows/performance.yml`
 - `.husky/pre-commit`
@@ -755,6 +794,7 @@ export const monitoring: MonitoringService =
 - `lighthouserc.json`
 
 **Modified files:**
+
 - `package.json` (scripts, lint-staged config)
 - `vite.config.ts` (bundle analysis plugin)
 - `src/main.tsx` (error boundaries, Web Vitals)
@@ -766,12 +806,14 @@ export const monitoring: MonitoringService =
 ### README.md Updates
 
 **Add CI badges:**
+
 ```markdown
-[![CI](https://github.com/username/meflow3/workflows/CI/badge.svg)](https://github.com/username/meflow3/actions)
-[![Coverage](https://codecov.io/gh/username/meflow3/branch/main/graph/badge.svg)](https://codecov.io/gh/username/meflow3)
+[![CI](https://github.com/username//workflows/CI/badge.svg)](https://github.com/username//actions)
+[![Coverage](https://codecov.io/gh/username//branch/main/graph/badge.svg)](https://codecov.io/gh/username/)
 ```
 
 **Add development section:**
+
 - Git hooks explanation
 - How to run tests locally
 - How to bypass hooks
@@ -780,6 +822,7 @@ export const monitoring: MonitoringService =
 ### CONTRIBUTING.md (New)
 
 **Content:**
+
 - Code style guide
 - PR process
 - Testing requirements
@@ -793,12 +836,14 @@ export const monitoring: MonitoringService =
 ### Developer Experience
 
 **Before Phase 4:**
+
 - ❌ Manual testing before PR
 - ❌ Inconsistent code quality
 - ❌ No performance monitoring
 - ❌ Errors go unnoticed
 
 **After Phase 4:**
+
 - ✅ Automatic testing on PR
 - ✅ Consistent code quality (hooks)
 - ✅ Performance regression detection
@@ -807,6 +852,7 @@ export const monitoring: MonitoringService =
 ### Code Quality
 
 **Improvements:**
+
 - 30% faster PR review (automated checks)
 - 80% fewer broken commits (pre-push hooks)
 - 100% test coverage visibility
@@ -815,6 +861,7 @@ export const monitoring: MonitoringService =
 ### User Experience
 
 **Improvements:**
+
 - Faster initial load (code splitting)
 - Better error handling (boundaries)
 - Performance monitoring (Web Vitals)
@@ -879,6 +926,7 @@ Week 2 (Days 6-10):
 ### Future Enhancements
 
 **Phase 4.5 (Optional):**
+
 - Sentry integration for production
 - Full deployment pipeline
 - Advanced performance monitoring

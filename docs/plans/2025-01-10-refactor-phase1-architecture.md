@@ -2,7 +2,7 @@
 
 > **For Claude:** REQUIRED SUB-SKILL: Use superpowers:executing-plans to implement this plan task-by-task.
 
-**Goal:** 将MeFlow3从type-based目录结构重组为feature-based结构，建立清晰的模块边界和统一的导出规范。
+**Goal:** 将从type-based目录结构重组为feature-based结构，建立清晰的模块边界和统一的导出规范。
 
 **Architecture:** 将现有的 `/src/components`, `/src/services`, `/src/hooks` 等按功能垂直切分为 `/src/features/{lessons,editor,progress,testing}` 和 `/src/shared`。每个feature自包含，通过 `index.ts` 暴露公开API。Store使用slices模式组织。
 
@@ -13,6 +13,7 @@
 ## Task 1: 创建新的目录结构
 
 **Files:**
+
 - Create: `src/features/lessons/` (directory structure)
 - Create: `src/features/editor/` (directory structure)
 - Create: `src/features/progress/` (directory structure)
@@ -49,6 +50,7 @@ git commit -m "chore: create new feature-based directory structure"
 ## Task 2: 迁移Lesson相关代码到features/lessons
 
 **Files:**
+
 - Move: `src/components/LessonSelector.tsx` → `src/features/lessons/components/`
 - Move: `src/components/CategoryTabs.tsx` → `src/features/lessons/components/`
 - Move: `src/components/pages/LearningPage.tsx` → `src/features/lessons/components/LearningPage.tsx`
@@ -84,30 +86,30 @@ cp src/lessonData.ts src/features/lessons/constants/lessonData.ts
  * @description Lesson feature - 课程管理、选择、展示
  */
 
-export { LessonSelector } from './components/LessonSelector'
-export { CategoryTabs } from './components/CategoryTabs'
-export { LearningPage } from './components/LearningPage'
+export { LessonSelector } from "./components/LessonSelector";
+export { CategoryTabs } from "./components/CategoryTabs";
+export { LearningPage } from "./components/LearningPage";
 
-export { useLesson } from './hooks/useLesson'
+export { useLesson } from "./hooks/useLesson";
 
-export { lessonService } from './services/lesson-service'
+export { lessonService } from "./services/lesson-service";
 
-export type { Lesson, LessonCategory } from './types/lesson'
+export type { Lesson, LessonCategory } from "./types/lesson";
 
-export { lessonData } from './constants/lessonData'
+export { lessonData } from "./constants/lessonData";
 ```
 
 **Step 4: 更新导入路径 (src/App.tsx)**
 
 ```typescript
 // 旧方式
-import { useLesson } from './hooks'
-import { lessonService } from './services'
-import AppLayout from './components/layout/AppLayout'
+import { useLesson } from "./hooks";
+import { lessonService } from "./services";
+import AppLayout from "./components/layout/AppLayout";
 
 // 新方式
-import { useLesson, lessonService } from './features/lessons'
-import AppLayout from './components/layout/AppLayout'
+import { useLesson, lessonService } from "./features/lessons";
+import AppLayout from "./components/layout/AppLayout";
 ```
 
 **Step 5: 验证编译通过**
@@ -130,6 +132,7 @@ git commit -m "refactor: migrate lesson feature to features/lessons"
 ## Task 3: 迁移Editor相关代码到features/editor
 
 **Files:**
+
 - Move: `src/components/editor/CodeEditor.tsx` → `src/features/editor/components/`
 - Move: `src/hooks/useEditor.ts` → `src/features/editor/hooks/`
 - Move: `src/hooks/useTestRunner.ts` → `src/features/editor/hooks/`
@@ -161,17 +164,17 @@ mv src/workers/ast-worker.ts src/features/editor/workers/
  * @description Editor feature - 代码编辑、分析、测试运行
  */
 
-export { CodeEditor } from './components/CodeEditor'
+export { CodeEditor } from "./components/CodeEditor";
 
-export { useEditor } from './hooks/useEditor'
-export { useTestRunner } from './hooks/useTestRunner'
+export { useEditor } from "./hooks/useEditor";
+export { useTestRunner } from "./hooks/useTestRunner";
 
-export { codeAnalyzer } from './services/code-analyzer'
-export { testService } from './services/test-service'
+export { codeAnalyzer } from "./services/code-analyzer";
+export { testService } from "./services/test-service";
 
-export type { CodeAnalysisResult, TestResult } from './types/service'
+export type { CodeAnalysisResult, TestResult } from "./types/service";
 
-export { astTester } from './utils/ast-tester'
+export { astTester } from "./utils/ast-tester";
 ```
 
 **Step 3: 更新导入路径**
@@ -184,9 +187,10 @@ grep -r "from.*hooks/useEditor" src/ --include="*.ts" --include="*.tsx"
 ```
 
 然后将这些import改为：
+
 ```typescript
-import { codeAnalyzer, testService } from './features/editor'
-import { useEditor, useTestRunner } from './features/editor'
+import { codeAnalyzer, testService } from "./features/editor";
+import { useEditor, useTestRunner } from "./features/editor";
 ```
 
 **Step 4: 验证编译通过**
@@ -209,6 +213,7 @@ git commit -m "refactor: migrate editor feature to features/editor"
 ## Task 4: 迁移Progress相关代码到features/progress
 
 **Files:**
+
 - Move: `src/components/feedback/TestResults.tsx` → `src/features/progress/components/`
 - Move: `src/hooks/useProgress.ts` → `src/features/progress/hooks/`
 - Move: `src/services/progress-service.ts` → `src/features/progress/services/`
@@ -240,13 +245,13 @@ cp src/store/progressStore.ts src/store/slices/progress.ts
  * @description Progress feature - 学习进度跟踪、课程完成状态
  */
 
-export { TestResults } from './components/TestResults'
+export { TestResults } from "./components/TestResults";
 
-export { useProgress } from './hooks/useProgress'
+export { useProgress } from "./hooks/useProgress";
 
-export { progressService } from './services/progress-service'
+export { progressService } from "./services/progress-service";
 
-export type { ProgressState } from './types/progress'
+export type { ProgressState } from "./types/progress";
 ```
 
 **Step 4: 创建features/progress/types/progress.ts**
@@ -259,15 +264,15 @@ export type { ProgressState } from './types/progress'
  */
 
 export interface ProgressState {
-  completedLessonIds: Set<string>
-  currentProgress: number
+  completedLessonIds: Set<string>;
+  currentProgress: number;
 }
 
 export interface ProgressRecord {
-  lessonId: string
-  categoryId: string
-  completedAt: number
-  score?: number
+  lessonId: string;
+  categoryId: string;
+  completedAt: number;
+  score?: number;
 }
 ```
 
@@ -289,6 +294,7 @@ git commit -m "refactor: migrate progress feature to features/progress"
 ## Task 5: 迁移共享代码到shared目录
 
 **Files:**
+
 - Move: `src/components/layout/` → `src/shared/components/layout/`
 - Move: `src/db/dexie-db.ts` → `src/shared/db/`
 - Create: `src/shared/constants/` (存放应用级常量)
@@ -347,10 +353,10 @@ export interface ServiceResult<T> {
  * @description 共享资源、通用组件、工具函数
  */
 
-export * from './components'
-export * from './db'
-export * from './types'
-export * from './utils'
+export * from "./components";
+export * from "./db";
+export * from "./types";
+export * from "./utils";
 ```
 
 **Step 5: 验证编译通过**
@@ -371,6 +377,7 @@ git commit -m "refactor: migrate shared resources to shared directory"
 ## Task 6: 重组Store使用slices模式
 
 **Files:**
+
 - Modify: `src/store/slices/lesson.ts` (从lessonStore.ts转换)
 - Modify: `src/store/slices/progress.ts` (从progressStore.ts转换)
 - Modify: `src/store/slices/editor.ts` (从editorStore.ts转换)
@@ -397,17 +404,17 @@ cp src/store/uiStore.ts src/store/slices/ui.ts
  * @description Lesson store slice - 课程选择和分类状态
  */
 
-import { create } from 'zustand'
+import { create } from "zustand";
 
 export interface LessonState {
-  currentCategoryId: string
-  setCurrentCategoryId: (id: string) => void
+  currentCategoryId: string;
+  setCurrentCategoryId: (id: string) => void;
 }
 
 export const useLessonStore = create<LessonState>((set) => ({
-  currentCategoryId: 'basics',
+  currentCategoryId: "basics",
   setCurrentCategoryId: (id: string) => set({ currentCategoryId: id }),
-}))
+}));
 ```
 
 **Step 3: 创建src/store/slices/index.ts**
@@ -419,10 +426,10 @@ export const useLessonStore = create<LessonState>((set) => ({
  * @description 所有store slices的统一导出
  */
 
-export { useLessonStore, type LessonState } from './lesson'
-export { useEditorStore, type EditorState } from './editor'
-export { useProgressStore, type ProgressState } from './progress'
-export { useUiStore, type UiState } from './ui'
+export { useLessonStore, type LessonState } from "./lesson";
+export { useEditorStore, type EditorState } from "./editor";
+export { useProgressStore, type ProgressState } from "./progress";
+export { useUiStore, type UiState } from "./ui";
 ```
 
 **Step 4: 简化src/store/index.ts**
@@ -434,24 +441,26 @@ export { useUiStore, type UiState } from './ui'
  * @description Zustand stores - 应用全局状态管理
  */
 
-export * from './slices'
+export * from "./slices";
 ```
 
 **Step 5: 更新所有import语句**
 
 查找并替换所有store的导入：
+
 ```bash
 # 查找所有store导入
 grep -r "from.*store" src/ --include="*.ts" --include="*.tsx" | grep -v node_modules
 ```
 
 将旧import改为新的：
+
 ```typescript
 // 旧
-import { useLessonStore } from './store/lessonStore'
+import { useLessonStore } from "./store/lessonStore";
 
 // 新
-import { useLessonStore } from './store'
+import { useLessonStore } from "./store";
 ```
 
 **Step 6: 验证编译通过**
@@ -472,6 +481,7 @@ git commit -m "refactor: reorganize stores using slices pattern"
 ## Task 7: 删除旧目录结构并清理
 
 **Files:**
+
 - Delete: `src/components/` (现在为空或只有旧文件)
 - Delete: `src/hooks/` (已迁移)
 - Delete: `src/services/` (已迁移)
@@ -608,6 +618,7 @@ git commit -m "refactor: remove old directory structure, migration complete"
 ## Task 8: 更新所有内部导入路径
 
 **Files:**
+
 - Scan: `src/features/**/*.ts` and `src/features/**/*.tsx`
 - Scan: `src/shared/**/*.ts` and `src/shared/**/*.tsx`
 
@@ -621,6 +632,7 @@ grep -r "from.*\.\/" src/features src/shared --include="*.ts" --include="*.tsx" 
 **Step 2: 修复特定的导入路径**
 
 对于features目录内的相对导入，确保：
+
 - 同一feature内部的导入使用相对路径（./）
 - 其他feature的导入通过公开API（最上级index.ts）
 - shared资源的导入使用 `'@/shared'` 或相对路径
@@ -628,13 +640,13 @@ grep -r "from.*\.\/" src/features src/shared --include="*.ts" --include="*.tsx" 
 ```typescript
 // 例：src/features/editor/components/CodeEditor.tsx
 // ✅ 正确：同feature内的相对导入
-import { useEditor } from '../hooks'
+import { useEditor } from "../hooks";
 
 // ✅ 正确：其他feature通过公开API
-import { lessonService } from '../../lessons'
+import { lessonService } from "../../lessons";
 
 // ✅ 正确：shared资源
-import { AppLayout } from '../../../shared/components/layout'
+import { AppLayout } from "../../../shared/components/layout";
 ```
 
 **Step 3: 检查是否有循环依赖**
@@ -664,6 +676,7 @@ git commit -m "refactor: fix internal import paths across features"
 ## Task 9: 创建README和文件头注释模板
 
 **Files:**
+
 - Create: `src/features/README.md` - Features目录说明
 - Create: `src/shared/README.md` - Shared目录说明
 - Create: `src/FILE_HEADER_TEMPLATE.md` - 文件头注释模板
@@ -694,21 +707,25 @@ This directory contains feature-based modules. Each feature is self-contained wi
 ## Features
 
 ### lessons
+
 Lesson selection, category management, lesson display
 
 ### editor
+
 Code editing, AST analysis, test running
 
 ### progress
+
 Progress tracking, completion status, statistics
 
 ### testing
+
 Test result display, test execution
 ```
 
 **Step 2: 创建shared/README.md**
 
-```markdown
+````markdown
 # Shared Directory
 
 Contains shared resources used across features.
@@ -728,23 +745,26 @@ Contains shared resources used across features.
 Import from shared when you need cross-feature resources:
 
 ```typescript
-import { AppLayout } from '@/shared/components'
-import { useTheme } from '@/shared/hooks'
+import { AppLayout } from "@/shared/components";
+import { useTheme } from "@/shared/hooks";
 ```
-```
+````
+
+````
 
 **Step 3: Commit**
 
 ```bash
 git add -A
 git commit -m "docs: add README and structure documentation"
-```
+````
 
 ---
 
 ## Task 10: 验证整个项目的构建和运行
 
 **Files:**
+
 - Test: Build process
 - Test: Development server
 - Test: No console errors
@@ -793,6 +813,7 @@ Phase 1完成后，你将获得：
 ✅ **完整的文档** - README和文件头注释
 
 下一阶段（Phase 2）将专注于：
+
 - 代码标准化（命名规范、类型定义）
 - 错误处理统一
 - 添加单元测试

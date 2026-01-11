@@ -1,7 +1,7 @@
-# MeFlow3 - React Learning Platform
+# - React Learning Platform
 
-[![CI](https://github.com/OWNER/meflow3/actions/workflows/ci.yml/badge.svg)](https://github.com/OWNER/meflow3/actions/workflows/ci.yml)
-[![Performance](https://github.com/OWNER/meflow3/actions/workflows/performance.yml/badge.svg)](https://github.com/OWNER/meflow3/actions/workflows/performance.yml)
+[![CI](https://github.com/OWNER//actions/workflows/ci.yml/badge.svg)](https://github.com/OWNER//actions/workflows/ci.yml)
+[![Performance](https://github.com/OWNER//actions/workflows/performance.yml/badge.svg)](https://github.com/OWNER//actions/workflows/performance.yml)
 
 An interactive React learning platform with code exercises, real-time feedback, and progress tracking.
 

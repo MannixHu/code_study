@@ -1,4 +1,4 @@
-# MeFlow3 Testing Guide
+# Testing Guide
 
 **Version:** 1.0.0
 **Last Updated:** 2025-01-10
@@ -23,15 +23,17 @@
 
 ## Introduction
 
-This guide explains how to write and maintain tests for the MeFlow3 project. We use Jest as our test runner and React Testing Library for component tests.
+This guide explains how to write and maintain tests for the project. We use Jest as our test runner and React Testing Library for component tests.
 
 ### Test Stack
+
 - **Jest**: Test runner and assertion library
 - **React Testing Library**: Component testing utilities
 - **@testing-library/user-event**: User interaction simulation
 - **ts-jest**: TypeScript support for Jest
 
 ### Running Tests
+
 ```bash
 # Run all tests
 npm test
@@ -54,7 +56,9 @@ npm test -- --testPathPatterns="service"
 ## Testing Philosophy
 
 ### What We Test
+
 ✅ **DO Test:**
+
 - Business logic and data transformations
 - User interactions and workflows
 - Error handling and edge cases
@@ -62,6 +66,7 @@ npm test -- --testPathPatterns="service"
 - State changes and side effects
 
 ❌ **DON'T Test:**
+
 - Implementation details
 - Third-party library internals
 - Styling and visual appearance (use visual regression testing)
@@ -80,6 +85,7 @@ npm test -- --testPathPatterns="service"
 ```
 
 **Our Focus:**
+
 - **70% Unit Tests** - Services, utilities, pure functions
 - **20% Integration Tests** - Feature workflows, state management
 - **10% E2E Tests** - Critical user paths (future phase)
@@ -89,6 +95,7 @@ npm test -- --testPathPatterns="service"
 ## Test Structure
 
 ### File Organization
+
 ```
 src/
 ├── features/
@@ -105,6 +112,7 @@ src/
 ```
 
 ### Test File Template
+
 ```typescript
 /**
  * Tests for ComponentName / ServiceName
@@ -144,68 +152,70 @@ describe('ComponentName', () => {
 ## Writing Service Tests
 
 ### Basic Pattern
+
 ```typescript
-import { myService } from './my-service'
-import { myRepository } from '../repository/my-repository'
+import { myService } from "./my-service";
+import { myRepository } from "../repository/my-repository";
 
 // Mock the repository layer
-jest.mock('../repository/my-repository')
+jest.mock("../repository/my-repository");
 
-describe('MyService', () => {
+describe("MyService", () => {
   beforeEach(() => {
-    jest.clearAllMocks()
-  })
+    jest.clearAllMocks();
+  });
 
-  describe('methodName', () => {
-    it('should return success result', async () => {
+  describe("methodName", () => {
+    it("should return success result", async () => {
       // Arrange
-      const mockData = { id: '1', name: 'Test' }
-      myRepository.getData.mockResolvedValue(mockData)
+      const mockData = { id: "1", name: "Test" };
+      myRepository.getData.mockResolvedValue(mockData);
 
       // Act
-      const result = await myService.methodName('1')
+      const result = await myService.methodName("1");
 
       // Assert
-      expect(result.success).toBe(true)
+      expect(result.success).toBe(true);
       if (result.success) {
-        expect(result.data).toEqual(mockData)
+        expect(result.data).toEqual(mockData);
       }
-      expect(myRepository.getData).toHaveBeenCalledWith('1')
-    })
+      expect(myRepository.getData).toHaveBeenCalledWith("1");
+    });
 
-    it('should return error result when repository fails', async () => {
+    it("should return error result when repository fails", async () => {
       // Arrange
-      myRepository.getData.mockRejectedValue(new Error('DB error'))
+      myRepository.getData.mockRejectedValue(new Error("DB error"));
 
       // Act
-      const result = await myService.methodName('1')
+      const result = await myService.methodName("1");
 
       // Assert
-      expect(result.success).toBe(false)
+      expect(result.success).toBe(false);
       if (!result.success) {
-        expect(result.error.code).toBe('ERROR_CODE')
+        expect(result.error.code).toBe("ERROR_CODE");
       }
-    })
-  })
-})
+    });
+  });
+});
 ```
 
 ### Testing Result Types
+
 ```typescript
 // Test success path
-const result = await service.method()
-expect(result.success).toBe(true)
+const result = await service.method();
+expect(result.success).toBe(true);
 if (result.success) {
-  expect(result.data).toBeDefined()
+  expect(result.data).toBeDefined();
   // Access result.data safely
 }
 
 // Test error path
-const result = await service.method()
-expect(result.success).toBe(false)
+const result = await service.method();
+expect(result.success).toBe(false);
 if (!result.success) {
-  expect(result.error.code).toBe('ERROR_CODE')
-  expect(result.error.message).toContain('Failed')
+  expect(result.error.code).toBe("ERROR_CODE");
+  expect(result.error.message).toContain("Failed");
 }
 ```
 
@@ -214,6 +224,7 @@ if (!result.success) {
 ## Writing Component Tests
 
 ### Basic Component Test
+
 ```typescript
 import { render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
@@ -239,6 +250,7 @@ describe('MyComponent', () => {
 ```
 
 ### Testing with Context/Store
+
 ```typescript
 import { render, screen } from '@testing-library/react'
 import { MyComponent } from './MyComponent'
@@ -265,6 +277,7 @@ describe('MyComponent', () => {
 ```
 
 ### Testing Async Components
+
 ```typescript
 it('should handle async data loading', async () => {
   render(<MyComponent />)
@@ -281,6 +294,7 @@ it('should handle async data loading', async () => {
 ```
 
 ### Testing Error States
+
 ```typescript
 it('should display error message on failure', async () => {
   // Mock service to throw error
@@ -298,65 +312,67 @@ it('should display error message on failure', async () => {
 ## Writing Hook Tests
 
 ### Basic Hook Test
+
 ```typescript
-import { renderHook, act } from '@testing-library/react'
-import { useMyHook } from './useMyHook'
+import { renderHook, act } from "@testing-library/react";
+import { useMyHook } from "./useMyHook";
 
-describe('useMyHook', () => {
-  it('should initialize with default state', () => {
-    const { result } = renderHook(() => useMyHook())
+describe("useMyHook", () => {
+  it("should initialize with default state", () => {
+    const { result } = renderHook(() => useMyHook());
 
-    expect(result.current.count).toBe(0)
-    expect(result.current.loading).toBe(false)
-  })
+    expect(result.current.count).toBe(0);
+    expect(result.current.loading).toBe(false);
+  });
 
-  it('should update state correctly', () => {
-    const { result } = renderHook(() => useMyHook())
+  it("should update state correctly", () => {
+    const { result } = renderHook(() => useMyHook());
 
     act(() => {
-      result.current.increment()
-    })
+      result.current.increment();
+    });
 
-    expect(result.current.count).toBe(1)
-  })
-})
+    expect(result.current.count).toBe(1);
+  });
+});
 ```
 
 ### Testing Hooks with Props
+
 ```typescript
-it('should respond to prop changes', () => {
-  const { result, rerender } = renderHook(
-    ({ id }) => useMyHook(id),
-    { initialProps: { id: '1' } }
-  )
+it("should respond to prop changes", () => {
+  const { result, rerender } = renderHook(({ id }) => useMyHook(id), {
+    initialProps: { id: "1" },
+  });
 
-  expect(result.current.data.id).toBe('1')
+  expect(result.current.data.id).toBe("1");
 
-  rerender({ id: '2' })
+  rerender({ id: "2" });
 
-  expect(result.current.data.id).toBe('2')
-})
+  expect(result.current.data.id).toBe("2");
+});
 ```
 
 ### Testing Async Hooks
-```typescript
-it('should handle async operations', async () => {
-  const { result } = renderHook(() => useMyHook())
 
-  expect(result.current.loading).toBe(false)
+```typescript
+it("should handle async operations", async () => {
+  const { result } = renderHook(() => useMyHook());
+
+  expect(result.current.loading).toBe(false);
 
   act(() => {
-    result.current.loadData()
-  })
+    result.current.loadData();
+  });
 
-  expect(result.current.loading).toBe(true)
+  expect(result.current.loading).toBe(true);
 
   await waitFor(() => {
-    expect(result.current.loading).toBe(false)
-  })
+    expect(result.current.loading).toBe(false);
+  });
 
-  expect(result.current.data).toBeDefined()
-})
+  expect(result.current.data).toBeDefined();
+});
 ```
 
 ---
@@ -364,6 +380,7 @@ it('should handle async operations', async () => {
 ## Writing Integration Tests
 
 ### Complete Workflow Test
+
 ```typescript
 import { render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
@@ -400,6 +417,7 @@ describe('Complete Lesson Workflow', () => {
 ```
 
 ### Testing State Across Features
+
 ```typescript
 it('should maintain state across feature interactions', async () => {
   const user = userEvent.setup()
@@ -425,65 +443,74 @@ it('should maintain state across feature interactions', async () => {
 ## Best Practices
 
 ### 1. Test Behavior, Not Implementation
+
 ```typescript
 // ❌ BAD: Testing implementation details
-expect(component.state.count).toBe(1)
-expect(component.handleClick).toHaveBeenCalled()
+expect(component.state.count).toBe(1);
+expect(component.handleClick).toHaveBeenCalled();
 
 // ✅ GOOD: Testing user-visible behavior
-expect(screen.getByText('Count: 1')).toBeInTheDocument()
-await user.click(screen.getByRole('button'))
-expect(screen.getByText('Count: 2')).toBeInTheDocument()
+expect(screen.getByText("Count: 1")).toBeInTheDocument();
+await user.click(screen.getByRole("button"));
+expect(screen.getByText("Count: 2")).toBeInTheDocument();
 ```
 
 ### 2. Use Accessible Queries
+
 ```typescript
 // Priority order:
-screen.getByRole('button', { name: 'Submit' })     // Best
-screen.getByLabelText('Email')                     // Good for forms
-screen.getByPlaceholderText('Enter email')         // OK
-screen.getByText('Click me')                       // OK
-screen.getByTestId('submit-button')                // Last resort
+screen.getByRole("button", { name: "Submit" }); // Best
+screen.getByLabelText("Email"); // Good for forms
+screen.getByPlaceholderText("Enter email"); // OK
+screen.getByText("Click me"); // OK
+screen.getByTestId("submit-button"); // Last resort
 ```
 
 ### 3. Avoid Test Fragility
+
 ```typescript
 // ❌ BAD: Brittle selectors
-const button = container.querySelector('.btn-primary')
-expect(container.firstChild.children[0]).toBeInTheDocument()
+const button = container.querySelector(".btn-primary");
+expect(container.firstChild.children[0]).toBeInTheDocument();
 
 // ✅ GOOD: Semantic queries
-const button = screen.getByRole('button', { name: 'Submit' })
-expect(screen.getByText('Welcome')).toBeInTheDocument()
+const button = screen.getByRole("button", { name: "Submit" });
+expect(screen.getByText("Welcome")).toBeInTheDocument();
 ```
 
 ### 4. Keep Tests Independent
+
 ```typescript
 // ❌ BAD: Tests depend on each other
-let sharedState
-it('test 1', () => { sharedState = 'value' })
-it('test 2', () => { expect(sharedState).toBe('value') })
+let sharedState;
+it("test 1", () => {
+  sharedState = "value";
+});
+it("test 2", () => {
+  expect(sharedState).toBe("value");
+});
 
 // ✅ GOOD: Each test is independent
-it('test 1', () => {
-  const state = 'value'
-  expect(state).toBe('value')
-})
-it('test 2', () => {
-  const state = 'value'
-  expect(state).toBe('value')
-})
+it("test 1", () => {
+  const state = "value";
+  expect(state).toBe("value");
+});
+it("test 2", () => {
+  const state = "value";
+  expect(state).toBe("value");
+});
 ```
 
 ### 5. Use Descriptive Test Names
+
 ```typescript
 // ❌ BAD: Vague test names
-it('works', () => {})
-it('test button', () => {})
+it("works", () => {});
+it("test button", () => {});
 
 // ✅ GOOD: Descriptive names
-it('should submit form when all fields are valid', () => {})
-it('should display error when email is invalid', () => {})
+it("should submit form when all fields are valid", () => {});
+it("should display error when email is invalid", () => {});
 ```
 
 ---
@@ -491,6 +518,7 @@ it('should display error when email is invalid', () => {})
 ## Common Patterns
 
 ### Pattern 1: Testing Forms
+
 ```typescript
 it('should submit form with valid data', async () => {
   const user = userEvent.setup()
@@ -510,6 +538,7 @@ it('should submit form with valid data', async () => {
 ```
 
 ### Pattern 2: Testing Loading States
+
 ```typescript
 it('should show loading state', async () => {
   render(<MyComponent />)
@@ -528,6 +557,7 @@ it('should show loading state', async () => {
 ```
 
 ### Pattern 3: Testing Error Boundaries
+
 ```typescript
 it('should catch and display errors', () => {
   const ThrowError = () => {
@@ -549,40 +579,45 @@ it('should catch and display errors', () => {
 ## Troubleshooting
 
 ### Issue: "Unable to find an element with text"
+
 ```typescript
 // Problem: Element not rendered yet
-expect(screen.getByText('Data')).toBeInTheDocument()  // ❌ Fails
+expect(screen.getByText("Data")).toBeInTheDocument(); // ❌ Fails
 
 // Solution: Wait for element
-expect(await screen.findByText('Data')).toBeInTheDocument()  // ✅ Works
+expect(await screen.findByText("Data")).toBeInTheDocument(); // ✅ Works
 ```
 
 ### Issue: "Not wrapped in act(...)"
+
 ```typescript
 // Problem: State update not wrapped
-result.current.update()  // ❌ Warning
+result.current.update(); // ❌ Warning
 
 // Solution: Wrap in act
 act(() => {
-  result.current.update()  // ✅ No warning
-})
+  result.current.update(); // ✅ No warning
+});
 ```
 
 ### Issue: "Can't perform a React state update on unmounted component"
+
 ```typescript
 // Problem: Async operation completes after unmount
 useEffect(() => {
-  fetchData().then(setData)
-}, [])
+  fetchData().then(setData);
+}, []);
 
 // Solution: Cleanup on unmount
 useEffect(() => {
-  let mounted = true
-  fetchData().then(data => {
-    if (mounted) setData(data)
-  })
-  return () => { mounted = false }
-}, [])
+  let mounted = true;
+  fetchData().then((data) => {
+    if (mounted) setData(data);
+  });
+  return () => {
+    mounted = false;
+  };
+}, []);
 ```
 
 ---
@@ -590,18 +625,21 @@ useEffect(() => {
 ## Coverage Targets
 
 ### Current Coverage (After Phase 2)
+
 - **Services**: 100% ✅
 - **Components**: 0%
 - **Hooks**: 0%
 - **Overall**: ~30%
 
 ### Phase 3 Targets
+
 - **Services**: 100% ✅
 - **Components**: 80%+
 - **Hooks**: 90%+
 - **Overall**: 80%+
 
 ### Running Coverage Reports
+
 ```bash
 # Generate coverage report
 npm run test:coverage
@@ -615,17 +653,20 @@ open coverage/lcov-report/index.html
 ## Resources
 
 ### Documentation
+
 - [Jest Documentation](https://jestjs.io/)
 - [React Testing Library](https://testing-library.com/react)
 - [Testing Library Queries](https://testing-library.com/docs/queries/about)
 - [User Event API](https://testing-library.com/docs/user-event/intro)
 
 ### Internal Resources
+
 - Phase 2 Completion Report
 - Service test examples: `src/features/*/services/*.test.ts`
 - Jest configuration: `jest.config.js`
 
 ### Getting Help
+
 - Check this guide first
 - Review existing tests for patterns
 - Ask in team chat
@@ -635,6 +676,6 @@ open coverage/lcov-report/index.html
 
 **Document Version:** 1.0.0
 **Last Updated:** 2025-01-10
-**Maintainer:** MeFlow3 Team
+**Maintainer:** Team
 
 **Happy Testing! 🧪**
