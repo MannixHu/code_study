@@ -180,7 +180,9 @@ describe("LessonService", () => {
     });
 
     it("should silently handle preload errors", async () => {
-      const consoleWarnSpy = vi.spyOn(console, "warn").mockImplementation();
+      const consoleWarnSpy = vi
+        .spyOn(console, "warn")
+        .mockImplementation(() => {});
       mockLessonRepository.preloadNextCategory.mockRejectedValue(
         new Error("Preload failed"),
       );
@@ -209,7 +211,9 @@ describe("LessonService", () => {
     });
 
     it("should silently handle preload errors", async () => {
-      const consoleWarnSpy = vi.spyOn(console, "warn").mockImplementation();
+      const consoleWarnSpy = vi
+        .spyOn(console, "warn")
+        .mockImplementation(() => {});
       mockLessonRepository.preloadAdjacentCategories.mockRejectedValue(
         new Error("Preload failed"),
       );

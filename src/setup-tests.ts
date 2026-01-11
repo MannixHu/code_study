@@ -32,7 +32,7 @@ class MockIntersectionObserver {
   unobserve() {}
 }
 
-Object.defineProperty(global, "IntersectionObserver", {
+Object.defineProperty(globalThis, "IntersectionObserver", {
   writable: true,
   value: MockIntersectionObserver,
 });
