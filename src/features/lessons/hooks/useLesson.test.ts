@@ -16,6 +16,16 @@ vi.mock("../../../store", () => ({
   useLessonStore: vi.fn(),
 }));
 
+// Mock the lessonService to prevent async calls
+vi.mock("../services/lesson-service", () => ({
+  lessonService: {
+    getAllCategoryMetadata: vi
+      .fn()
+      .mockResolvedValue({ success: true, data: [] }),
+    loadCategory: vi.fn().mockResolvedValue({ success: true, data: null }),
+  },
+}));
+
 import { useLessonStore } from "../../../store";
 
 const mockUseLessonStore = useLessonStore as unknown as jest.Mock;
@@ -42,10 +52,12 @@ describe("useLesson", () => {
     currentLesson: mockLesson,
     currentCategoryId: "jsx",
     currentLessonId: "1",
+    categories: [],
     loading: false,
     error: null,
     setCurrentCategoryId: vi.fn().mockResolvedValue(undefined),
     setCurrentLessonId: vi.fn(),
+    setCategories: vi.fn(),
   };
 
   beforeEach(() => {
