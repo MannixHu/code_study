@@ -70,25 +70,35 @@ export function useEditor(
     };
   }, [userCode, isSaved, lessonId, markAsSaved]);
 
-  // 在课程加载时加载已保存的代码
+  // 在课程切换时加载已保存的代码或使用启动代码
   useEffect(() => {
     const loadCode = async () => {
       if (!lessonId) return;
 
       try {
+        // 先尝试加载已保存的代码
         await loadSavedCode(lessonId);
+
+        // 获取最新的 lastSavedCode 状态
+        const lastSaved = useEditorStore.getState().lastSavedCode;
+
+        // 如果没有加载到保存的代码（lastSavedCode为空），使用启动代码
+        if (!lastSaved && starterCode) {
+          setUserCode(starterCode);
+        }
       } catch (error) {
         console.warn("Failed to load saved code:", error);
-      }
-
-      // 获取最新的 userCode 状态
-      const currentCode = useEditorStore.getState().userCode;
-      // 如果没有已保存的代码，使用启动代码
-      if (!currentCode && starterCode) {
-        setUserCode(starterCode);
+        // 加载失败时使用启动代码
+        if (starterCode) {
+          setUserCode(starterCode);
+        }
       }
     };
 
+    // 每次 lessonId 变化时重置并加载新代码
+    if (starterCode) {
+      setUserCode(starterCode);
+    }
     loadCode();
   }, [lessonId, starterCode, loadSavedCode, setUserCode]);
 
