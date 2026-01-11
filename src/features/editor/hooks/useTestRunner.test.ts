@@ -1,4 +1,4 @@
-import { vi } from "vitest";
+import { vi, type Mocked } from "vitest";
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /**
  * Tests for useTestRunner hook
@@ -30,12 +30,14 @@ import { useProgressStore, useEditorStore } from "../../../store";
 import { testService } from "../services/test-service";
 import { progressService } from "../../progress";
 
-const mockUseProgressStore = useProgressStore as unknown as jest.Mock;
-const mockUseEditorStore = useEditorStore as unknown as jest.Mock;
-const mockTestService = testService as jest.Mocked<typeof testService>;
-const mockProgressService = progressService as jest.Mocked<
-  typeof progressService
+const mockUseProgressStore = useProgressStore as unknown as ReturnType<
+  typeof vi.fn
 >;
+const mockUseEditorStore = useEditorStore as unknown as ReturnType<
+  typeof vi.fn
+>;
+const mockTestService = testService as Mocked<typeof testService>;
+const mockProgressService = progressService as Mocked<typeof progressService>;
 
 describe("useTestRunner", () => {
   const mockTestResults = [

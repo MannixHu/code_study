@@ -25,9 +25,9 @@ import { useLesson } from "../../../features/lessons";
 import { useProgress } from "../../../features/progress";
 import { useUIStore } from "../../../store";
 
-const mockUseLesson = useLesson as unknown as jest.Mock;
-const mockUseProgress = useProgress as unknown as jest.Mock;
-const mockUseUIStore = useUIStore as unknown as jest.Mock;
+const mockUseLesson = useLesson as unknown as ReturnType<typeof vi.fn>;
+const mockUseProgress = useProgress as unknown as ReturnType<typeof vi.fn>;
+const mockUseUIStore = useUIStore as unknown as ReturnType<typeof vi.fn>;
 
 describe("AppSidebar", () => {
   const mockCategory = {

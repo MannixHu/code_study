@@ -51,9 +51,9 @@ vi.mock("../../progress", () => ({
 import { useLesson } from "../hooks/useLesson";
 import { useEditor, useTestRunner } from "../../editor";
 
-const mockUseLesson = useLesson as jest.Mock;
-const mockUseEditor = useEditor as jest.Mock;
-const mockUseTestRunner = useTestRunner as jest.Mock;
+const mockUseLesson = useLesson as unknown as ReturnType<typeof vi.fn>;
+const mockUseEditor = useEditor as unknown as ReturnType<typeof vi.fn>;
+const mockUseTestRunner = useTestRunner as unknown as ReturnType<typeof vi.fn>;
 
 describe("LearningPage", () => {
   const mockLesson = {

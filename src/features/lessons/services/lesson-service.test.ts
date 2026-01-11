@@ -1,4 +1,4 @@
-import { vi } from "vitest";
+import { vi, type Mocked } from "vitest";
 /**
  * Unit Tests for Lesson Service
  */
@@ -10,7 +10,7 @@ import type { Category, Lesson } from "../types/lesson";
 // Mock the lesson repository
 vi.mock("../repository/lesson-repository");
 
-const mockLessonRepository = lessonRepository as jest.Mocked<
+const mockLessonRepository = lessonRepository as Mocked<
   typeof lessonRepository
 >;
 

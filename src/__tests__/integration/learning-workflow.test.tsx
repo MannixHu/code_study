@@ -1,4 +1,4 @@
-import { vi } from "vitest";
+import { vi, type MockedFunction } from "vitest";
 /**
  * Integration tests for complete learning workflows
  * Tests end-to-end user scenarios across multiple components and features
@@ -63,11 +63,9 @@ vi.mock("../../features/progress", () => ({
 import { useLesson } from "../../features/lessons/hooks/useLesson";
 import { useEditor, useTestRunner } from "../../features/editor";
 
-const mockUseLesson = useLesson as jest.MockedFunction<typeof useLesson>;
-const mockUseEditor = useEditor as jest.MockedFunction<typeof useEditor>;
-const mockUseTestRunner = useTestRunner as jest.MockedFunction<
-  typeof useTestRunner
->;
+const mockUseLesson = useLesson as MockedFunction<typeof useLesson>;
+const mockUseEditor = useEditor as MockedFunction<typeof useEditor>;
+const mockUseTestRunner = useTestRunner as MockedFunction<typeof useTestRunner>;
 
 describe("Learning Workflow Integration Tests", () => {
   const mockCategory: Category = {

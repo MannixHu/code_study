@@ -28,7 +28,9 @@ vi.mock("../services/lesson-service", () => ({
 
 import { useLessonStore } from "../../../store";
 
-const mockUseLessonStore = useLessonStore as unknown as jest.Mock;
+const mockUseLessonStore = useLessonStore as unknown as ReturnType<
+  typeof vi.fn
+>;
 
 describe("useLesson", () => {
   const mockCategory = {

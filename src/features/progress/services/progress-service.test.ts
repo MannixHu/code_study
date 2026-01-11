@@ -1,4 +1,4 @@
-import { vi } from "vitest";
+import { vi, type Mocked } from "vitest";
 /**
  * Unit Tests for Progress Service
  */
@@ -11,7 +11,7 @@ import type { ProgressV2 } from "../../../shared/db/dexie-db";
 // Mock the progress repository
 vi.mock("../repository/progress-repository");
 
-const mockProgressRepository = progressRepository as jest.Mocked<
+const mockProgressRepository = progressRepository as Mocked<
   typeof progressRepository
 >;
 
