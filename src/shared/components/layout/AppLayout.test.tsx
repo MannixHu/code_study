@@ -1,17 +1,13 @@
 import { vi } from "vitest";
 /**
  * Tests for AppLayout component
+ * 沉浸式布局 - 无顶部 Header
  */
 
 import { render, screen } from "@testing-library/react";
 import AppLayout from "./AppLayout";
 
 // Mock child components
-vi.mock("./AppHeader", () => ({
-  __esModule: true,
-  default: () => <div data-testid="app-header">AppHeader</div>,
-}));
-
 vi.mock("./AppSidebar", () => ({
   __esModule: true,
   default: () => <div data-testid="app-sidebar">AppSidebar</div>,
@@ -28,12 +24,6 @@ describe("AppLayout", () => {
 
       const layout = document.querySelector(".app-layout");
       expect(layout).toBeInTheDocument();
-    });
-
-    it("should render AppHeader component", () => {
-      render(<AppLayout />);
-
-      expect(screen.getByTestId("app-header")).toBeInTheDocument();
     });
 
     it("should render AppSidebar component", () => {
@@ -64,16 +54,6 @@ describe("AppLayout", () => {
   });
 
   describe("Layout Structure", () => {
-    it("should have header at top level", () => {
-      render(<AppLayout />);
-
-      const layout = document.querySelector(".app-layout");
-      const header = screen.getByTestId("app-header");
-
-      // Header should be a direct child of layout
-      expect(layout?.contains(header)).toBe(true);
-    });
-
     it("should have sidebar inside app-body", () => {
       render(<AppLayout />);
 
@@ -90,6 +70,17 @@ describe("AppLayout", () => {
       const learningPage = screen.getByTestId("learning-page");
 
       expect(appContent?.contains(learningPage)).toBe(true);
+    });
+
+    it("should be immersive layout without header", () => {
+      render(<AppLayout />);
+
+      // 验证是沉浸式布局，没有顶部 header
+      const layout = document.querySelector(".app-layout");
+      expect(layout).toBeInTheDocument();
+
+      // 验证使用深色背景
+      expect(layout).toHaveClass("bg-[#1e1e1e]");
     });
   });
 });

@@ -142,13 +142,12 @@ describe("AppSidebar", () => {
       expect(screen.getByText("10 分钟")).toBeInTheDocument();
     });
 
-    it("should render action buttons", () => {
+    it("should render navigation buttons only (action buttons moved to bottom bar)", () => {
       render(<AppSidebar />);
 
-      expect(screen.getByText("提交答案")).toBeInTheDocument();
-      expect(screen.getByText("提示")).toBeInTheDocument();
-      expect(screen.getByText("重置")).toBeInTheDocument();
-      expect(screen.getByText("答案")).toBeInTheDocument();
+      // 操作按钮已移至底部栏，侧边栏只保留导航按钮
+      expect(screen.getByText("上一题")).toBeInTheDocument();
+      expect(screen.getByText(/下一题/i)).toBeInTheDocument();
     });
 
     it("should render navigation buttons", () => {
@@ -285,16 +284,19 @@ describe("AppSidebar", () => {
       expect(screen.getByText("Use function declaration")).toBeInTheDocument();
     });
 
-    it("should call nextHint when hint button is clicked", async () => {
-      const user = userEvent.setup();
+    it("should display hint alert when hint is available", () => {
+      // 提示按钮已移至底部操作栏
+      // 此测试验证当 showHint 为 true 时显示提示内容
+      mockUseUIStore.mockReturnValue({
+        showHint: true,
+        hintIndex: 2,
+        resetHint: mockResetHint,
+        nextHint: mockNextHint,
+      });
+
       render(<AppSidebar />);
 
-      const hintButton = screen.getByText("提示").closest("button");
-      if (hintButton) {
-        await user.click(hintButton);
-      }
-
-      expect(mockNextHint).toHaveBeenCalledWith(2);
+      expect(screen.getByText(/提示 2\/2/i)).toBeInTheDocument();
     });
   });
 

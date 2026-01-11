@@ -92,7 +92,7 @@ describe("AppHeader", () => {
     it("should render header with logo text", () => {
       render(<AppHeader />);
 
-      expect(screen.getByText("React 学习")).toBeInTheDocument();
+      expect(screen.getByText("Code Study")).toBeInTheDocument();
     });
 
     it("should render tabs container", () => {

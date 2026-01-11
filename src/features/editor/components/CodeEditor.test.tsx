@@ -20,21 +20,25 @@ vi.mock("@monaco-editor/react", () => ({
   }: {
     value: string;
     onChange: (value: string | undefined) => void;
-    onMount: (editor: any) => void;
+    onMount: (editor: any, monaco: any) => void;
     language: string;
     theme: string;
     height: string | number;
   }) => {
-    // Simulate editor mount
+    // Simulate editor instance
     const mockEditor = {
       addCommand: vi.fn(),
+    };
+
+    // Simulate monaco object with KeyMod and KeyCode
+    const mockMonaco = {
       KeyMod: { CtrlCmd: 1 },
       KeyCode: { KeyS: 83 },
     };
 
-    // Call onMount if provided
+    // Call onMount if provided with both editor and monaco
     if (onMount) {
-      setTimeout(() => onMount(mockEditor), 0);
+      setTimeout(() => onMount(mockEditor, mockMonaco), 0);
     }
 
     return (

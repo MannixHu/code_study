@@ -4,7 +4,7 @@
  */
 
 import { useRef, memo } from "react";
-import Editor from "@monaco-editor/react";
+import Editor, { type Monaco } from "@monaco-editor/react";
 import type { editor } from "monaco-editor";
 
 interface CodeEditorProps {
@@ -32,13 +32,15 @@ function CodeEditor({
     }
   };
 
-  const handleEditorMount = (editor: editor.IStandaloneCodeEditor) => {
-    editorRef.current = editor;
+  const handleEditorMount = (
+    editorInstance: editor.IStandaloneCodeEditor,
+    monaco: Monaco,
+  ) => {
+    editorRef.current = editorInstance;
 
     // 设置编辑器快捷键
-    editor.addCommand(
-      // @ts-expect-error - Monaco Editor API
-      editor.KeyMod.CtrlCmd | editor.KeyCode.KeyS,
+    editorInstance.addCommand(
+      monaco.KeyMod.CtrlCmd | monaco.KeyCode.KeyS,
       () => {
         // Ctrl+S 保存（由上层处理）
         console.log("Save triggered");

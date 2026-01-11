@@ -168,27 +168,27 @@ describe("Learning Workflow Integration Tests", () => {
       expect(mockSetUserCode).toHaveBeenCalled();
 
       // 2. Run tests and see results
-      const runButton = screen.getByText("运行测试");
+      const runButton = screen.getByRole("button", { name: /运行测试/ });
       await user.click(runButton);
 
       rerender(<LearningPage />);
       expect(screen.getByTestId("some-failed")).toBeInTheDocument();
 
       // 3. Reset code
-      const resetButton = screen.getByText("重置代码");
+      const resetButton = screen.getByRole("button", { name: /重置/ });
       await user.click(resetButton);
 
       expect(mockResetCode).toHaveBeenCalledWith(mockLesson.id);
       expect(mockSetUserCode).toHaveBeenCalledWith(mockLesson.starterCode);
 
       // 4. View solution
-      const solutionButton = screen.getByText("查看答案");
+      const solutionButton = screen.getByRole("button", { name: /答案/ });
       await user.click(solutionButton);
 
       expect(mockSetUserCode).toHaveBeenCalledWith(mockLesson.solution);
 
       // 5. Save code
-      const saveButton = screen.getByText("保存代码");
+      const saveButton = screen.getByRole("button", { name: /保存/ });
       await user.click(saveButton);
 
       expect(mockSaveCode).toHaveBeenCalledWith(mockLesson.id);
@@ -209,7 +209,7 @@ describe("Learning Workflow Integration Tests", () => {
       const { rerender } = render(<LearningPage />);
 
       // Run tests
-      const runButton = screen.getByText("运行测试");
+      const runButton = screen.getByRole("button", { name: /运行测试/ });
       await user.click(runButton);
 
       // Update mock to return results
@@ -245,7 +245,7 @@ describe("Learning Workflow Integration Tests", () => {
 
       render(<LearningPage />);
 
-      const runButton = screen.getByText("运行测试");
+      const runButton = screen.getByRole("button", { name: /运行测试/ });
 
       // Before click - button should be enabled
       expect(runButton).not.toBeDisabled();
@@ -363,9 +363,9 @@ describe("Learning Workflow Integration Tests", () => {
 
       render(<LearningPage />);
 
-      const runButton = screen.getByText("运行测试");
-      const resetButton = screen.getByText("重置代码");
-      const saveButton = screen.getByText("保存代码");
+      const runButton = screen.getByRole("button", { name: /运行测试/ });
+      const resetButton = screen.getByRole("button", { name: /重置/ });
+      const saveButton = screen.getByRole("button", { name: /保存/ });
 
       // Click multiple buttons
       await user.click(runButton);

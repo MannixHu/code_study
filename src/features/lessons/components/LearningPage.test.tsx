@@ -127,23 +127,24 @@ describe("LearningPage", () => {
     it("should render editor panel", () => {
       render(<LearningPage />);
 
-      expect(screen.getByText("代码编辑区")).toBeInTheDocument();
       expect(screen.getByTestId("code-editor")).toBeInTheDocument();
     });
 
-    it("should render preview panel", () => {
+    it("should render bottom panel with test results area", () => {
       render(<LearningPage />);
 
-      expect(screen.getByText("实时预览")).toBeInTheDocument();
+      // 底部面板显示测试结果占位符
+      expect(screen.getByText("运行测试查看结果")).toBeInTheDocument();
     });
 
     it("should show saved indicator when code is saved", () => {
       render(<LearningPage />);
 
-      expect(screen.getByText("已保存")).toBeInTheDocument();
+      // 保存状态显示在保存按钮中
+      expect(screen.getByText(/已保存/)).toBeInTheDocument();
     });
 
-    it("should show unsaved indicator when code is not saved", () => {
+    it("should show save button without saved text when code is not saved", () => {
       mockUseEditor.mockReturnValue({
         ...defaultEditorState,
         isSaved: false,
@@ -151,25 +152,22 @@ describe("LearningPage", () => {
 
       render(<LearningPage />);
 
-      expect(screen.queryByText("已保存")).not.toBeInTheDocument();
-      expect(document.querySelector(".unsaved-dot")).toBeInTheDocument();
+      // 未保存时按钮只显示 "保存"
+      const saveButton = screen.getByRole("button", { name: /保存/ });
+      expect(saveButton).toBeInTheDocument();
+      // 已保存文字不应该出现在保存按钮中（而不是"已保存"）
+      expect(saveButton.textContent).not.toContain("已保存");
     });
 
     it("should render control buttons", () => {
       render(<LearningPage />);
 
       expect(
-        screen.getByRole("button", { name: "运行测试" }),
+        screen.getByRole("button", { name: /运行测试/ }),
       ).toBeInTheDocument();
-      expect(
-        screen.getByRole("button", { name: "重置代码" }),
-      ).toBeInTheDocument();
-      expect(
-        screen.getByRole("button", { name: "查看答案" }),
-      ).toBeInTheDocument();
-      expect(
-        screen.getByRole("button", { name: "保存代码" }),
-      ).toBeInTheDocument();
+      expect(screen.getByRole("button", { name: /重置/ })).toBeInTheDocument();
+      expect(screen.getByRole("button", { name: /答案/ })).toBeInTheDocument();
+      expect(screen.getByRole("button", { name: /保存/ })).toBeInTheDocument();
     });
   });
 
@@ -228,7 +226,7 @@ describe("LearningPage", () => {
 
       render(<LearningPage />);
 
-      await user.click(screen.getByRole("button", { name: "运行测试" }));
+      await user.click(screen.getByRole("button", { name: /运行测试/ }));
 
       expect(runTests).toHaveBeenCalledWith(
         defaultEditorState.userCode,
@@ -258,7 +256,7 @@ describe("LearningPage", () => {
 
       render(<LearningPage />);
 
-      await user.click(screen.getByRole("button", { name: "查看答案" }));
+      await user.click(screen.getByRole("button", { name: /答案/ }));
 
       expect(setUserCode).toHaveBeenCalledWith(mockLesson.solution);
     });
@@ -275,7 +273,7 @@ describe("LearningPage", () => {
 
       render(<LearningPage />);
 
-      await user.click(screen.getByRole("button", { name: "重置代码" }));
+      await user.click(screen.getByRole("button", { name: /重置/ }));
 
       expect(resetCode).toHaveBeenCalledWith(mockLesson.id);
       expect(setUserCode).toHaveBeenCalledWith(mockLesson.starterCode);
@@ -291,7 +289,7 @@ describe("LearningPage", () => {
 
       render(<LearningPage />);
 
-      await user.click(screen.getByRole("button", { name: "保存代码" }));
+      await user.click(screen.getByRole("button", { name: /保存/ }));
 
       expect(saveCode).toHaveBeenCalledWith(mockLesson.id);
     });

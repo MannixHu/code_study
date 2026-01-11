@@ -56,12 +56,15 @@ export function HintButton({
       >
         <Button
           type="default"
+          size="middle"
           icon={isLoading ? <LoadingOutlined spin /> : <BulbOutlined />}
           onClick={onClick}
           disabled={buttonDisabled}
           style={{
             borderColor: isMaxLevel ? "#d9d9d9" : getLevelColor(currentLevel),
             color: isMaxLevel ? "#d9d9d9" : getLevelColor(currentLevel),
+            height: 36,
+            paddingInline: 14,
           }}
         >
           {isLoading ? "生成中..." : isMaxLevel ? "无更多提示" : "获取提示"}

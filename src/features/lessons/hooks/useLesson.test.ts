@@ -4,7 +4,12 @@ import { vi } from "vitest";
  */
 
 import { renderHook, act, waitFor } from "@testing-library/react";
-import { useLesson, useCategorySelector, useLessonSelector } from "./useLesson";
+import {
+  useLesson,
+  useCategorySelector,
+  useLessonSelector,
+  resetInitialized,
+} from "./useLesson";
 
 // Mock the store
 vi.mock("../../../store", () => ({
@@ -45,6 +50,7 @@ describe("useLesson", () => {
 
   beforeEach(() => {
     vi.clearAllMocks();
+    resetInitialized(); // 重置模块级初始化状态
     mockUseLessonStore.mockReturnValue(mockStoreState);
   });
 
@@ -97,7 +103,14 @@ describe("useLesson", () => {
       expect(typeof result.current.setCurrentLesson).toBe("function");
     });
 
-    it("should call setCurrentCategoryId on mount when category exists", async () => {
+    it("should call setCurrentCategoryId on mount when category is null", async () => {
+      // 当 category 为 null 时应该触发加载
+      mockUseLessonStore.mockReturnValue({
+        ...mockStoreState,
+        currentCategory: null,
+        currentLesson: null,
+      });
+
       renderHook(() => useLesson());
 
       await waitFor(() => {
@@ -105,14 +118,30 @@ describe("useLesson", () => {
       });
     });
 
+    it("should not call setCurrentCategoryId when category already exists", async () => {
+      // 当 category 已存在时不应该再次加载
+      renderHook(() => useLesson());
+
+      await waitFor(() => {
+        expect(mockStoreState.setCurrentCategoryId).not.toHaveBeenCalled();
+      });
+    });
+
     it("should not initialize twice on re-render", async () => {
+      // 当 category 为 null 时触发加载，但只加载一次
+      mockUseLessonStore.mockReturnValue({
+        ...mockStoreState,
+        currentCategory: null,
+        currentLesson: null,
+      });
+
       const { rerender } = renderHook(() => useLesson());
 
       rerender();
       rerender();
 
       await waitFor(() => {
-        // Should only be called once due to initializedRef
+        // Should only be called once due to module-level isInitialized
         expect(mockStoreState.setCurrentCategoryId).toHaveBeenCalledTimes(1);
       });
     });
